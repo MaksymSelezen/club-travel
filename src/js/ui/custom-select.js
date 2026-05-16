@@ -14,8 +14,7 @@ window.addEventListener('resize', () => {
   if (document.querySelector('[data-select].is-open')) {
     selectClose();
   }
-})
-
+});
 
 function selectOption(option) {
   const select = option.closest('[data-select]');
@@ -49,7 +48,6 @@ export function selectOpen() {
         select.classList.add('is-open');
         triggerEl.setAttribute('aria-expanded', 'true');
       }
-
     } else if (option) {
       selectOption(option);
     } else if (!isSelectClick) selectClose();
@@ -57,18 +55,25 @@ export function selectOpen() {
 }
 
 export function updateGuestValue(guestSelect) {
-
   const guestAdult = guestSelect.querySelector('[data-guests-adults]');
   const guestChildren = guestSelect.querySelector('[data-guests-children]');
+  const guestAdultInput = guestSelect.querySelector(
+    '[data-guests-adults-input]',
+  );
+  const guestChildrenInput = guestSelect.querySelector(
+    '[data-guests-children-input]',
+  );
 
   const guestDropdown = guestSelect.querySelector('[data-guests-dropdown]');
   const counterList = guestDropdown.querySelectorAll('[data-counter]');
   const chips = guestSelect.querySelector('[data-chips]');
-  let adult=0;
-  let children=0;
+  let adult = 0;
+  let children = 0;
 
   counterList.forEach(item => {
-    const value = Number(item.querySelector('[data-counter-value]').textContent);
+    const value = Number(
+      item.querySelector('[data-counter-value]').textContent,
+    );
     const type = item.dataset.counter;
 
     if (chips) {
@@ -76,10 +81,21 @@ export function updateGuestValue(guestSelect) {
       if (chip) chip.querySelector('span').textContent = String(value);
     }
 
-    if (type==="adults") {adult = value;}
-    else  {children += value;}
+    if (type === 'adults') {
+      adult = value;
+    } else {
+      children += value;
+    }
   });
 
-  guestAdult.textContent = String(adult);
-  guestChildren.textContent = String(children);
+  if (guestAdult) guestAdult.textContent = String(adult);
+  if (guestAdultInput) {
+    guestAdultInput.value = String(adult);
+    guestAdultInput.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  if (guestChildren) guestChildren.textContent = String(children);
+  if (guestChildrenInput) {
+    guestChildrenInput.value = String(children);
+    guestChildrenInput.dispatchEvent(new Event('input', { bubbles: true }));
+  }
 }

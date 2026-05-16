@@ -1,14 +1,15 @@
 <div class="guests-selector {{guestsSelectorClass}}" data-guests-selector data-select>
-  <input type="hidden" name="guests" class="guests-selector__input" data-guests-input />
+  <input type="hidden" name="adults" data-guests-adults-input />
+  <input type="hidden" name="children" data-guests-children-input />
 <div class="guests-selector__trigger-wrap">
-  <button type="button" class="guests-selector__trigger" aria-expanded="false" data-select-trigger>
+  <button type="button" class="guests-selector__trigger clickable input-base" aria-expanded="false" data-select-trigger>
     <span class="guests-selector__value" data-guests-value>
       Взрослых: <span data-guests-adults>2</span>; детей: <span data-guests-children>0</span>
     </span>
     {{> ui/svg className="guests-selector__arrow" id="chevron" dataAttr="data-select-arrow"}}
   </button>
 
-  <div class="guests-selector__dropdown" data-guests-dropdown>
+  <div class="guests-selector__dropdown input-base" data-guests-dropdown>
     {{#each guestsRows}}
       <div class="guests-selector__row">
         <span class="guests-selector__label">{{label}}</span>

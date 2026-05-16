@@ -1,12 +1,12 @@
 <div class="custom-select {{customSelectClass}}" data-select="{{name}}" {{{dataAtr}}}>
   <input type="hidden" name="{{name}}" data-select-input />
   <button
-    type="button" class="custom-select__trigger clickable" data-select-trigger
+    type="button" class="custom-select__trigger clickable input-base" data-select-trigger
     role="combobox" aria-haspopup="listbox" aria-expanded="false">
     <span data-select-value>{{placeholder}}</span>
     {{> ui/svg className="custom-select__input-arrow" id="chevron" dataAttr="data-select-arrow"}}
   </button>
-  <ul class="custom-select__dropdown" data-select-dropdown role="listbox">
+  <ul class="custom-select__dropdown input-base" data-select-dropdown role="listbox">
     {{#if options}}
       {{#each options}}
         <li

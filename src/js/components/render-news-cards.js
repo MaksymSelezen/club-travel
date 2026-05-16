@@ -1,5 +1,6 @@
 import { getNews } from '@/js/services/api/getNews.js';
 import { updateTextContent } from '@/js/utils/update-text-content.js';
+import { formatMoney } from '@/js/utils/format-money.js';
 
 export const renderNewsCards = async (className, maxCards) => {
   const cardsData = await getNews(maxCards);
@@ -30,7 +31,7 @@ export const renderNewsCards = async (className, maxCards) => {
     updateTextContent(card, '[data-card-title]', cardsData[i].title);
 
     if (cardPriceWrap && cardsData[i].price) {
-      updateTextContent(cardPriceWrap, 'span', `от ${cardsData[i].price}€`);
+      updateTextContent(cardPriceWrap, 'span', `от ${formatMoney(cardsData[i].price)}€`);
       cardPriceWrap.classList.add('has-price');
     } else cardPriceWrap.classList.remove('has-price');
 

@@ -1,4 +1,4 @@
-<form class="tour-selector {{classTourSelector}}" data-tour-selector>
+<form class="tour-selector {{classTourSelector}}" novalidate="novalidate" data-tour-selector>
   <ul
     class="tour-selector__tabs" role="tablist"
     aria-label="Етапи підбору туру">
@@ -70,7 +70,7 @@
           <span
             class="tour-selector__label">Желаемая цена на одного человека (€)</span>
           <input
-            class="tour-selector__input" type="number" inputmode="numeric"
+            class="tour-selector__input input-base" type="number" inputmode="numeric"
             placeholder="Введите цену" />
         </label>
         <div class="tour-selector__field">
@@ -132,7 +132,7 @@
         <label class="tour-selector__field">
           <span class="tour-selector__label">Пожелания</span>
           <textarea
-            class="tour-selector__input tour-selector__input_area"
+            class="tour-selector__input tour-selector__input_area input-base"
             placeholder="Ваши пожелания"></textarea>
         </label>
       </div>
@@ -147,19 +147,19 @@
         <label class="tour-selector__field">
           <span class="tour-selector__label">Имя</span>
           <input
-            class="tour-selector__input" type="text" autocomplete="name"
+            class="tour-selector__input input-base" type="text" autocomplete="name"
             placeholder="Введите имя" />
         </label>
         <label class="tour-selector__field">
           <span class="tour-selector__label">Телефон</span>
           <input
-            class="tour-selector__input" type="tel" autocomplete="tel"
+            class="tour-selector__input input-base" type="tel" autocomplete="tel"
             placeholder="Введите телефон" />
         </label>
         <label class="tour-selector__field">
           <span class="tour-selector__label">Эл. почта</span>
           <input
-            class="tour-selector__input" type="email" autocomplete="email"
+            class="tour-selector__input input-base" type="email" autocomplete="email"
             placeholder="Введите email" />
         </label>
       </div>

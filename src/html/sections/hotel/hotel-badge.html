@@ -1,9 +1,9 @@
-<div class="hotel-badge {{hotelBadgeClass}}">
+<div class="hotel-badge {{hotelBadgeClass}}" data-badge="container">
   <div class="hotel-badge__content">
-    <h1 class="hotel-badge__title">AMBASSADOR</h1>
+    <h1 class="hotel-badge__title" data-badge="title"></h1>
     <div class="hotel-badge__meta">
       {{> ui/svg className="hotel-badge__meta-icon" id="point"}}
-      <span class="hotel-badge__meta-text">Болгария, Золотые Пески</span>
+      <span class="hotel-badge__meta-text" data-badge="location"></span>
     </div>
   </div>
   {{>ui/rating ratingClass="hotel-badge__rating"}}

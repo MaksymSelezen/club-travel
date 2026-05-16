@@ -1,0 +1,25 @@
+@use '@/scss/base/reset';
+@use '@/scss/base/base';
+
+@use 'swiper/css';
+@use 'swiper/css/navigation';
+@use 'swiper/css/autoplay';
+
+@use '@/scss/ui/states';
+@use '@/scss/ui/btn';
+@use '@/scss/ui/rating';
+@use '@/scss/ui/intro-header';
+@use '@/scss/ui/link-more';
+@use '@/scss/ui/badge';
+
+@use '@/scss/components/swiper-cards';
+@use '@/scss/components/tour-search';
+
+@use '@/scss/layout/header';
+@use '@/scss/layout/burger-menu';
+
+@use '@/scss/sections/common/main-hero';
+@use '@/scss/sections/main/main';
+@use '@/scss/sections/search-result/hotel-card';
+
+@use '@/scss/layout/footer';

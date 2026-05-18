@@ -1,4 +1,4 @@
-export async function renderSlides(gallery) {
+export function renderSlides(gallery) {
 
   const swiperContainer = document.querySelector('[data-swiper-thumbs-container]');
   const mainWrap = swiperContainer.querySelector('[data-main-wrap]');

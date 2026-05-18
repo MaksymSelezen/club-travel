@@ -42,7 +42,7 @@
         slidesPerView: 1,
         spaceBetween: 30,
         grabCursor: true,
-        loop: true,
+        loop: slides.length > 1,
         loopAdditionalSlides: 2,
         lazy: {
           loadPrevNext: true,

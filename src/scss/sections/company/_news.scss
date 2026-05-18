@@ -1,6 +1,15 @@
 @use "@/scss/utils/media" as media;
 .news {
-    margin-top: 200px;
+    margin-top: 60px;
+    @include media.max-width(xs) {
+        margin-top: 50px;
+    }
+    &__intro-header{
+        font-weight: 700;
+        font-size: 26px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
 
     &__list {
         display: grid;

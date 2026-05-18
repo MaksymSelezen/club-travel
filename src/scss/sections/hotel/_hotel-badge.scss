@@ -4,27 +4,36 @@
     background: #fff;
     padding: 12px 19px;
     width: max-content;
+    max-width: 400px;
     display: flex;
+    flex-direction: column-reverse;
     align-items: start;
     gap: 4px;
-    @include media.max-width(xxs) {
-        flex-direction: column-reverse;
+    //max-width: 350px;
+    @include media.max-width(xs) {
+        //flex-direction: column-reverse;
         padding: 6px 18px;
+        //width: 100%;
+        max-width: 340px;
     }
     &__content {
         line-height: 1;
+        width: 100%;
+        min-width: 0;
     }
 
     &__title {
         font-weight: 700;
         font-size: 26px;
         color: var(--text);
+        //width: 100%;
+
         @include media.max-width(xs) {
             font-size: 22px;
         }
     }
     &__rating{
-        & svg{
+        & .rating__icon .is-true{
             display: block;
         }
     }

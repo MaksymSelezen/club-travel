@@ -1,5 +1,6 @@
 import { getHotOffers } from '@/js/services/api/getHotOffers.js';
 import { updateTextContent } from '@/js/utils/update-text-content.js';
+import { formatMoney } from '@/js/utils/format-money.js';
 
 export const renderHotCards = async (className, maxCards) => {
   const cardsData = (await getHotOffers(maxCards)) || [];
@@ -42,12 +43,12 @@ export const renderHotCards = async (className, maxCards) => {
 
     if (cardsData[i].oldPrice && cardOldPrice) {
       updateTextContent(
-        card, '[data-card-old-price]', `${cardsData[i].oldPrice}€/чел`,
+        card, '[data-card-old-price]', `${formatMoney(cardsData[i].oldPrice)}€/чел`,
       );
       cardOldPrice.classList.add('is-true');
     }
 
-    updateTextContent(card, '[data-card-price]', cardsData[i].price);
+    updateTextContent(card, '[data-card-price]', formatMoney(cardsData[i].price));
 
     if (cardRating && cardsData[i].stars) {
       for (let j = 0; j < Number(cardsData[i].stars); j++) {

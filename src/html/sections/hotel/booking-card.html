@@ -1,30 +1,30 @@
-<form class="booking-card {{bookingCardClass}}">
+<form class="booking-card {{bookingCardClass}}" data-booking="container">
   <div class="booking-card__header">
-    <h3 class="booking-card__title">Выбранный тур</h3>
+    <h3 class="booking-card__title"></h3>
     <a class="booking-card__change clickable" href="{{links.searchResults.href}}">изменить</a>
   </div>
 
   <ul class="booking-card__details" aria-label="Параметры выбранного тура">
-    <li class="booking-card__details-item">
+    <li class="booking-card__details-item" data-booking="period">
       {{> ui/svg className="booking-card__icon" id="calendar"}}
-      <span>18 июня 2020 г. / 7 ночей</span>
+      <span>Дату перенесли</span>
     </li>
-    <li class="booking-card__details-item">
+    <li class="booking-card__details-item" data-booking="departure">
       {{> ui/svg className="booking-card__icon" id="airplane"}}
-      <span>Вылет из Таллинна</span>
+      <span>Вылет отложили</span>
     </li>
-    <li class="booking-card__details-item">
+    <li class="booking-card__details-item" data-booking="meal">
       {{> ui/svg className="booking-card__icon" id="food"}}
-      <span>Завтраки</span>
+      <span></span>
     </li>
-    <li class="booking-card__details-item">
+    <li class="booking-card__details-item" data-booking="tour">
       {{> ui/svg className="booking-card__icon" id="house"}}
-      <span>Стандарт</span>
+      <span></span>
     </li>
   </ul>
 
   <div class="booking-card__price" aria-label="Цена за одного человека">
-    <span class="booking-card__price-value">429€</span><span class="booking-card__price-unit">/чел</span>
+    <span class="booking-card__price-value" data-booking="pricePerson">0€</span><span class="booking-card__price-unit">/чел</span>
   </div>
 
   <p class="booking-card__note">
@@ -46,7 +46,7 @@
 
   <p class="booking-card__total" aria-label="Общая стоимость тура">
     <span class="booking-card__total-label">Общая стоимость тура:</span>
-    <span class="booking-card__total-value">1429€</span>
+    <span class="booking-card__total-value" data-booking="final-price">0€</span>
   </p>
 
   <button class="booking-card__button btn btn_orange" type="sumbit">Бронировать</button>

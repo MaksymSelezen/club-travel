@@ -3,33 +3,41 @@ import '@/js/layout/header-account-dropdown.js';
 import '@/js/layout/header-scroll-state.js';
 import '@/js/sections/main/hero-swiper.js';
 
-import { renderHotCards } from '@/js/components/render-hot-cards.js';
-import { initCardsSwiper } from '@/js/sections/main/cards-swiper.js';
-import { selectOpen, updateGuestValue } from '@/js/ui/custom-select.js';
+import { initSelect, updateGuestValue } from '@/js/ui/custom-select.js';
 import { initCounter } from '@/js/ui/counter.js';
-import { innitSwiperThumbs } from '@/js/sections/hotel/swiper-tumbs.js';
-import { renderSlides } from '@/js/sections/hotel/render-swiper-thumbs.js';
 
-import { getHotelData } from '@/js/sections/hotel/get-hotel-data.js';
-import { renderAboutHotel } from '@/js/sections/hotel/render-about-hotel.js';
+import { hotelDataMapper } from '@/js/sections/hotel/hotel-data-mapper.js';
+import { renderSlides } from '@/js/sections/hotel/render-swiper-thumbs.js';
+import { innitSwiperThumbs } from '@/js/sections/hotel/swiper-tumbs.js';
+import { renderInfoHotel } from '@/js/sections/hotel/render-info-hotel.js';
+import { renderBadgeHotel } from '@/js/sections/hotel/render-badge-hotel.js';
+import { renderSelectedTour } from '@/js/sections/hotel/render-selected-tour.js';
+
+import { renderHotCards } from '@/js/components/render-hot-cards.js';
+import { initCardsSwiper } from '@/js/components/cards-swiper.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  selectOpen();
-  initCounter();
+  const hotelDataPromise = hotelDataMapper();
 
+  initSelect();
+  initCounter();
 
   document.querySelectorAll('[data-guests-selector]').forEach(guestSelect => {
     updateGuestValue(guestSelect);
   });
 
-  const hotelData = await getHotelData();
+  const hotelData = await hotelDataPromise;
+  renderSlides(hotelData.gallery);
+  requestAnimationFrame(() => {
+    innitSwiperThumbs('[data-swiper-thumbs]');
+  });
 
-  await Promise.all([
-    renderSlides(hotelData.gallery).then(() => innitSwiperThumbs('[data-swiper-thumbs]')),
-    renderAboutHotel(hotelData.info),
+  renderInfoHotel(hotelData.info);
+  renderBadgeHotel(hotelData.badge);
+  renderSelectedTour(hotelData.bookingCard);
 
-    renderHotCards('.hotel-page__promo-tours', 5).then(() =>
-      initCardsSwiper('.hotel-page__promo-tours', 3),
-    ),
-  ]);
+  await renderHotCards('.hotel-page__promo-tours', 5);
+  requestAnimationFrame(() => {
+    initCardsSwiper('.hotel-page__promo-tours', 3);
+  });
 });

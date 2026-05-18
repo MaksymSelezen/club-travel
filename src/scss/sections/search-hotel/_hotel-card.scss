@@ -1,0 +1,61 @@
+@use '@/scss/utils/media' as media;
+
+.hotel-card {
+    --hotel-card-side: 200px;
+    --hotel-card-gap: 39px;
+
+    width: 100%;
+    padding: 0 0 34px;
+    border-bottom: 1px solid #e2e2e2;
+    color: var(--text);
+
+    &__container {
+    }
+
+    &__summary {
+
+    }
+
+    &__offers-container {
+        display: grid;
+        grid-template-rows: 0fr;
+        //transition: grid-template-rows 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
+        overflow: hidden;
+        margin-top: 0;
+        @include media.max-width(lg) {
+            transition: grid-template-rows 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
+        }
+    }
+    &__offers-accordion-body {
+        min-height: 0;
+    }
+
+    &.is-open {
+        padding-bottom: 36px;
+    }
+
+    &.is-open &__offers-container {
+        grid-template-rows: 1fr;
+        margin-top: 13px;
+        //padding: 15px 4px 5px 13px;
+
+        @include media.max-width(lg) {
+            margin-top: -1px;
+            //padding-top: 5px;
+            //padding-bottom: 8px;
+        }
+    }
+
+    &.is-open &__summary {
+        .hotel-summary__deal {
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0);
+            background: #F5F5FA;
+            &::after{
+                opacity: 1;
+                visibility: visible;
+                background: #F5F5FA;
+            }
+        }
+    }
+}

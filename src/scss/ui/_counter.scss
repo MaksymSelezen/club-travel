@@ -23,16 +23,34 @@
         justify-content: center;
         align-items: center;
         position: relative;
+        transition: opacity 0.3s ease-in-out;
+        &:focus-visible {
+            opacity: 1;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            &:hover:not(:active) {
+                opacity: 1;
+            }
+        }
+
+        &:active {
+            transform: scale(0.95);
+            opacity: 1;
+        }
 
         & span {
             width: 6px;
             height: 1px;
             background: white;
             flex-shrink: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
 
             &:nth-child(2) {
-                transform: rotate(90deg);
-                position: absolute;
+                transform: translate(-50%, -50%) rotate(90deg);
             }
         }
     }

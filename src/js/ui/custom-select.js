@@ -1,5 +1,5 @@
 function selectClose() {
-  document.querySelectorAll('[data-select]').forEach(select => {
+  document.querySelectorAll('[data-select].is-open').forEach(select => {
     const triggerEl = select.querySelector('[data-select-trigger]');
     if (!triggerEl) {
       return;
@@ -10,35 +10,37 @@ function selectClose() {
   });
 }
 
-window.addEventListener('resize', () => {
-  if (document.querySelector('[data-select].is-open')) {
-    selectClose();
-  }
-})
-
+window.addEventListener('resize', selectClose);
 
 function selectOption(option) {
   const select = option.closest('[data-select]');
+  if (!select) return;
   const allOptions = select.querySelectorAll('[data-select-option]');
   const label = select.querySelector('[data-select-value]');
   const input = select.querySelector('[data-select-input]');
-  if (option.dataset.value) input.value = option.dataset.value.trim();
-  label.textContent = option.textContent.trim();
+  if (input && option.dataset.value) input.value = option.dataset.value.trim();
+  if (label) label.textContent = option.textContent.trim();
 
   allOptions.forEach(opt => opt.setAttribute('aria-selected', 'false'));
   option.setAttribute('aria-selected', 'true');
   selectClose();
 }
 
-export function selectOpen() {
+
+let isInit = false;
+export function initSelect() {
   // updateGuestValue();
+  if (isInit) return;
+  isInit = true;
 
   document.addEventListener('click', e => {
     const triggerEl = e.target.closest('[data-select-trigger]');
     const option = e.target.closest('[data-select-option]');
     const isSelectClick = e.target.closest('[data-select]');
 
-    if (triggerEl) {
+    if (option) {
+      selectOption(option);
+    } else if (triggerEl) {
       const select = triggerEl.closest('[data-select]');
       if (!select) return;
       const isOpen = select.classList.contains('is-open');
@@ -49,26 +51,30 @@ export function selectOpen() {
         select.classList.add('is-open');
         triggerEl.setAttribute('aria-expanded', 'true');
       }
-
-    } else if (option) {
-      selectOption(option);
-    } else if (!isSelectClick) selectClose();
+    }  else if (!isSelectClick) selectClose();
   });
 }
 
 export function updateGuestValue(guestSelect) {
-
   const guestAdult = guestSelect.querySelector('[data-guests-adults]');
   const guestChildren = guestSelect.querySelector('[data-guests-children]');
+  const guestAdultInput = guestSelect.querySelector(
+    '[data-guests-adults-input]',
+  );
+  const guestChildrenInput = guestSelect.querySelector(
+    '[data-guests-children-input]',
+  );
 
   const guestDropdown = guestSelect.querySelector('[data-guests-dropdown]');
   const counterList = guestDropdown.querySelectorAll('[data-counter]');
   const chips = guestSelect.querySelector('[data-chips]');
-  let adult=0;
-  let children=0;
+  let adult = 0;
+  let children = 0;
 
   counterList.forEach(item => {
-    const value = Number(item.querySelector('[data-counter-value]').textContent);
+    const value = Number(
+      item.querySelector('[data-counter-value]').textContent,
+    );
     const type = item.dataset.counter;
 
     if (chips) {
@@ -76,10 +82,21 @@ export function updateGuestValue(guestSelect) {
       if (chip) chip.querySelector('span').textContent = String(value);
     }
 
-    if (type==="adults") {adult = value;}
-    else  {children += value;}
+    if (type === 'adults') {
+      adult = value;
+    } else {
+      children += value;
+    }
   });
 
-  guestAdult.textContent = String(adult);
-  guestChildren.textContent = String(children);
+  if (guestAdult) guestAdult.textContent = String(adult);
+  if (guestAdultInput) {
+    guestAdultInput.value = String(adult);
+    guestAdultInput.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (guestChildren) guestChildren.textContent = String(children);
+  if (guestChildrenInput) {
+    guestChildrenInput.value = String(children);
+    guestChildrenInput.dispatchEvent(new Event('change', { bubbles: true }));
+  }
 }

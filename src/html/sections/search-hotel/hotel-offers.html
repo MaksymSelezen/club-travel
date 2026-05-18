@@ -1,0 +1,113 @@
+<div class="hotel-offers {{hotelOffersClass}}"  data-hotel-offers>
+  <div class="hotel-offers__sort" aria-label="Сортировка предложений">
+    <span class="hotel-offers__sort-label">Сортировать:</span>
+    <div class="hotel-offers__sort-selects">
+      {{> ui/custom-select
+        customSelectClass="hotel-offers__sort-select"
+        name="priceSort"
+        placeholder="Цена"
+        inputValue="price"
+        options=(json '[{ "value": "price", "label": "Цена" }, { "value": "date", "label": "Дата" }]')
+      }}
+      {{> ui/custom-select
+        customSelectClass="hotel-offers__sort-select"
+        name="directionSort"
+        placeholder="Возрастаю..."
+        inputValue="asc"
+        options=(json '[{ "value": "asc", "label": "Возрастаю..." }, { "value": "desc", "label": "Убываю..." }]')
+      }}
+    </div>
+  </div>
+
+  <div class="hotel-offers__table" role="table" aria-label="Предложения по туру">
+
+    <div class="hotel-offers__head" role="row">
+      <span role="columnheader">Дата</span>
+      <span role="columnheader">
+        <button class="hotel-offers__head-btn clickable" type="button">
+          Период
+          {{> ui/svg className="hotel-offers__head-btn-icon" id="drop-down"}}
+        </button>
+      </span>
+      <span role="columnheader">Питание</span>
+      <span role="columnheader">Тип номера</span>
+      <span role="columnheader">Мест в самолёте</span>
+      <span role="columnheader">Стоимость</span>
+    </div>
+
+    <div class="hotel-offers__row" role="row" data-hotel-offer-row>
+      <span role="cell" data-label="Дата">25 июня 2018</span>
+      <span role="cell" data-label="Период">7 ночей</span>
+      <span role="cell" data-label="Питание">Завтраки</span>
+      <span role="cell" data-label="Тип номера">Standard</span>
+      <span role="cell" data-label="Мест">10+</span>
+      <span role="cell" data-label="Стоимость">
+        <span class="hotel-offers__price-value">
+          <strong>645€</strong>/чел
+        </span>
+      </span>
+
+      <span role="cell">
+        <button class="hotel-offers__select btn btn_orange" type="button">
+          Выбрать
+        </button>
+      </span>
+    </div>
+
+    <div class="hotel-offers__row" role="row" data-hotel-offer-row>
+      <span role="cell" data-label="Дата">27 июня 2021</span>
+      <span role="cell" data-label="Период">5 ночей</span>
+      <span role="cell" data-label="Питание">Завтраки</span>
+      <span role="cell" data-label="Тип номера">Standard</span>
+      <span role="cell" data-label="Мест">8+</span>
+      <span role="cell" data-label="Стоимость">
+        <span class="hotel-offers__price-value">
+          <strong>645€</strong>/чел
+        </span>
+      </span>
+      <span role="cell">
+        <button class="hotel-offers__select btn btn_orange" type="button">
+          Выбрать
+        </button>
+      </span>
+    </div>
+
+    <div class="hotel-offers__row" role="row" data-hotel-offer-row>
+      <span role="cell" data-label="Дата">26 июня 2022</span>
+      <span role="cell" data-label="Период">10 ночей</span>
+      <span role="cell" data-label="Питание">Завтраки</span>
+      <span role="cell" data-label="Тип номера">Standard</span>
+      <span role="cell" data-label="Мест">12+</span>
+      <span role="cell" data-label="Стоимость">
+        <span class="hotel-offers__price-value">
+          <strong>645€</strong>/чел
+        </span>
+      </span>
+      <span role="cell">
+        <button class="hotel-offers__select btn btn_orange" type="button">
+          Выбрать
+        </button>
+      </span>
+    </div>
+
+    <div class="hotel-offers__row" role="row" data-hotel-offer-row>
+      <span role="cell" data-label="Дата">22 июня 2018</span>
+      <span role="cell" data-label="Период">3 ночей</span>
+      <span role="cell" data-label="Питание">Завтраки</span>
+      <span role="cell" data-label="Тип номера">Standard</span>
+      <span role="cell" data-label="Мест">2+</span>
+      <span role="cell" data-label="Стоимость">
+        <span class="hotel-offers__price-value">
+          <strong>645€</strong>/чел
+        </span>
+      </span>
+      <span role="cell">
+        <button class="hotel-offers__select btn btn_orange" type="button">
+          Выбрать
+        </button>
+      </span>
+    </div>
+
+
+  </div>
+</div>

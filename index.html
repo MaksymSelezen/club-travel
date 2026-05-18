@@ -7,23 +7,44 @@
 
     <main>
       {{>sections/common/main-hero}} {{>components/tour-search}}
-      {{>sections/common/promo-tours sectionClass="promo-company" tag="h1"
-      iconId="offer" titleOrange="Кампании" titleMain="и новости" subtitle="Кто
-      действует быстро — получает самые вкусные цены"
-      subtitleIconId="smile-wink" cardPartial="components/news-card"
-      textLinkMore="Все кампании и новости" hrefLink=links.company.href }}
-      {{>sections/common/promo-tours sectionClass="promo-offers" tag="h2"
-      iconId="fast-time" titleOrange="горящие предложения" subtitle="Кто
-      действует быстро — получает самые вкусные цены"
-      subtitleIconId="smile-wink" cardPartial="components/hot-card"
-      textLinkMore="Все горящие предложения" hrefLink=links.hotDeals.href }}
+
+      {{>sections/common/promo-tours
+        sectionClass="promo-company"
+        tag="h1"
+        iconId="offer"
+        titleOrange="Кампании"
+        titleMain="и новости"
+        subtitle="Кто действует быстро — получает самые вкусные цены"
+        subtitleIconId="smile-wink"
+        cardPartial="components/news-card"
+        textLinkMore="Все кампании и новости"
+        hrefLink=links.company.href }}
+
+      {{>sections/common/promo-tours
+        sectionClass="promo-offers"
+        tag="h2"
+        iconId="fast-time"
+        titleOrange="горящие предложения"
+        subtitle="Кто действует быстро — получает самые вкусные цены"
+        subtitleIconId="smile-wink"
+        cardPartial="components/hot-card"
+        textLinkMore="Все горящие предложения"
+        hrefLink=links.hotDeals.href }}
+
       {{>sections/main/promo-season-tours sectionClass="promo-winter-tours"
-      title="ЗИМНИЕ ТУРЫ" subtitle="Зима 2026 - 2027" textLinkMore="Все
-      зимниетуры" hrefLink=links.seasonTours.href }}
-      {{>sections/main/promo-season-tours sectionClass="promo-summer-tours"
-      title="летние ТУРЫ" subtitle="Лето 2026 - 2027" textLinkMore="Все летние
-      туры" hrefLink=links.seasonTours.href }} {{>sections/common/promo-support
-      sectionClass="main-page__promo-support" }}
+        title="ЗИМНИЕ ТУРЫ"
+        subtitle="Зима 2026 - 2027"
+        textLinkMore="Все зимние туры"
+        hrefLink=links.seasonTours.href }}
+
+      {{>sections/main/promo-season-tours
+        sectionClass="promo-summer-tours"
+        title="летние ТУРЫ"
+        subtitle="Лето 2026 - 2027"
+        textLinkMore="Все летние туры"
+        hrefLink=links.seasonTours.href }}
+
+      {{>sections/common/promo-support sectionClass="main-page__promo-support" }}
     </main>
 
     {{>layout/footer}} {{>layout/script srcJs="main"}}

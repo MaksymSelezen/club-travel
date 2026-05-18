@@ -44,14 +44,15 @@
     &__list {
         color: #555;
         line-height: 1.35;
-        //& li::before {
-        //    content: '';
-        //    display: block;
-        //    width: 13px;
-        //    height: 1px;
-        //    background-color: #555;
-        //    margin-top: 9px;
-        //}
+        & li::before {
+            content: '';
+            display: block;
+            flex-shrink: 0;
+            width: 13px;
+            height: 1px;
+            background-color: #555;
+            margin-top: 9px;
+        }
         &_no-dash li{
             &::before {
                 display: none;

@@ -56,159 +56,109 @@ const FILTER_LABELS = {
   },
 };
 
-const tourSearchBlocks = document.querySelectorAll('[data-tour-search]');
-
-tourSearchBlocks.forEach(tourSearch => {
-  const openButton = tourSearch.querySelector('[data-tour-search-toggle]');
-  const closeButton = tourSearch.querySelector('[data-tour-search-close]');
-  const priceBlock = tourSearch.querySelector('[data-tour-search-price]');
+document.querySelectorAll('[data-tour-search]').forEach(tourSearch => {
   const activeFilters = tourSearch.querySelector('[data-tour-search-active]');
-  const filterCheckboxes = tourSearch.querySelectorAll(
-    '[data-tour-search-filter]',
-  );
+  const priceBlock = tourSearch.querySelector('[data-tour-search-price]');
 
-  const openAdvancedSearch = () => {
-    tourSearch.classList.add('tour-search_expanded');
-  };
+  tourSearch
+    .querySelector('[data-tour-search-toggle]')
+    ?.addEventListener('click', () =>
+      tourSearch.classList.add('tour-search_expanded'),
+    );
 
-  const closeAdvancedSearch = () => {
-    tourSearch.classList.remove('tour-search_expanded');
-  };
+  tourSearch
+    .querySelector('[data-tour-search-close]')
+    ?.addEventListener('click', () =>
+      tourSearch.classList.remove('tour-search_expanded'),
+    );
 
-  openButton?.addEventListener('click', openAdvancedSearch);
-  closeButton?.addEventListener('click', closeAdvancedSearch);
-
-  filterCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', () => {
-      renderActiveFilters(tourSearch);
-    });
+  tourSearch.addEventListener('change', event => {
+    if (event.target.matches('[data-tour-search-filter]')) {
+      renderActiveFilters(tourSearch, activeFilters);
+    }
   });
 
   activeFilters?.addEventListener('click', event => {
-    const tagButton = event.target.closest('[data-tour-search-tag]');
+    const tag = event.target.closest('[data-tour-search-tag]');
+    if (!tag) return;
 
-    if (!tagButton) {
-      return;
-    }
+    const input = tourSearch.querySelector(
+      `[data-tour-search-filter][name="${tag.dataset.tourSearchTagName}"][value="${tag.dataset.tourSearchTag}"]`,
+    );
 
-    const filterName = tagButton.dataset.tourSearchTagName;
-    const filterValue = tagButton.dataset.tourSearchTag;
+    if (!input) return;
 
-    const targetCheckbox = [...filterCheckboxes].find(checkbox => {
-      return checkbox.name === filterName && checkbox.value === filterValue;
-    });
-
-    if (!targetCheckbox) {
-      return;
-    }
-
-    targetCheckbox.checked = false;
-    renderActiveFilters(tourSearch);
+    input.checked = false;
+    renderActiveFilters(tourSearch, activeFilters);
   });
 
-  if (priceBlock) {
-    initPriceRange(priceBlock);
-  }
-
-  renderActiveFilters(tourSearch);
+  if (priceBlock) initPriceRange(priceBlock);
+  renderActiveFilters(tourSearch, activeFilters);
 });
 
-function renderActiveFilters(tourSearch) {
-  const activeFilters = tourSearch.querySelector('[data-tour-search-active]');
-  const checkedFilters = [
+function renderActiveFilters(tourSearch, activeFilters) {
+  if (!activeFilters) return;
+
+  const checked = [
     ...tourSearch.querySelectorAll('[data-tour-search-filter]:checked'),
   ];
+  activeFilters.innerHTML =
+    '<span class="tour-search__active_label">Активные фильтры:</span>';
+  if (!checked.length) return;
 
-  if (!activeFilters) {
-    return;
-  }
-
-  activeFilters.innerHTML = '';
-
-  const label = document.createElement('span');
-  label.className = 'tour-search__active_label';
-  label.textContent = 'Активные фильтры:';
-
-  activeFilters.append(label);
-
-  if (checkedFilters.length === 0) {
-    return;
-  }
-
-  const groupedFilters = checkedFilters.reduce((acc, checkbox) => {
-    if (!acc[checkbox.name]) {
-      acc[checkbox.name] = [];
-    }
-
-    acc[checkbox.name].push(checkbox);
-
+  const groups = checked.reduce((acc, input) => {
+    (acc[input.name] ||= []).push(input);
     return acc;
   }, {});
 
-  FILTER_GROUPS_ORDER.forEach(groupName => {
-    const groupItems = groupedFilters[groupName];
-
-    if (!groupItems || groupItems.length === 0) {
-      return;
-    }
+  [...FILTER_GROUPS_ORDER, ...Object.keys(groups)].forEach(name => {
+    const items = groups[name];
+    if (!items || !items.length) return;
 
     const group = document.createElement('div');
     group.className = 'tour-search__active_group';
+    group.innerHTML = `<span class="tour-search__active_name">${FILTER_GROUP_LABELS[name] || name}</span>`;
 
-    const groupTitle = document.createElement('span');
-    groupTitle.className = 'tour-search__active_name';
-    groupTitle.textContent = FILTER_GROUP_LABELS[groupName] || groupName;
-
-    group.append(groupTitle);
-
-    groupItems.forEach(checkbox => {
+    items.forEach(input => {
       const tag = document.createElement('button');
       tag.className = 'tour-search__tag';
       tag.type = 'button';
-      tag.dataset.tourSearchTagName = checkbox.name;
-      tag.dataset.tourSearchTag = checkbox.value;
-      tag.textContent = getFilterLabel(checkbox);
-
+      tag.dataset.tourSearchTagName = input.name;
+      tag.dataset.tourSearchTag = input.value;
+      tag.textContent = getFilterLabel(input);
       group.append(tag);
     });
 
     activeFilters.append(group);
+    delete groups[name];
   });
 }
 
-function getFilterLabel(checkbox) {
-  const labelFromMap = FILTER_LABELS[checkbox.name]?.[checkbox.value];
-
-  if (labelFromMap) {
-    return labelFromMap;
-  }
-
-  const textElement = checkbox
-    .closest('.tour-search__option')
-    ?.querySelector('.tour-search__option_text');
-
-  return textElement?.textContent.trim() || checkbox.value;
+function getFilterLabel(input) {
+  return (
+    FILTER_LABELS[input.name]?.[input.value] ||
+    input
+      .closest('.tour-search__option')
+      ?.querySelector('.tour-search__option_text')
+      ?.textContent.trim() ||
+    input.value
+  );
 }
 
 function initPriceRange(priceBlock) {
   const minInput = priceBlock.querySelector('[data-tour-search-price-min]');
   const maxInput = priceBlock.querySelector('[data-tour-search-price-max]');
-  const priceValues = priceBlock.querySelectorAll('.tour-search__price_value');
+  const [minValueText, maxValueText] = priceBlock.querySelectorAll(
+    '.tour-search__price_value',
+  );
 
-  if (!minInput || !maxInput || priceValues.length < 2) {
-    return;
-  }
-
-  const minValueText = priceValues[0];
-  const maxValueText = priceValues[1];
+  if (!minInput || !maxInput || !minValueText || !maxValueText) return;
 
   const minLimit = Number(minInput.min);
   const maxLimit = Number(maxInput.max);
   const minGap = Number(minInput.step) || 1;
-
-  const getPercent = value => {
-    return ((value - minLimit) / (maxLimit - minLimit)) * 100;
-  };
+  const getPercent = value =>
+    ((value - minLimit) / (maxLimit - minLimit)) * 100;
 
   const updatePriceView = () => {
     const minValue = Number(minInput.value);
@@ -216,42 +166,29 @@ function initPriceRange(priceBlock) {
 
     minValueText.textContent = `${minValue}€`;
     maxValueText.textContent = `${maxValue}€`;
-
     priceBlock.style.setProperty(
       '--price-min-position',
       `${getPercent(minValue)}%`,
     );
-
     priceBlock.style.setProperty(
       '--price-max-position',
       `${getPercent(maxValue)}%`,
     );
   };
 
-  const handleMinInput = () => {
-    const minValue = Number(minInput.value);
-    const maxValue = Number(maxInput.value);
-
-    if (minValue > maxValue - minGap) {
-      minInput.value = maxValue - minGap;
+  minInput.addEventListener('input', () => {
+    if (Number(minInput.value) > Number(maxInput.value) - minGap) {
+      minInput.value = Number(maxInput.value) - minGap;
     }
-
     updatePriceView();
-  };
+  });
 
-  const handleMaxInput = () => {
-    const minValue = Number(minInput.value);
-    const maxValue = Number(maxInput.value);
-
-    if (maxValue < minValue + minGap) {
-      maxInput.value = minValue + minGap;
+  maxInput.addEventListener('input', () => {
+    if (Number(maxInput.value) < Number(minInput.value) + minGap) {
+      maxInput.value = Number(minInput.value) + minGap;
     }
-
     updatePriceView();
-  };
-
-  minInput.addEventListener('input', handleMinInput);
-  maxInput.addEventListener('input', handleMaxInput);
+  });
 
   updatePriceView();
 }

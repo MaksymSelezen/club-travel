@@ -3,6 +3,8 @@
 @use 'swiper/css';
 @use 'swiper/css/navigation';
 
+@use '@/scss/ui/input';
+
 @use '../layout/header';
 @use '../layout/burger-menu';
 @use '../layout/footer';

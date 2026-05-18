@@ -32,10 +32,10 @@ function initGuestsListeners(container, tour) {
   inputs.forEach((input) => {
     const previousHandler = inputsTrackers.get(input);
     if (previousHandler) {
-      input.removeEventListener('input', previousHandler);
+      input.removeEventListener('change', previousHandler);
     }
 
-    input.addEventListener('input', handleUpdate);
+    input.addEventListener('change', handleUpdate);
     inputsTrackers.set(input, handleUpdate);
   })
   handleUpdate();

@@ -1,7 +1,7 @@
 export const links = {
   hotDeals: { href: '#!' },
   main: { href: './index.html' },
-  searchResults: { href: '#!' },
+  searchResults: { href: './search-result.html' },
   searchResultsCalendar: { href: '#!' },
   hotel: { href: './hotel.html' },
   directions: { href: '#!' },
@@ -22,5 +22,5 @@ export const links = {
   policy: { href: './policy.html' },
 };
 
-// <a href="{{links.airTickets.href}}">Поддержка туров</a>
+// <a href="{{links.searchResults.href}}">Поддержка туров</a>
 // <a href="{{links.[tour-support].href}}">Поддержка туров</a>

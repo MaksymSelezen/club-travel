@@ -5,7 +5,7 @@ import '@/js/sections/main/hero-swiper.js';
 
 import { initTourSelector } from '@/js/sections/tour-request/init-tour-selector.js';
 import { initStrapiTourForm } from '@/js/sections/tour-request/init-strapi-tour-form.js';
-import { selectOpen, updateGuestValue } from '@/js/ui/custom-select.js';
+import { initSelect, updateGuestValue } from '@/js/ui/custom-select.js';
 import { initCounter } from '@/js/ui/counter.js';
 import { updateDisabledState } from '@/js/ui/disabled-state.js';
 
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   void initStrapiTourForm();
   initTourSelector();
   initCounter();
-  selectOpen();
+  initSelect();
 
   document.querySelectorAll('[data-guests-selector]').forEach((guestSelect) => {
     updateGuestValue(guestSelect);

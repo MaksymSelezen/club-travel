@@ -2,17 +2,19 @@
 <html lang="ru">
 {{>layout/head title="Club Travel, Результаты поиска" hrefStyle="search-result-style"}}
 
-<body class="tour-search">
-    <main>
-        {{>layout/header}}
-        {{>sections/common/main-hero}}
-        {{>layout/burger-menu}}
-        {{>components/tour-search}}
+<body class="search-result">
+{{>layout/header}} {{>layout/burger-menu}}
 
-        {{>layout/footer}}
-        {{>layout/script srcJs="search-result"}}
+<main>
+  {{>sections/common/main-hero}} {{>components/tour-search}}
 
-    </main>
+
+  {{>sections/search-hotel/hotel-card searchCardClass=""}}
+  {{>sections/common/promo-support sectionClass="main-page__promo-support" }}
+</main>
+
+{{>layout/footer}}
+{{>layout/script srcJs="search-result"}}
 </body>
 
 </html>

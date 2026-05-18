@@ -1,3 +1,6 @@
+import '../services/api/findTour.js';
+import '../utils/restore-filter-from-url.js';
+
 const FILTER_GROUPS_ORDER = [
   'accommodation',
   'meal',

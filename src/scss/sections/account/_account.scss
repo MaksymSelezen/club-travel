@@ -1,19 +1,5 @@
 @use '@/scss/utils/media' as media;
 
-.account-page {
-  &__main-hero .main-hero__swiper {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1366 / 320;
-  }
-
-  @include media.max-width(xxs) {
-    &__main-hero .main-hero__swiper {
-      aspect-ratio: 360 / 191;
-    }
-  }
-}
-
 .account {
   &__container {
     padding-top: 0;

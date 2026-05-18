@@ -1,45 +1,5 @@
 @use '@/scss/utils/media' as media;
 
-.contacts-page {
-  &__main-hero {
-    .main-hero__swiper {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 1366 / 320;
-    }
-
-    @include media.max-width(lg) {
-      .main-hero__swiper {
-        aspect-ratio: 1280 / 300;
-      }
-    }
-
-    @include media.max-width(md) {
-      .main-hero__swiper {
-        aspect-ratio: 1024 / 280;
-      }
-    }
-
-    @include media.max-width(sm) {
-      .main-hero__swiper {
-        aspect-ratio: 768 / 240;
-      }
-    }
-
-    @include media.max-width(xs) {
-      .main-hero__swiper {
-        aspect-ratio: 576 / 220;
-      }
-    }
-
-    @include media.max-width(xxs) {
-      .main-hero__swiper {
-        aspect-ratio: 360 / 191;
-      }
-    }
-  }
-}
-
 .contacts {
   &__container {
     padding-bottom: 100px;
@@ -248,35 +208,12 @@
   }
 
   &__input {
-    width: 100%;
     height: 42px;
-    padding: 0 16px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background-color: #fff;
-    font-size: 13px;
-    color: var(--text);
-    transition: border-color 0.2s ease;
-
-    &:focus {
-      border-color: var(--primary);
-    }
   }
 
   &__textarea {
     display: block;
-    width: 100%;
     height: 83px;
-    padding: 10px 16px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 13px;
-    color: var(--text);
-    transition: border-color 0.2s ease;
-
-    &:focus {
-      border-color: var(--primary);
-    }
   }
 
   &__submit {

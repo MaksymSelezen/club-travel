@@ -18,6 +18,7 @@ const initHeroSwiper = () => {
     spaceBetween: 0,
     speed: 600,
     loop: true,
+    grabCursor: true,
 
     navigation: {
       prevEl: '.js-main-hero-prev',

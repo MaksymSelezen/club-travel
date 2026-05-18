@@ -3,25 +3,22 @@
 .main-hero {
   position: relative;
   width: 100%;
+  height: 320px;
   overflow: hidden;
+
+  @include media.max-width(xxs) {
+    height: 191px;
+  }
 
   &__swiper {
     position: relative;
     width: 100%;
-    height: 539px;
-
-    @include media.max-width(md) {
-      height: auto;
-    }
+    height: 100%;
   }
 
   &__wrapper {
     width: 100%;
     height: 100%;
-
-    @include media.max-width(md) {
-      height: auto;
-    }
   }
 
   &__slide {
@@ -29,8 +26,6 @@
     height: 100%;
 
     @include media.max-width(md) {
-      height: auto;
-
       &:not(:first-child) {
         display: none;
       }
@@ -42,20 +37,12 @@
     width: 100%;
     height: 100%;
 
-    @include media.max-width(md) {
-      height: auto;
-    }
-
     img {
       display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center center;
-
-      @include media.max-width(md) {
-        height: auto;
-      }
     }
   }
 

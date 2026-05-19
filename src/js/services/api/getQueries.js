@@ -24,12 +24,8 @@ export const getFilterState = () => {
   return state;
 }
 
-tourSearchForm.addEventListener('input', (e) => {
-  e.preventDefault();
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
-
-    const currentState = getFilterState();
-
+const getParams = () => {
+  const currentState = getFilterState();
     const urlParams = new URLSearchParams();
 
     if(currentState.direction) urlParams.set('direction', currentState.direction);
@@ -40,23 +36,23 @@ tourSearchForm.addEventListener('input', (e) => {
     if(currentState.meal.length) urlParams.set('meal', currentState.meal.join(','));
     if(currentState.tourComposition.length) urlParams.set('tourComposition', currentState.tourComposition.join(','));
     if(currentState.departureCity.length) urlParams.set('departureCity', currentState.departureCity.join(','));
-    if(currentState.regions.length) urlParams.set('region', currentState.regions.join(','));
+    if(currentState.regions.length) urlParams.set('regions', currentState.regions.join(','));
 
+    return urlParams;
+}
+
+tourSearchForm.addEventListener('input', (e) => {
+  e.preventDefault();
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+    const urlParams = getParams();
     const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
     window.history.pushState({}, '', newUrl);
-
-    console.log('Фильтр изменился! Текущее состояние:', currentState);
-    // window.location.href = `/club-travel/pages/search-result.html?${urlParams.toString()}`;
-
-    // const strapiQuery = convertStateToStrapiQuery(currentState);
-    // const finalStrapiUrl = `${API_URL}v2-hotels?${strapiQuery}`
-    // console.log('Строка запроса для Strapi:', finalStrapiUrl);
   }
 })
 
 tourSearchForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  const currentState = getFilterState();
-  window.location.href = `/club-travel/pages/search-result.html?${new URLSearchParams(currentState).toString()}`
+  const urlParams = getParams();
+  window.location.href = `/club-travel/search-result.html?${urlParams.toString()}`
 })
 

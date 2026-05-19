@@ -1,6 +1,6 @@
 const tourSearchForm = document.querySelector('[data-tour-search-form]');
 
-const restoreFilterFromURL = () => {
+export const restoreFilterFromURL = () => {
   const urlParams = new URLSearchParams(window.location.search);
   
 
@@ -32,7 +32,7 @@ const restoreFilterFromURL = () => {
   restoreCheckboxesFromURL('meal', 'meal');
   restoreCheckboxesFromURL('tourComposition', 'tourComposition');
   restoreCheckboxesFromURL('departureCity', 'departureCity');
-  restoreCheckboxesFromURL('region', 'region');
+  restoreCheckboxesFromURL('regions', 'region');
 };
 
 restoreFilterFromURL();

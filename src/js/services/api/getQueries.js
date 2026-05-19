@@ -57,6 +57,6 @@ tourSearchForm.addEventListener('input', (e) => {
 tourSearchForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const currentState = getFilterState();
-  window.location.href = `/club-travel/pages/search-result.html?${new URLSearchParams(currentState).toString()}`
+  window.location.href = `/club-travel/search-result.html?${new URLSearchParams(currentState).toString()}`
 })
 

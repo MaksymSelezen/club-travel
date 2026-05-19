@@ -61,25 +61,61 @@ const FILTER_LABELS = {
   },
 };
 
-document.querySelectorAll('[data-tour-search]').forEach(tourSearch => {
-  const activeFilters = tourSearch.querySelector('[data-tour-search-active]');
-  const priceBlock = tourSearch.querySelector('[data-tour-search-price]');
+const MONTHS = [
+  'января',
+  'февраля',
+  'марта',
+  'апреля',
+  'мая',
+  'июня',
+  'июля',
+  'августа',
+  'сентября',
+  'октября',
+  'ноября',
+  'декабря',
+];
 
-  tourSearch
+const MONTH_TITLES = [
+  'Январь',
+  'Февраль',
+  'Март',
+  'Апрель',
+  'Май',
+  'Июнь',
+  'Июль',
+  'Август',
+  'Сентябрь',
+  'Октябрь',
+  'Ноябрь',
+  'Декабрь',
+];
+
+const WEEKDAYS = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+const ACTIVE_FILTERS_LABEL =
+  '<span class="tour-search__active_label">Активные фильтры:</span>';
+
+document.querySelectorAll('[data-tour-search]').forEach(initTourSearch);
+
+function initTourSearch(root) {
+  const activeFilters = root.querySelector('[data-tour-search-active]');
+  const priceBlock = root.querySelector('[data-tour-search-price]');
+
+  root
     .querySelector('[data-tour-search-toggle]')
     ?.addEventListener('click', () =>
-      tourSearch.classList.add('tour-search_expanded'),
+      root.classList.add('tour-search_expanded'),
     );
 
-  tourSearch
+  root
     .querySelector('[data-tour-search-close]')
     ?.addEventListener('click', () =>
-      tourSearch.classList.remove('tour-search_expanded'),
+      root.classList.remove('tour-search_expanded'),
     );
 
-  tourSearch.addEventListener('change', event => {
+  root.addEventListener('change', event => {
     if (event.target.matches('[data-tour-search-filter]')) {
-      renderActiveFilters(tourSearch, activeFilters);
+      renderActiveFilters(root, activeFilters);
     }
   });
 
@@ -87,38 +123,43 @@ document.querySelectorAll('[data-tour-search]').forEach(tourSearch => {
     const tag = event.target.closest('[data-tour-search-tag]');
     if (!tag) return;
 
-    const input = tourSearch.querySelector(
-      `[data-tour-search-filter][name="${tag.dataset.tourSearchTagName}"][value="${tag.dataset.tourSearchTag}"]`,
-    );
-
+    const selector = `[data-tour-search-filter][name="${tag.dataset.tourSearchTagName}"][value="${tag.dataset.tourSearchTag}"]`;
+    const input = root.querySelector(selector);
     if (!input) return;
 
     input.checked = false;
-    renderActiveFilters(tourSearch, activeFilters);
+    renderActiveFilters(root, activeFilters);
   });
 
-  if (priceBlock) initPriceRange(priceBlock);
-  renderActiveFilters(tourSearch, activeFilters);
-});
+  initDatePicker(root);
+  initPriceRange(priceBlock);
+  renderActiveFilters(root, activeFilters);
+}
 
-function renderActiveFilters(tourSearch, activeFilters) {
-  if (!activeFilters) return;
+function renderActiveFilters(root, container) {
+  if (!container) return;
 
   const checked = [
-    ...tourSearch.querySelectorAll('[data-tour-search-filter]:checked'),
+    ...root.querySelectorAll('[data-tour-search-filter]:checked'),
   ];
-  activeFilters.innerHTML =
-    '<span class="tour-search__active_label">Активные фильтры:</span>';
+  container.innerHTML = ACTIVE_FILTERS_LABEL;
   if (!checked.length) return;
 
-  const groups = checked.reduce((acc, input) => {
-    (acc[input.name] ||= []).push(input);
-    return acc;
-  }, {});
+  const groups = new Map();
+  checked.forEach(input => {
+    const list = groups.get(input.name) || [];
+    list.push(input);
+    groups.set(input.name, list);
+  });
 
-  [...FILTER_GROUPS_ORDER, ...Object.keys(groups)].forEach(name => {
-    const items = groups[name];
-    if (!items || !items.length) return;
+  const orderedNames = [
+    ...FILTER_GROUPS_ORDER,
+    ...[...groups.keys()].filter(name => !FILTER_GROUPS_ORDER.includes(name)),
+  ];
+
+  orderedNames.forEach(name => {
+    const items = groups.get(name);
+    if (!items?.length) return;
 
     const group = document.createElement('div');
     group.className = 'tour-search__active_group';
@@ -126,16 +167,15 @@ function renderActiveFilters(tourSearch, activeFilters) {
 
     items.forEach(input => {
       const tag = document.createElement('button');
-      tag.className = 'tour-search__tag';
       tag.type = 'button';
+      tag.className = 'tour-search__tag';
       tag.dataset.tourSearchTagName = input.name;
       tag.dataset.tourSearchTag = input.value;
       tag.textContent = getFilterLabel(input);
       group.append(tag);
     });
 
-    activeFilters.append(group);
-    delete groups[name];
+    container.append(group);
   });
 }
 
@@ -150,7 +190,113 @@ function getFilterLabel(input) {
   );
 }
 
+function initDatePicker(root) {
+  const dateField = root.querySelector('[data-tour-search-date]');
+  const dateBox = root.querySelector('[data-tour-search-date-box]');
+  const dateInput = root.querySelector('[data-tour-search-date-input]');
+  const calendar = root.querySelector('[data-tour-search-calendar]');
+
+  if (!dateField || !dateBox || !dateInput || !calendar) return;
+
+  let selectedDate = getTodayDate();
+  let viewDate = new Date(
+    selectedDate.getFullYear(),
+    selectedDate.getMonth(),
+    1,
+  );
+
+  const closeCalendar = () => {
+    calendar.hidden = true;
+  };
+
+  const renderCalendar = () => {
+    const year = viewDate.getFullYear();
+    const month = viewDate.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const emptyDays = (new Date(year, month, 1).getDay() + 6) % 7;
+    const selectedIso = formatIsoDate(selectedDate);
+    const todayIso = formatIsoDate(getTodayDate());
+
+    const emptyCells =
+      '<span class="tour-search__calendar_day_empty"></span>'.repeat(emptyDays);
+
+    const dayCells = Array.from({ length: daysInMonth }, (_, index) => {
+      const day = index + 1;
+      const iso = formatIsoDate(new Date(year, month, day));
+      const classes = ['tour-search__calendar_day'];
+      if (iso === selectedIso)
+        classes.push('tour-search__calendar_day_selected');
+      if (iso === todayIso) classes.push('tour-search__calendar_day_today');
+
+      return `<button class="${classes.join(' ')}" type="button" data-tour-search-calendar-day="${iso}">${day}</button>`;
+    }).join('');
+
+    calendar.innerHTML = `
+      <div class="tour-search__calendar_header">
+        <button class="tour-search__calendar_nav" type="button" data-tour-search-calendar-prev>‹</button>
+        <span class="tour-search__calendar_month">${MONTH_TITLES[month]} ${year}</span>
+        <button class="tour-search__calendar_nav" type="button" data-tour-search-calendar-next>›</button>
+      </div>
+      <div class="tour-search__calendar_weekdays">
+        ${WEEKDAYS.map(day => `<span class="tour-search__calendar_weekday">${day}</span>`).join('')}
+      </div>
+      <div class="tour-search__calendar_grid">${emptyCells}${dayCells}</div>
+    `;
+  };
+
+  const syncInput = () => {
+    dateInput.value = formatInputDate(selectedDate);
+    dateInput.dataset.date = formatIsoDate(selectedDate);
+  };
+
+  dateBox.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+    calendar.hidden = !calendar.hidden;
+    if (!calendar.hidden) renderCalendar();
+  });
+
+  calendar.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (event.target.closest('[data-tour-search-calendar-prev]')) {
+      viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1);
+      renderCalendar();
+      return;
+    }
+
+    if (event.target.closest('[data-tour-search-calendar-next]')) {
+      viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1);
+      renderCalendar();
+      return;
+    }
+
+    const dayButton = event.target.closest('[data-tour-search-calendar-day]');
+    if (!dayButton) return;
+
+    selectedDate = parseIsoDate(dayButton.dataset.tourSearchCalendarDay);
+    viewDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+    syncInput();
+    renderCalendar();
+    closeCalendar();
+  });
+
+  document.addEventListener('click', event => {
+    if (!dateField.contains(event.target)) closeCalendar();
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeCalendar();
+  });
+
+  syncInput();
+  renderCalendar();
+}
+
 function initPriceRange(priceBlock) {
+  if (!priceBlock) return;
+
   const minInput = priceBlock.querySelector('[data-tour-search-price-min]');
   const maxInput = priceBlock.querySelector('[data-tour-search-price-max]');
   const [minValueText, maxValueText] = priceBlock.querySelectorAll(
@@ -165,7 +311,7 @@ function initPriceRange(priceBlock) {
   const getPercent = value =>
     ((value - minLimit) / (maxLimit - minLimit)) * 100;
 
-  const updatePriceView = () => {
+  const syncPriceView = () => {
     const minValue = Number(minInput.value);
     const maxValue = Number(maxInput.value);
 
@@ -182,18 +328,43 @@ function initPriceRange(priceBlock) {
   };
 
   minInput.addEventListener('input', () => {
-    if (Number(minInput.value) > Number(maxInput.value) - minGap) {
-      minInput.value = Number(maxInput.value) - minGap;
-    }
-    updatePriceView();
+    const nextValue = Math.min(
+      Number(minInput.value),
+      Number(maxInput.value) - minGap,
+    );
+    minInput.value = String(nextValue);
+    syncPriceView();
   });
 
   maxInput.addEventListener('input', () => {
-    if (Number(maxInput.value) < Number(minInput.value) + minGap) {
-      maxInput.value = Number(minInput.value) + minGap;
-    }
-    updatePriceView();
+    const nextValue = Math.max(
+      Number(maxInput.value),
+      Number(minInput.value) + minGap,
+    );
+    maxInput.value = String(nextValue);
+    syncPriceView();
   });
 
-  updatePriceView();
+  syncPriceView();
+}
+
+function getTodayDate() {
+  const today = new Date();
+  return new Date(today.getFullYear(), today.getMonth(), today.getDate());
+}
+
+function parseIsoDate(value) {
+  const [year, month, day] = value.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function formatIsoDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function formatInputDate(date) {
+  return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 }

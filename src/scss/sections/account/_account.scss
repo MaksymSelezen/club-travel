@@ -9,12 +9,6 @@
     display: grid;
     grid-template-columns: 316px minmax(0, 1fr);
     gap: 52px;
-    align-items: flex-start;
-  }
-
-  &__sidebar,
-  &__content {
-    min-width: 0;
   }
 
   &__content {

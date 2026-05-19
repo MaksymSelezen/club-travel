@@ -1,6 +1,7 @@
 import '../services/api/getQueries.js';
-import '../utils/restore-filter-from-url.js';
 import '../utils/format-query-to-strapi-req.js';
+import '../services/api/findHotels.js'; 
+import '../utils/restore-filter-from-url.js';
 
 const FILTER_GROUPS_ORDER = [
   'accommodation',

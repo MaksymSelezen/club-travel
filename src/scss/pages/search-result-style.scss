@@ -20,9 +20,11 @@
 @use '@/scss/sections/common/main-hero';
 @use '@/scss/sections/main/main';
 
-@use '@/scss/sections/search-hotel/hotel-card';
-@use '@/scss/sections/search-hotel/hotel-summary';
-@use '@/scss/sections/search-hotel/hotel-offers';
+@use '@/scss/sections/search-result/hotel-card';
+@use '@/scss/sections/search-result/hotel-summary';
+@use '@/scss/sections/search-result/hotel-offers';
+@use '@/scss/sections/search-result/card-area';
+@use '@/scss/sections/search-result/search-result';
 
 @use '@/scss/sections/common/promo-support';
 

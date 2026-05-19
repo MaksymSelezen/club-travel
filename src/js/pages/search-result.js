@@ -7,11 +7,14 @@ import '@/js/components/tour-search.js';
 
 import { initSelect } from '@/js/ui/custom-select.js';
 import { initCardsSwiper } from '@/js/components/cards-swiper.js';
-import { initAccordion } from '@/js/sections/search-hotel/init-accordion.js';
+import { initAccordion } from '@/js/sections/search-result/init-accordion.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   initSelect();
-  initCardsSwiper('.hotel-summary');
+
+  document.querySelectorAll('.hotel-summary').forEach(card => {
+    initCardsSwiper(card); // Передаємо сам елемент, без унікальних id чи класів!
+  });
 
   initAccordion();
 });

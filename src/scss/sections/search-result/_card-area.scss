@@ -1,0 +1,8 @@
+.card-area{
+    &__container{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-top: 35px;
+    }
+}

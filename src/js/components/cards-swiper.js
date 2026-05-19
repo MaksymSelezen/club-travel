@@ -3,7 +3,8 @@
   // import Swiper, { Navigation, Autoplay } from 'swiper';
 
   export function initCardsSwiper(className, desktopSlides) {
-    const sliderContainer = document.querySelector(className);
+    // const sliderContainer = document.querySelector(className);
+    const sliderContainer = typeof className === 'string' ? document.querySelector(className) : className;
     if (!sliderContainer) return;
     const sliderEl = sliderContainer.querySelector('.swiper');
     const slidesWrap = sliderContainer.querySelector('.swiper-wrapper');

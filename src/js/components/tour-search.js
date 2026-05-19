@@ -1,6 +1,7 @@
+import { getCountries, getRegions } from '../services/api/getDirection.js';
 import '../services/api/getQueries.js';
 import '../utils/format-query-to-strapi-req.js';
-import '../services/api/findHotels.js'; 
+import '../services/api/findHotels.js';
 import '../utils/restore-filter-from-url.js';
 
 const FILTER_GROUPS_ORDER = [
@@ -97,9 +98,85 @@ const ACTIVE_FILTERS_LABEL =
 
 document.querySelectorAll('[data-tour-search]').forEach(initTourSearch);
 
-function initTourSearch(root) {
+function getCountryValue(country) {
+  return (
+    country.slug ||
+    country.documentId ||
+    String(country.id || country.name || '')
+  );
+}
+
+function getRegionCountryValue(region) {
+  const country = region.country;
+  if (!country) return '';
+  return (
+    country.slug ||
+    country.documentId ||
+    String(country.id || country.name || '')
+  );
+}
+
+function createRegionItemMarkup(region) {
+  const value = region.slug || region.documentId || String(region.id || '');
+  const label = region.name || value;
+  const countryValue = getRegionCountryValue(region);
+  return `<li class="tour-search__item"><label class="tour-search__option"><input class="tour-search__checkbox" type="checkbox" name="region" value="${value}" data-tour-search-filter data-tour-search-region-country="${countryValue}" /><span class="tour-search__checkbox_icon"><svg class="tour-search__checkbox_svg"><use href="#check-circle"></use></svg></span><span class="tour-search__option_text">${label}</span></label></li>`;
+}
+
+async function initTourSearch(root) {
   const activeFilters = root.querySelector('[data-tour-search-active]');
   const priceBlock = root.querySelector('[data-tour-search-price]');
+  const directionField = root.querySelector('[name="direction"]');
+  const regionList = root.querySelector('[data-tour-search-region-list]');
+  let allRegions = [];
+
+  const renderRegions = selectedDirection => {
+    if (!regionList) return;
+    if (!selectedDirection) {
+      regionList.innerHTML = '';
+      return;
+    }
+
+    const filteredRegions = allRegions.filter(
+      region => getRegionCountryValue(region) === selectedDirection,
+    );
+    regionList.innerHTML = filteredRegions.map(createRegionItemMarkup).join('');
+  };
+
+  const syncRegionsForDirection = selectedDirection => {
+    const regionInputs = [
+      ...root.querySelectorAll('[data-tour-search-filter][name="region"]'),
+    ];
+    regionInputs.forEach(input => {
+      if (input.dataset.tourSearchRegionCountry !== selectedDirection) {
+        input.checked = false;
+      }
+    });
+    renderRegions(selectedDirection);
+    renderActiveFilters(root, activeFilters);
+  };
+
+  if (directionField) {
+    const [countries, regions] = await Promise.all([
+      getCountries(),
+      getRegions(),
+    ]);
+    const options = countries
+      .map(country => {
+        const value = getCountryValue(country);
+        const label = country.name || value;
+        return value ? `<option value="${value}">${label}</option>` : '';
+      })
+      .filter(Boolean)
+      .join('');
+    directionField.insertAdjacentHTML('beforeend', options);
+    allRegions = regions;
+    renderRegions(directionField.value);
+
+    directionField.addEventListener('change', event => {
+      syncRegionsForDirection(event.target.value);
+    });
+  }
 
   root
     .querySelector('[data-tour-search-toggle]')

@@ -34,8 +34,7 @@
       class="hotel-summary__swiper-btn hotel-summary__swiper-btn_next"
       type="button"
       aria-label="Следующее фото"
-      data-btn-next
-    >
+      data-btn-next>
       {{> ui/svg className="hotel-summary__swiper-btn-icon" id="chevron"}}
     </button>
 
@@ -111,7 +110,8 @@
     </ul>
   </div>
 
-  <div class="hotel-summary__deal" data-hotel-deal>
+  <div class="hotel-summary__deal-wrap" data-hotel-deal>
+  <div class="hotel-summary__deal">
     <p class="hotel-summary__deal-price">
       <span data-hotel-offers>2 предложения</span>
       <span class="hotel-summary__deal-value">от <strong
@@ -128,4 +128,5 @@
       Открыть
     </button>
   </div>
+</div>
 </div>

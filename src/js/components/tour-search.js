@@ -1,5 +1,6 @@
-import '../services/api/findTour.js';
+import '../services/api/getQueries.js';
 import '../utils/restore-filter-from-url.js';
+import '../utils/format-query-to-strapi-req.js';
 
 const FILTER_GROUPS_ORDER = [
   'accommodation',

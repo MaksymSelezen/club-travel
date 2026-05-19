@@ -13,9 +13,6 @@
             data-tour-search-field
           >
             <option value="">Все направления</option>
-            <option value="bulgaria">Болгария</option>
-            <option value="turkey">Турция</option>
-            <option value="egypt">Египет</option>
           </select>
 
           {{> ui/svg className="tour-search__field_icon" id="chevron" }}
@@ -41,21 +38,32 @@
         </span>
       </label>
 
-      <label class="tour-search__field">
+      <div
+        class="tour-search__field tour-search__field_date"
+        data-tour-search-date
+      >
         <span class="tour-search__field_label">Дата вылета</span>
 
-        <span class="tour-search__field_box">
+        <span class="tour-search__field_box" data-tour-search-date-box>
           <input
             class="tour-search__field_control"
             type="text"
             name="departureDate"
-            value="23 июня 2020"
+            value=""
+            readonly
             data-tour-search-field
+            data-tour-search-date-input
           />
 
           {{> ui/svg className="tour-search__field_icon" id="calendar" }}
         </span>
-      </label>
+
+        <div
+          class="tour-search__calendar"
+          data-tour-search-calendar
+          hidden
+        ></div>
+      </div>
 
       <label class="tour-search__field tour-search__field_guests">
         <span class="tour-search__field_label">Гости</span>
@@ -67,8 +75,8 @@
             data-tour-search-field
           >
             <option value="2-1">Взрослых: 2; детей: 1</option>
-            <option value="1-0">Взрослых: 1; детей: 0</option>
-            <option value="2-0">Взрослых: 2; детей: 0</option>
+            <option value="1-0">Взрослых: 1</option>
+            <option value="2-0">Взрослых: 2</option>
             <option value="2-2">Взрослых: 2; детей: 2</option>
           </select>
 
@@ -299,9 +307,9 @@
                   id="check-circle" }}
                 </span>
 
-                <span class="tour-search__option_text">
-                  Завтрак, обед, ужин
-                </span>
+                <span class="tour-search__option_text"
+                  >Завтрак, обед, ужин</span
+                >
               </label>
             </li>
 
@@ -339,9 +347,9 @@
                   id="check-circle" }}
                 </span>
 
-                <span class="tour-search__option_text">
-                  Ультра: всё включено
-                </span>
+                <span class="tour-search__option_text"
+                  >Ультра: всё включено</span
+                >
               </label>
             </li>
           </ul>
@@ -366,9 +374,9 @@
                   id="check-circle" }}
                 </span>
 
-                <span class="tour-search__option_text">
-                  Туристический пакет
-                </span>
+                <span class="tour-search__option_text"
+                  >Туристический пакет</span
+                >
               </label>
             </li>
 
@@ -497,270 +505,16 @@
         <div class="tour-search__group tour-search__group_region">
           <h4 class="tour-search__group_title">Регион</h4>
 
-          <ul class="tour-search__list tour-search__list_columns">
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="albena"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Албена</span>
-              </label>
-            </li>
-
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="bansko"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Банско</span>
-              </label>
-            </li>
-
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="burgas"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Бургас</span>
-              </label>
-            </li>
-
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="dunes"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Дюны</span>
-              </label>
-            </li>
-
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="elenite"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Елените</span>
-              </label>
-            </li>
-
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="golden-sands"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Золотые пески</span>
-              </label>
-            </li>
-
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="kranevo"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Кранево</span>
-              </label>
-            </li>
-
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="nesebar"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Несебр</span>
-              </label>
-            </li>
-
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="obzor"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Обзор</span>
-              </label>
-            </li>
-
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="pomorie"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Поморие</span>
-              </label>
-            </li>
-
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="ravda"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Равда</span>
-              </label>
-            </li>
-
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="riviera"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Ривьера</span>
-              </label>
-            </li>
-
-            <li class="tour-search__item">
-              <label class="tour-search__option">
-                <input
-                  class="tour-search__checkbox"
-                  type="checkbox"
-                  name="region"
-                  value="sarafovo"
-                  data-tour-search-filter
-                />
-                <span class="tour-search__checkbox_icon">
-                  {{> ui/svg className="tour-search__checkbox_svg"
-                  id="check-circle" }}
-                </span>
-                <span class="tour-search__option_text">Сарафово</span>
-              </label>
-            </li>
-          </ul>
+          <ul
+            class="tour-search__list tour-search__list_columns"
+            data-tour-search-region-list
+          ></ul>
         </div>
       </div>
 
       <div class="tour-search__active" data-tour-search-active>
         <span class="tour-search__active_label">Активные фильтры:</span>
-
-        <div class="tour-search__active_group">
-          <span class="tour-search__active_name"
-            >Категория размещения отеля</span
-          >
-
-          <button
-            class="tour-search__tag"
-            type="button"
-            data-tour-search-tag="5-stars"
-          >
-            5 звезд
-          </button>
-
-          <button
-            class="tour-search__tag"
-            type="button"
-            data-tour-search-tag="3-stars"
-          >
-            3 звезды
-          </button>
-        </div>
-
-        <div class="tour-search__active_group">
-          <span class="tour-search__active_name">Состав тура</span>
-
-          <button
-            class="tour-search__tag"
-            type="button"
-            data-tour-search-tag="flight-only"
-          >
-            Только перелет
-          </button>
-        </div>
       </div>
-
-      <div class="tour-search__active" data-tour-search-active hidden></div>
     </div>
   </form>
 </section>

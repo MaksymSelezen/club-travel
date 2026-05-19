@@ -2,39 +2,38 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-
-    -webkit-box-shadow: 0 0 0 1000px #fdfdfd inset !important;
-    -webkit-text-fill-color: var(--text) !important;
-    border: 1px solid #ddd !important;
-    transition: background-color 5000s ease-in-out 0s;
+  -webkit-box-shadow: 0 0 0 1000px #fdfdfd inset !important;
+  -webkit-text-fill-color: var(--text) !important;
+  border: 1px solid #ddd !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .input-base {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--input-border);
-    border-radius: 4px;
-    background: var(--white);
-    transition: border-color 0.2s ease-in-out;
-    &:focus-visible {
-        border-color: var(--blue);
-    }
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  background: var(--white);
+  transition: border-color 0.2s ease-in-out;
+  &:focus-visible {
+    border-color: var(--primary);
+  }
 
-    @media (hover: hover) and (pointer: fine) {
-        &:hover:not(:active) {
-            border-color: var(--blue);
-        }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(:active) {
+      border-color: var(--primary);
     }
+  }
 
-    &:active {
-        border-color: var(--blue);
-    }
+  &:active {
+    border-color: var(--primary);
+  }
 
-    &_is-invalid {
-        border: 1px solid var(--input-border-red) !important;
-    }
+  &_is-invalid {
+    border: 1px solid var(--input-border-red) !important;
+  }
 
-    &_is-valid {
-        border: 1px solid var(--input-border-green) !important;
-    }
+  &_is-valid {
+    border: 1px solid var(--input-border-green) !important;
+  }
 }

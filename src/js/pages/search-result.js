@@ -10,6 +10,7 @@ import { initCardsSwiper } from '@/js/components/cards-swiper.js';
 import { initAccordion } from '@/js/sections/search-result/init-accordion.js';
 import { initSortInCard } from '@/js/sections/search-result/init-sortIn-card.js';
 
+
 document.addEventListener('DOMContentLoaded', async () => {
   initSelect();
 
@@ -20,3 +21,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initAccordion();
   initSortInCard();
 });
+
+import { findHotels } from '@/js/services/api/findHotels.js';
+const hotels = await findHotels();
+
+console.log("hoteіls",hotels);

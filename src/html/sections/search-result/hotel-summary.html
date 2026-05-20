@@ -1,23 +1,12 @@
-<div class="hotel-summary {{hotelSummaryClass}}">
-  <div class="hotel-summary__swiper swiper">
-    <div class="hotel-summary__swiper-wrapper swiper-wrapper">
+<div class="hotel-summary {{hotelSummaryClass}}" data-hotel-summary>
+  <template class="hotel-summary__swiper-template" data-hotel-summary-template>
+    <div class="hotel-summary__swiper-slide swiper-slide" data-swiper-slide>
+      <img src="" alt="">
+    </div>
+  </template>
 
-      <div class="hotel-summary__swiper-slide swiper-slide">
-        {{> ui/picture
-          className="hotel-summary__picture"
-          alt="Отель у моря"
-          desktop="/src/assets/image/test.jpg"
-          desktopWebp="/src/assets/image/test.webp"
-        }}
-      </div>
-      <div class="hotel-summary__swiper-slide swiper-slide">
-        {{> ui/picture
-          className="hotel-summary__picture"
-          alt="Отель у моря"
-          desktop="/src/assets/image/test.jpg"
-          desktopWebp="/src/assets/image/test.webp"
-        }}
-      </div>
+  <div class="hotel-summary__swiper swiper">
+    <div class="hotel-summary__swiper-wrapper swiper-wrapper" data-swiper-wrapper>
 
     </div>
 
@@ -25,8 +14,7 @@
       class="hotel-summary__swiper-btn hotel-summary__swiper-btn_prev"
       type="button"
       aria-label="Предыдущее фото"
-      data-btn-prev
-    >
+      data-btn-prev>
       {{> ui/svg className="hotel-summary__swiper-btn-icon" id="chevron"}}
     </button>
 

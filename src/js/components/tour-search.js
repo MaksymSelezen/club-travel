@@ -1,8 +1,7 @@
 import { getCountries, getRegions } from '../services/api/getDirection.js';
-import '../services/api/getQueries.js';
-import '../utils/format-query-to-strapi-req.js';
-import '../services/api/findHotels.js';
-import '../utils/restore-filter-from-url.js';
+import { getFilterState } from '../services/api/getQueries.js';
+import { findHotels } from '../services/api/findHotels.js';
+import { convertStateToStrapiQuery } from '../utils/format-query-to-strapi-req.js';
 
 const FILTER_GROUPS_ORDER = [
   'accommodation',
@@ -45,21 +44,6 @@ const FILTER_LABELS = {
     riga: 'Рига',
     vilnius: 'Вильнюс',
   },
-  region: {
-    albena: 'Албена',
-    bansko: 'Банско',
-    burgas: 'Бургас',
-    dunes: 'Дюны',
-    elenite: 'Елените',
-    'golden-sands': 'Золотые пески',
-    kranevo: 'Кранево',
-    nesebar: 'Несебр',
-    obzor: 'Обзор',
-    pomorie: 'Поморие',
-    ravda: 'Равда',
-    riviera: 'Ривьера',
-    sarafovo: 'Сарафово',
-  },
 };
 
 const MONTHS = [
@@ -76,7 +60,6 @@ const MONTHS = [
   'ноября',
   'декабря',
 ];
-
 const MONTH_TITLES = [
   'Январь',
   'Февраль',
@@ -91,7 +74,6 @@ const MONTH_TITLES = [
   'Ноябрь',
   'Декабрь',
 ];
-
 const WEEKDAYS = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
 const ACTIVE_FILTERS_LABEL =
   '<span class="tour-search__active_label">Активные фильтры:</span>';
@@ -105,22 +87,30 @@ function getCountryValue(country) {
     String(country.id || country.name || '')
   );
 }
-
 function getRegionCountryValue(region) {
   const country = region.country;
-  if (!country) return '';
-  return (
-    country.slug ||
-    country.documentId ||
-    String(country.id || country.name || '')
-  );
+  return country
+    ? country.slug ||
+        country.documentId ||
+        String(country.id || country.name || '')
+    : '';
+}
+function getRegionValue(region) {
+  return region.slug || region.documentId || String(region.id || '');
 }
 
 function createRegionItemMarkup(region) {
-  const value = region.slug || region.documentId || String(region.id || '');
+  const value = getRegionValue(region);
   const label = region.name || value;
   const countryValue = getRegionCountryValue(region);
   return `<li class="tour-search__item"><label class="tour-search__option"><input class="tour-search__checkbox" type="checkbox" name="region" value="${value}" data-tour-search-filter data-tour-search-region-country="${countryValue}" /><span class="tour-search__checkbox_icon"><svg class="tour-search__checkbox_svg"><use href="#check-circle"></use></svg></span><span class="tour-search__option_text">${label}</span></label></li>`;
+}
+
+function getSavedValues(urlParams, paramName) {
+  return (urlParams.get(paramName) || '')
+    .split(',')
+    .map(v => v.trim())
+    .filter(Boolean);
 }
 
 async function initTourSearch(root) {
@@ -128,6 +118,8 @@ async function initTourSearch(root) {
   const priceBlock = root.querySelector('[data-tour-search-price]');
   const directionField = root.querySelector('[name="direction"]');
   const regionList = root.querySelector('[data-tour-search-region-list]');
+  const form = root.querySelector('[data-tour-search-form]');
+  const urlParams = new URLSearchParams(window.location.search);
   let allRegions = [];
 
   const renderRegions = selectedDirection => {
@@ -136,24 +128,84 @@ async function initTourSearch(root) {
       regionList.innerHTML = '';
       return;
     }
-
     const filteredRegions = allRegions.filter(
       region => getRegionCountryValue(region) === selectedDirection,
     );
     regionList.innerHTML = filteredRegions.map(createRegionItemMarkup).join('');
   };
 
-  const syncRegionsForDirection = selectedDirection => {
+  const restoreFilters = () => {
+    if (!form) return;
+    const applyCheckboxes = (paramName, inputName) => {
+      const savedValues = getSavedValues(urlParams, paramName);
+      if (!savedValues.length) return;
+      form.querySelectorAll(`input[name="${inputName}"]`).forEach(cb => {
+        cb.checked = savedValues.includes(cb.value);
+      });
+    };
+
+    const minPriceInput = form.querySelector('[data-tour-search-price-min]');
+    const maxPriceInput = form.querySelector('[data-tour-search-price-max]');
+    if (minPriceInput && urlParams.has('priceMin'))
+      minPriceInput.value = urlParams.get('priceMin') || minPriceInput.value;
+    if (maxPriceInput && urlParams.has('priceMax'))
+      maxPriceInput.value = urlParams.get('priceMax') || maxPriceInput.value;
+
+    applyCheckboxes('accommodation', 'accommodation');
+    applyCheckboxes('meal', 'meal');
+    applyCheckboxes('tourComposition', 'tourComposition');
+    applyCheckboxes('departureCity', 'departureCity');
+  };
+
+  const restoreRegions = selectedDirection => {
     const regionInputs = [
       ...root.querySelectorAll('[data-tour-search-filter][name="region"]'),
     ];
+    const savedRegions = getSavedValues(urlParams, 'regions');
     regionInputs.forEach(input => {
-      if (input.dataset.tourSearchRegionCountry !== selectedDirection) {
-        input.checked = false;
-      }
+      const isAllowed =
+        input.dataset.tourSearchRegionCountry === selectedDirection;
+      input.checked = isAllowed && savedRegions.includes(input.value);
     });
+  };
+
+  const syncQueryAndApi = () => {
+    if (!form) return;
+    const state = getFilterState();
+    const clean = new URLSearchParams();
+    if (state.direction) clean.set('direction', state.direction);
+    if (state.price?.min !== undefined)
+      clean.set('priceMin', String(state.price.min));
+    if (state.price?.max !== undefined)
+      clean.set('priceMax', String(state.price.max));
+    if (state.accomondation?.length)
+      clean.set('accommodation', state.accomondation.join(','));
+    if (state.meal?.length) clean.set('meal', state.meal.join(','));
+    if (state.tourComposition?.length)
+      clean.set('tourComposition', state.tourComposition.join(','));
+    if (state.departureCity?.length)
+      clean.set('departureCity', state.departureCity.join(','));
+    if (state.regions?.length) clean.set('regions', state.regions.join(','));
+
+    const nextUrl = clean.toString()
+      ? `${window.location.pathname}?${clean.toString()}`
+      : window.location.pathname;
+    window.history.replaceState({}, '', nextUrl);
+
+    const strapiQuery = convertStateToStrapiQuery(state);
+    void findHotels(strapiQuery);
+  };
+
+  const syncRegionsForDirection = selectedDirection => {
     renderRegions(selectedDirection);
+    root
+      .querySelectorAll('[data-tour-search-filter][name="region"]')
+      .forEach(input => {
+        if (input.dataset.tourSearchRegionCountry !== selectedDirection)
+          input.checked = false;
+      });
     renderActiveFilters(root, activeFilters);
+    syncQueryAndApi();
   };
 
   if (directionField) {
@@ -161,17 +213,31 @@ async function initTourSearch(root) {
       getCountries(),
       getRegions(),
     ]);
-    const options = countries
-      .map(country => {
-        const value = getCountryValue(country);
-        const label = country.name || value;
-        return value ? `<option value="${value}">${label}</option>` : '';
-      })
-      .filter(Boolean)
-      .join('');
-    directionField.insertAdjacentHTML('beforeend', options);
+    directionField.insertAdjacentHTML(
+      'beforeend',
+      countries
+        .map(country => {
+          const value = getCountryValue(country);
+          const label = country.name || value;
+          return value ? `<option value="${value}">${label}</option>` : '';
+        })
+        .filter(Boolean)
+        .join(''),
+    );
+
     allRegions = regions;
+    restoreFilters();
+
+    if (urlParams.has('direction')) {
+      const requestedDirection = urlParams.get('direction') || '';
+      const validCountryValues = new Set(countries.map(getCountryValue));
+      directionField.value = validCountryValues.has(requestedDirection)
+        ? requestedDirection
+        : '';
+    }
+
     renderRegions(directionField.value);
+    restoreRegions(directionField.value);
 
     directionField.addEventListener('change', event => {
       syncRegionsForDirection(event.target.value);
@@ -183,7 +249,6 @@ async function initTourSearch(root) {
     ?.addEventListener('click', () =>
       root.classList.add('tour-search_expanded'),
     );
-
   root
     .querySelector('[data-tour-search-close]')
     ?.addEventListener('click', () =>
@@ -191,57 +256,56 @@ async function initTourSearch(root) {
     );
 
   root.addEventListener('change', event => {
-    if (event.target.matches('[data-tour-search-filter]')) {
+    if (
+      event.target.matches(
+        '[data-tour-search-filter], [data-tour-search-field], [data-tour-search-price-min], [data-tour-search-price-max]',
+      )
+    ) {
       renderActiveFilters(root, activeFilters);
+      syncQueryAndApi();
     }
   });
 
   activeFilters?.addEventListener('click', event => {
     const tag = event.target.closest('[data-tour-search-tag]');
     if (!tag) return;
-
     const selector = `[data-tour-search-filter][name="${tag.dataset.tourSearchTagName}"][value="${tag.dataset.tourSearchTag}"]`;
     const input = root.querySelector(selector);
     if (!input) return;
-
     input.checked = false;
     renderActiveFilters(root, activeFilters);
+    syncQueryAndApi();
   });
 
   initDatePicker(root);
   initPriceRange(priceBlock);
   renderActiveFilters(root, activeFilters);
+  syncQueryAndApi();
 }
 
 function renderActiveFilters(root, container) {
   if (!container) return;
-
   const checked = [
     ...root.querySelectorAll('[data-tour-search-filter]:checked'),
   ];
   container.innerHTML = ACTIVE_FILTERS_LABEL;
   if (!checked.length) return;
-
   const groups = new Map();
-  checked.forEach(input => {
-    const list = groups.get(input.name) || [];
-    list.push(input);
-    groups.set(input.name, list);
+  checked.forEach(i => {
+    const list = groups.get(i.name) || [];
+    list.push(i);
+    groups.set(i.name, list);
   });
-
-  const orderedNames = [
+  const ordered = [
     ...FILTER_GROUPS_ORDER,
-    ...[...groups.keys()].filter(name => !FILTER_GROUPS_ORDER.includes(name)),
+    ...[...groups.keys()].filter(n => !FILTER_GROUPS_ORDER.includes(n)),
   ];
-
-  orderedNames.forEach(name => {
+  ordered.forEach(name => {
     const items = groups.get(name);
     if (!items?.length) return;
-
     const group = document.createElement('div');
     group.className = 'tour-search__active_group';
     group.innerHTML = `<span class="tour-search__active_name">${FILTER_GROUP_LABELS[name] || name}</span>`;
-
     items.forEach(input => {
       const tag = document.createElement('button');
       tag.type = 'button';
@@ -251,11 +315,9 @@ function renderActiveFilters(root, container) {
       tag.textContent = getFilterLabel(input);
       group.append(tag);
     });
-
     container.append(group);
   });
 }
-
 function getFilterLabel(input) {
   return (
     FILTER_LABELS[input.name]?.[input.value] ||
@@ -266,26 +328,21 @@ function getFilterLabel(input) {
     input.value
   );
 }
-
 function initDatePicker(root) {
   const dateField = root.querySelector('[data-tour-search-date]');
   const dateBox = root.querySelector('[data-tour-search-date-box]');
   const dateInput = root.querySelector('[data-tour-search-date-input]');
   const calendar = root.querySelector('[data-tour-search-calendar]');
-
   if (!dateField || !dateBox || !dateInput || !calendar) return;
-
   let selectedDate = getTodayDate();
   let viewDate = new Date(
     selectedDate.getFullYear(),
     selectedDate.getMonth(),
     1,
   );
-
   const closeCalendar = () => {
     calendar.hidden = true;
   };
-
   const renderCalendar = () => {
     const year = viewDate.getFullYear();
     const month = viewDate.getMonth();
@@ -293,10 +350,8 @@ function initDatePicker(root) {
     const emptyDays = (new Date(year, month, 1).getDay() + 6) % 7;
     const selectedIso = formatIsoDate(selectedDate);
     const todayIso = formatIsoDate(getTodayDate());
-
     const emptyCells =
       '<span class="tour-search__calendar_day_empty"></span>'.repeat(emptyDays);
-
     const dayCells = Array.from({ length: daysInMonth }, (_, index) => {
       const day = index + 1;
       const iso = formatIsoDate(new Date(year, month, day));
@@ -304,94 +359,66 @@ function initDatePicker(root) {
       if (iso === selectedIso)
         classes.push('tour-search__calendar_day_selected');
       if (iso === todayIso) classes.push('tour-search__calendar_day_today');
-
       return `<button class="${classes.join(' ')}" type="button" data-tour-search-calendar-day="${iso}">${day}</button>`;
     }).join('');
-
-    calendar.innerHTML = `
-      <div class="tour-search__calendar_header">
-        <button class="tour-search__calendar_nav" type="button" data-tour-search-calendar-prev>‹</button>
-        <span class="tour-search__calendar_month">${MONTH_TITLES[month]} ${year}</span>
-        <button class="tour-search__calendar_nav" type="button" data-tour-search-calendar-next>›</button>
-      </div>
-      <div class="tour-search__calendar_weekdays">
-        ${WEEKDAYS.map(day => `<span class="tour-search__calendar_weekday">${day}</span>`).join('')}
-      </div>
-      <div class="tour-search__calendar_grid">${emptyCells}${dayCells}</div>
-    `;
+    calendar.innerHTML = `<div class="tour-search__calendar_header"><button class="tour-search__calendar_nav" type="button" data-tour-search-calendar-prev>‹</button><span class="tour-search__calendar_month">${MONTH_TITLES[month]} ${year}</span><button class="tour-search__calendar_nav" type="button" data-tour-search-calendar-next>›</button></div><div class="tour-search__calendar_weekdays">${WEEKDAYS.map(day => `<span class="tour-search__calendar_weekday">${day}</span>`).join('')}</div><div class="tour-search__calendar_grid">${emptyCells}${dayCells}</div>`;
   };
-
   const syncInput = () => {
     dateInput.value = formatInputDate(selectedDate);
     dateInput.dataset.date = formatIsoDate(selectedDate);
   };
-
   dateBox.addEventListener('click', event => {
     event.preventDefault();
     event.stopPropagation();
     calendar.hidden = !calendar.hidden;
     if (!calendar.hidden) renderCalendar();
   });
-
   calendar.addEventListener('click', event => {
     event.preventDefault();
     event.stopPropagation();
-
     if (event.target.closest('[data-tour-search-calendar-prev]')) {
       viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1);
       renderCalendar();
       return;
     }
-
     if (event.target.closest('[data-tour-search-calendar-next]')) {
       viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1);
       renderCalendar();
       return;
     }
-
     const dayButton = event.target.closest('[data-tour-search-calendar-day]');
     if (!dayButton) return;
-
     selectedDate = parseIsoDate(dayButton.dataset.tourSearchCalendarDay);
     viewDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
     syncInput();
     renderCalendar();
     closeCalendar();
   });
-
   document.addEventListener('click', event => {
     if (!dateField.contains(event.target)) closeCalendar();
   });
-
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') closeCalendar();
   });
-
   syncInput();
   renderCalendar();
 }
-
 function initPriceRange(priceBlock) {
   if (!priceBlock) return;
-
   const minInput = priceBlock.querySelector('[data-tour-search-price-min]');
   const maxInput = priceBlock.querySelector('[data-tour-search-price-max]');
   const [minValueText, maxValueText] = priceBlock.querySelectorAll(
     '.tour-search__price_value',
   );
-
   if (!minInput || !maxInput || !minValueText || !maxValueText) return;
-
   const minLimit = Number(minInput.min);
   const maxLimit = Number(maxInput.max);
   const minGap = Number(minInput.step) || 1;
   const getPercent = value =>
     ((value - minLimit) / (maxLimit - minLimit)) * 100;
-
   const syncPriceView = () => {
     const minValue = Number(minInput.value);
     const maxValue = Number(maxInput.value);
-
     minValueText.textContent = `${minValue}€`;
     maxValueText.textContent = `${maxValue}€`;
     priceBlock.style.setProperty(
@@ -403,7 +430,6 @@ function initPriceRange(priceBlock) {
       `${getPercent(maxValue)}%`,
     );
   };
-
   minInput.addEventListener('input', () => {
     const nextValue = Math.min(
       Number(minInput.value),
@@ -412,7 +438,6 @@ function initPriceRange(priceBlock) {
     minInput.value = String(nextValue);
     syncPriceView();
   });
-
   maxInput.addEventListener('input', () => {
     const nextValue = Math.max(
       Number(maxInput.value),
@@ -421,27 +446,19 @@ function initPriceRange(priceBlock) {
     maxInput.value = String(nextValue);
     syncPriceView();
   });
-
   syncPriceView();
 }
-
 function getTodayDate() {
   const today = new Date();
   return new Date(today.getFullYear(), today.getMonth(), today.getDate());
 }
-
 function parseIsoDate(value) {
   const [year, month, day] = value.split('-').map(Number);
   return new Date(year, month - 1, day);
 }
-
 function formatIsoDate(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 }
-
 function formatInputDate(date) {
   return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 }

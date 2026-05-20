@@ -3,6 +3,9 @@ import { API_URL } from '../services/api/constants';
 export const convertStateToStrapiQuery = (state) => {
   const strapiParams = new URLSearchParams();
 
+  strapiParams.set('populate[hotelDescription][populate]', '*');
+  strapiParams.set('populate[hotelFeatures][populate]', '*');
+
   strapiParams.set('populate[country][fields][0]', 'name');
   strapiParams.set('populate[country][fields][1]', 'slug');
 
@@ -16,6 +19,12 @@ export const convertStateToStrapiQuery = (state) => {
   strapiParams.set('populate[offers][fields][2]', 'tourComposition');
   strapiParams.set('populate[offers][fields][3]', 'departureCitySlug');
   strapiParams.set('populate[offers][fields][4]', 'duration');
+  strapiParams.set('populate[offers][fields][6]', 'beachDistance');
+  strapiParams.set('populate[offers][fields][7]', 'date');
+  strapiParams.set('populate[offers][fields][8]', 'type');
+  strapiParams.set('populate[offers][fields][9]', 'seatsOnThePlane');
+
+
 
   if(state.direction) {
     strapiParams.set('filters[country][slug][$eq]', state.direction);

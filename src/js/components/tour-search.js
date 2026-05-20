@@ -21,10 +21,10 @@ const FILTER_GROUP_LABELS = {
 
 const FILTER_LABELS = {
   accommodation: {
-    '2-stars': '2 звезды',
-    '3-stars': '3 звезды',
-    '4-stars': '4 звезды',
-    '5-stars': '5 звезд',
+    2: '2 звезды',
+    3: '3 звезды',
+    4: '4 звезды',
+    5: '5 звезд',
     apartments: 'Апартаменты',
   },
   meal: {
@@ -149,11 +149,26 @@ function createRegionItemMarkup(region, checkboxSvgMarkup) {
   `;
 }
 
+function normalizeAccommodationValue(value) {
+  const trimmed = String(value || '').trim();
+  const legacyMatch = trimmed.match(/^(\d+)-stars$/);
+
+  if (legacyMatch) return legacyMatch[1];
+
+  return trimmed;
+}
+
 function getSavedValues(urlParams, paramName) {
-  return (urlParams.get(paramName) || '')
+  const values = (urlParams.get(paramName) || '')
     .split(',')
     .map(value => value.trim())
     .filter(Boolean);
+
+  if (paramName === 'accommodation') {
+    return values.map(normalizeAccommodationValue);
+  }
+
+  return values;
 }
 
 async function initTourSearch(root) {

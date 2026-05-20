@@ -507,7 +507,11 @@
     display: none;
   }
 
-  &__group_accommodation .tour-search__item:last-child .tour-search__option {
+  &__group_accommodation .tour-search__apartments {
+    margin-top: 8px;
+  }
+
+  &__group_accommodation .tour-search__apartments .tour-search__option {
     gap: 8px;
   }
 

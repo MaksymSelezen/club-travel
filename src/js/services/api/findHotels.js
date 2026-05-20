@@ -1,27 +1,17 @@
-import { API_URL } from "./constants.js";
-import { getFilterState } from "./getQueries.js";
-import { restoreFilterFromURL } from "../../utils/restore-filter-from-url.js";
-import { convertStateToStrapiQuery } from "../../utils/format-query-to-strapi-req.js";
+import { API_URL } from './constants.js';
 
-
-export const findHotels = async (strapiQueryString) => {
+export const findHotels = async strapiQueryString => {
   try {
     const finalBackUrl = `${API_URL}v2-hotels?${strapiQueryString}`;
-    console.log('link:', finalBackUrl);
-
     const response = await fetch(finalBackUrl);
-    if (!response.ok) throw new Error(`Ошибка сервера. Статус: ${response.status}`);
+    if (!response.ok)
+      throw new Error(`Ошибка сервера. Статус: ${response.status}`);
     const { data } = await response.json();
+    console.log(finalBackUrl);
+
     return data;
-  }
-
-  catch(error) {
+  } catch (error) {
     console.error('Ошибка при получении данных от Strapi:', error);
+    return [];
   }
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  const currentState = getFilterState();
-  const strapiQuery = convertStateToStrapiQuery(currentState);
-  findHotels(strapiQuery);
-});
+};

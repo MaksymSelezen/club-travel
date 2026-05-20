@@ -5,12 +5,18 @@ import '@/js/sections/main/hero-swiper.js';
 import '@/js/utils/restore-filter-from-url.js';
 import '@/js/components/tour-search.js';
 
-
 import { initSelect } from '@/js/ui/custom-select.js';
 import { initCardsSwiper } from '@/js/components/cards-swiper.js';
+import { initAccordion } from '@/js/sections/search-result/init-accordion.js';
+import { initSortInCard } from '@/js/sections/search-result/init-sortIn-card.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   initSelect();
-  initCardsSwiper('.hotel-summary');
-});
 
+  document.querySelectorAll('.hotel-summary').forEach(card => {
+    initCardsSwiper(card);
+  });
+
+  initAccordion();
+  initSortInCard();
+});

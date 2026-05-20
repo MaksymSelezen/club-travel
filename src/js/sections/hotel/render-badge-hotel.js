@@ -1,4 +1,4 @@
-import { updateTextContent } from '@/js/ui/update-text-content.js';
+import { updateTextContent } from '@/js/utils/update-text-content.js';
 
 export function renderBadgeHotel(badge) {
   // const features= info.features;

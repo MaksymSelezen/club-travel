@@ -19,3 +19,23 @@
         opacity: 1;
     }
 }
+
+.card-clickable{
+    transition: box-shadow .3s ease, transform .3s ease;
+    &:focus-visible {
+        box-shadow: 0 1px 13px 0 rgba(0, 0, 0, 0.25);
+        transform: translateY(-2px);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover:not(:active) {
+            box-shadow: 0 1px 13px 0 rgba(0, 0, 0, 0.25);
+            transform: translateY(-2px);
+        }
+    }
+
+    &:active {
+        box-shadow: 0 1px 13px 0 rgba(0, 0, 0, 0.25);
+        transform: translateY(-2px);
+    }
+}

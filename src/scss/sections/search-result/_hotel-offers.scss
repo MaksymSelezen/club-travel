@@ -4,13 +4,15 @@
     --offers-cols: 1.2fr 1fr 1.2fr 1.2fr 1fr 1fr 160px;
     --offers-gap: 16px;
 
-    background: #F5F5FA;
-    border-radius: 10px 0 10px 10px;
+    //background: var(--white);
+    //background: #F5F5FA;
+    //border-radius: 10px 0 10px 10px;
     padding: 15px 4px 5px 13px;
 
     @include media.max-width(lg) {
         --offers-cols: 1.2fr 1fr 1.2fr 1.2fr 1fr 1.2fr 120px;
         --offers-gap: 12px;
+        background: #F5F5FA;
         border-radius: 0 0 10px 10px;
         padding: 5px 14px 15px 14px;
         margin-top: -4px;
@@ -100,6 +102,10 @@
     &__head-btn-icon{
         width: 24px;
         aspect-ratio: 1;
+    }
+
+    &__body{
+        display: contents;
     }
 
     &__row {

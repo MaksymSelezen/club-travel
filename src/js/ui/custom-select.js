@@ -18,7 +18,10 @@ function selectOption(option) {
   const allOptions = select.querySelectorAll('[data-select-option]');
   const label = select.querySelector('[data-select-value]');
   const input = select.querySelector('[data-select-input]');
-  if (input && option.dataset.value) input.value = option.dataset.value.trim();
+  if (input && option.dataset.value) {
+    input.value = option.dataset.value.trim();
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  }
   if (label) label.textContent = option.textContent.trim();
 
   allOptions.forEach(opt => opt.setAttribute('aria-selected', 'false'));

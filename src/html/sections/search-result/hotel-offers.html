@@ -4,10 +4,15 @@
     <div class="hotel-offers__sort-selects">
       {{> ui/custom-select
         customSelectClass="hotel-offers__sort-select"
-        name="priceSort"
+        name="valueSort"
         placeholder="Цена"
         inputValue="price"
-        options=(json '[{ "value": "price", "label": "Цена" }, { "value": "date", "label": "Дата" }]')
+        options=(json '[
+        { "value": "price", "label": "Цена" },
+        { "value": "date", "label": "Дата" },
+        { "value": "period", "label": "Период" },
+        { "value": "places", "label": "Мест" }
+        ]')
       }}
       {{> ui/custom-select
         customSelectClass="hotel-offers__sort-select"
@@ -45,7 +50,7 @@
       <span role="cell" data-label="Мест">10+</span>
       <span role="cell" data-label="Стоимость">
         <span class="hotel-offers__price-value">
-          <strong>645€</strong>/чел
+          <strong>542€</strong>/чел
         </span>
       </span>
 
@@ -64,7 +69,7 @@
       <span role="cell" data-label="Мест">8+</span>
       <span role="cell" data-label="Стоимость">
         <span class="hotel-offers__price-value">
-          <strong>645€</strong>/чел
+          <strong>685€</strong>/чел
         </span>
       </span>
       <span role="cell">
@@ -82,7 +87,7 @@
       <span role="cell" data-label="Мест">12+</span>
       <span role="cell" data-label="Стоимость">
         <span class="hotel-offers__price-value">
-          <strong>645€</strong>/чел
+          <strong>545€</strong>/чел
         </span>
       </span>
       <span role="cell">
@@ -100,7 +105,7 @@
       <span role="cell" data-label="Мест">2+</span>
       <span role="cell" data-label="Стоимость">
         <span class="hotel-offers__price-value">
-          <strong>645€</strong>/чел
+          <strong>635€</strong>/чел
         </span>
       </span>
       <span role="cell">

@@ -26,9 +26,6 @@
         transition: grid-template-rows 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
         overflow: hidden;
         margin-top: 0;
-        //@include media.max-width(lg) {
-        //    transition: grid-template-rows 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
-        //}
     }
     &__offers-accordion-body {
         min-height: 0;
@@ -49,8 +46,6 @@
             border-radius: 0;
             margin-top: -1px;
             background: none;
-            //padding-top: 5px;
-            //padding-bottom: 8px;
         }
     }
 
@@ -65,12 +60,6 @@
             @include media.max-width(lg) {
                 background: #F5F5FA;
             }
-            //
-            //&::after{
-            //    opacity: 1;
-            //    visibility: visible;
-            //    background: #F5F5FA;
-            //}
         }
     }
 }

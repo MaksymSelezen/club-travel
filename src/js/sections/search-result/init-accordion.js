@@ -1,5 +1,4 @@
 export const initAccordion=() =>{
-  document.querySelectorAll('[data-hotel-card]').forEach(card => {});
   const hotelCardList = document.querySelectorAll('[data-hotel-card]');
   hotelCardList.forEach(card => {
     const toggleBtnEl = card.querySelector('[data-hotel-card-toggle]');

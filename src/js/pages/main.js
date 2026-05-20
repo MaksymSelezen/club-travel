@@ -6,7 +6,7 @@ import '@/js/components/tour-search.js';
 
 import { renderNewsCards } from '@/js/components/render-news-cards.js';
 import { renderHotCards } from '@/js/components/render-hot-cards.js';
-import { renderSeasonCards } from '@/js/sections/main/render-season-cards.js';
+import { renderSeasonCards } from '@/js/components/render-season-cards.js';
 import { initCardsSwiper } from '@/js/components/cards-swiper.js';
 
 document.addEventListener('DOMContentLoaded', async () => {

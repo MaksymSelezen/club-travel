@@ -59,7 +59,7 @@ const getParams = () => {
   const urlParams = new URLSearchParams();
 
   if (currentState.direction)
-    urlParams.set('direction', currentState.direction);
+  urlParams.set('direction', currentState.direction);
   urlParams.set('priceMin', currentState.price.min);
   urlParams.set('priceMax', currentState.price.max);
 

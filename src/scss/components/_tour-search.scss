@@ -476,6 +476,7 @@
 
   &__group_region {
     grid-area: region;
+    min-width: 0;
   }
 
   &__group_title {
@@ -526,12 +527,21 @@
   }
 
   &__list_columns {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-rows: repeat(8, auto);
-    grid-auto-columns: max-content;
-    column-gap: 135px;
-    row-gap: 10px;
+    display: block;
+    columns: 3;
+    column-gap: 32px;
+    column-fill: auto;
+    height: 360px;
+
+    .tour-search__item {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      margin-bottom: 8px;
+    }
+
+    .tour-search__option {
+      display: inline-flex;
+    }
   }
 
   &__option {

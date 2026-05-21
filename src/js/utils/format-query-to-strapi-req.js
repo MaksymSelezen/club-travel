@@ -29,6 +29,21 @@ export const convertStateToStrapiQuery = (state) => {
   if(state.direction) {
     strapiParams.set('filters[country][slug][$eq]', state.direction);
   }
+
+  if (state.duration) {
+    const targetDuration = Number(state.duration);
+    
+    const tolerance = 2; 
+    const minDays = Math.max(1, targetDuration - tolerance);
+    const maxDays = targetDuration + tolerance;
+
+    strapiParams.set('filters[offers][duration][$gte]', minDays.toString());
+    strapiParams.set('filters[offers][duration][$lte]', maxDays.toString());
+    
+    strapiParams.set('populate[offers][filters][duration][$gte]', minDays.toString());
+    strapiParams.set('populate[offers][filters][duration][$lte]', maxDays.toString());
+  }
+
   strapiParams.set('filters[priceForPerson][$gte]', state.price.min);
   strapiParams.set('filters[priceForPerson][$lte]', state.price.max);
 

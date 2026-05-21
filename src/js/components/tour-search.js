@@ -3,6 +3,7 @@ import { getFilterState } from '../services/api/getQueries.js';
 import { findHotels } from '../services/api/findHotels.js';
 import { convertStateToStrapiQuery } from '../utils/format-query-to-strapi-req.js';
 
+
 const FILTER_GROUPS_ORDER = [
   'accommodation',
   'meal',
@@ -244,53 +245,60 @@ async function initTourSearch(root) {
     });
   };
 
-  const syncQueryAndApi = () => {
-    if (!form) return;
+  const syncQueryAndApi = async () => {
+    // if (!form) return;
 
     const state = getFilterState();
-    const clean = new URLSearchParams();
+    // const clean = new URLSearchParams();
 
-    if (state.direction) {
-      clean.set('direction', state.direction);
-    }
+    // if (state.direction) {
+    //   clean.set('direction', state.direction);
+    // }
 
-    if (state.price?.min !== undefined) {
-      clean.set('priceMin', String(state.price.min));
-    }
+    //  if (state.duration) {
+    //   clean.set('duration', state.duration);
+    // }
 
-    if (state.price?.max !== undefined) {
-      clean.set('priceMax', String(state.price.max));
-    }
+    // if (state.date) {
+    //   clean.set('date', state.date);
+    // }
 
-    if (state.accomondation?.length) {
-      clean.set('accommodation', state.accomondation.join(','));
-    }
+    // if (state.price?.min !== undefined) {
+    //   clean.set('priceMin', String(state.price.min));
+    // }
 
-    if (state.meal?.length) {
-      clean.set('meal', state.meal.join(','));
-    }
+    // if (state.price?.max !== undefined) {
+    //   clean.set('priceMax', String(state.price.max));
+    // }
 
-    if (state.tourComposition?.length) {
-      clean.set('tourComposition', state.tourComposition.join(','));
-    }
+    // if (state.accomondation?.length) {
+    //   clean.set('accommodation', state.accomondation.join(','));
+    // }
 
-    if (state.departureCity?.length) {
-      clean.set('departureCity', state.departureCity.join(','));
-    }
+    // if (state.meal?.length) {
+    //   clean.set('meal', state.meal.join(','));
+    // }
 
-    if (state.regions?.length) {
-      clean.set('regions', state.regions.join(','));
-    }
+    // if (state.tourComposition?.length) {
+    //   clean.set('tourComposition', state.tourComposition.join(','));
+    // }
 
-    const nextUrl = clean.toString()
-      ? `${window.location.pathname}?${clean.toString()}`
-      : window.location.pathname;
+    // if (state.departureCity?.length) {
+    //   clean.set('departureCity', state.departureCity.join(','));
+    // }
 
-    window.history.replaceState({}, '', nextUrl);
+    // if (state.regions?.length) {
+    //   clean.set('regions', state.regions.join(','));
+    // }
 
+    // const nextUrl = clean.toString()
+    //   ? `${window.location.pathname}?${clean.toString()}`
+    //   : window.location.pathname;
+
+    // window.history.replaceState({}, '', nextUrl);
     const strapiQuery = convertStateToStrapiQuery(state);
-
-    void findHotels(strapiQuery);
+    const hotels = await findHotels(strapiQuery);
+   
   };
 
   const syncRegionsForDirection = selectedDirection => {
@@ -393,6 +401,7 @@ async function initTourSearch(root) {
   initPriceRange(priceBlock);
   renderActiveFilters(root, activeFilters);
   syncQueryAndApi();
+
 }
 
 function renderActiveFilters(root, container) {
@@ -666,3 +675,4 @@ function formatIsoDate(date) {
 function formatInputDate(date) {
   return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 }
+

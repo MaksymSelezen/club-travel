@@ -6,9 +6,14 @@ export const restoreFilterFromURL = () => {
 
   if ([...urlParams].length === 0) return;
 
-  const directionInput = tourSearchForm.querySelector('[data-tour-search-field]');
+  const directionInput = tourSearchForm.querySelector('select[name="direction"]');
   if (directionInput && urlParams.has('direction')) {
     directionInput.value = urlParams.get('direction');
+  }
+
+  const durationInput = tourSearchForm.querySelector('select[name="duration"]');
+  if (durationInput && urlParams.has('duration')) {
+    durationInput.value = urlParams.get('duration');
   }
 
   const minPriceInput = tourSearchForm.querySelector('[data-tour-search-price-min]');

@@ -10,10 +10,14 @@ export const getFilterState = () => {
       departureCity: [],
       regions: [],
       price: { min: 200, max: 3000 },
+      duration: '',
+      date: '',
     };
   }
 
-  const checkedDirection = tourSearchForm.querySelector('[name="direction"]');
+  const checkedDirection = tourSearchForm.querySelector('select[name="direction"]');
+  const selectedDuration = tourSearchForm.querySelector('select[name="duration"]');
+  const selectedDate = tourSearchForm.querySelector('input[name="departureDate"]');
   const checkedHotelAccomondation = tourSearchForm.querySelectorAll(
     'input[name="accommodation"]:checked',
   );
@@ -29,9 +33,11 @@ export const getFilterState = () => {
   const checkedRegion = tourSearchForm.querySelectorAll(
     'input[name="region"]:checked',
   );
-
+  
   return {
     direction: checkedDirection?.value || '',
+    duration: selectedDuration?.value || '',
+    date: selectedDate?.value || '',
     accomondation: Array.from(checkedHotelAccomondation).map(
       input => input.value,
     ),
@@ -60,6 +66,8 @@ const getParams = () => {
 
   if (currentState.direction)
   urlParams.set('direction', currentState.direction);
+  if(currentState.duration) 
+    urlParams.set('duration', currentState.duration);
   urlParams.set('priceMin', currentState.price.min);
   urlParams.set('priceMax', currentState.price.max);
 
@@ -73,12 +81,12 @@ const getParams = () => {
     urlParams.set('departureCity', currentState.departureCity.join(','));
   if (currentState.regions.length)
     urlParams.set('regions', currentState.regions.join(','));
-
   return urlParams;
 };
 
 tourSearchForm.addEventListener('input', e => {
   e.preventDefault();
+ 
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
     const urlParams = getParams();
     const newUrl = `${window.location.pathname}?${urlParams.toString()}`;

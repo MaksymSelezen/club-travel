@@ -8,7 +8,7 @@ export const findHotels = async strapiQueryString => {
       throw new Error(`Ошибка сервера. Статус: ${response.status}`);
     const { data } = await response.json();
     console.log(finalBackUrl);
-
+    console.log(data);
     return data;
   } catch (error) {
     console.error('Ошибка при получении данных от Strapi:', error);

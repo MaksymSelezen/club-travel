@@ -1,0 +1,23 @@
+@use 'swiper/css';
+@use 'swiper/css/navigation';
+@use 'swiper/css/autoplay';
+
+@use '../base/reset';
+@use '../base/base';
+@use '../layout/header';
+@use '../layout/burger-menu';
+@use '../layout/footer';
+@use '@/scss/sections/common/main-hero';
+@use '@/scss/components/tour-search';
+@use '@/scss/sections/burn-offer/burn-offer';
+
+.burn-main-hero .main-hero__swiper {
+  aspect-ratio: 1366/320;
+  height: auto;
+  @media (width < 1025px) {
+    aspect-ratio: 1024/364;
+  }
+  @media (width <= 768px) {
+    aspect-ratio: 360/191;
+  }
+}

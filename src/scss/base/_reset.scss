@@ -1,18 +1,18 @@
 ﻿* {
-    padding: 0;
-    margin: 0;
-    border: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
 }
 
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 a:focus,
 a:active {
-    outline: none;
+  outline: none;
 }
 
 //a:focus:not(:focus-visible), a:active {
@@ -20,80 +20,80 @@ a:active {
 //}
 
 a {
-    color: inherit;
-    font-family: inherit;
-    font-size: inherit;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 html {
-    -webkit-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-    min-height: 100vh;
-    line-height: 1.4;
-    //height: 100%;
-    //width: 100%;
+  min-height: 100vh;
+  line-height: 1.4;
+  //height: 100%;
+  //width: 100%;
 }
 
 input,
 select,
 button,
 textarea {
-    font: inherit;
-    color: inherit;
-    outline: none;
-    appearance: none;
-    -webkit-appearance: none;
-    border-radius: 0;
+  font: inherit;
+  color: inherit;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
 }
 
 button {
-    cursor: pointer;
-    background: none;
-    border: none;
+  cursor: pointer;
+  background: none;
+  border: none;
 }
 
 select,
-input[type="checkbox"],
-input[type="radio"] {
-    cursor: pointer;
+input[type='checkbox'],
+input[type='radio'] {
+  cursor: pointer;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="password"],
+input[type='text'],
+input[type='email'],
+input[type='tel'],
+input[type='password'],
 textarea {
-    cursor: text;
+  cursor: text;
 }
 
 textarea {
-    resize: none;
+  resize: none;
 }
 
 input::-ms-clear {
-    display: none;
+  display: none;
 }
 
 button::-moz-focus-inner {
-    padding: 0;
-    border: 0;
+  padding: 0;
+  border: 0;
 }
 
 a,
 a:visited,
 a:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 ul,
 ol {
-    list-style: none;
+  list-style: none;
 }
 
 img {
-    vertical-align: top;
+  vertical-align: top;
 }
 
 h1,
@@ -103,34 +103,38 @@ h4,
 h5,
 h6,
 p {
-    font-size: inherit;
-    font-weight: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* Firefox */
-input[type=number] {
-    -moz-appearance: textfield;
+input[type='number'] {
+  -moz-appearance: textfield;
 }
 
 table {
-    border-collapse: collapse;
-    border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  th {
+    text-align: left;
+  }
 }
 
 picture,
 svg,
 img {
-    display: block;
+  display: block;
 }
 
 video,
 canvas {
-    display: block;
-    max-width: 100%;
+  display: block;
+  max-width: 100%;
 }

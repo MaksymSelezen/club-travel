@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ru">
+
+{{>layout/head title="Горящие предложения" hrefStyle="burn-style"}}
+
+
+<body class="burn-page">
+    {{> layout/header}}
+    {{> layout/burger-menu}}
+    <main>
+        {{>sections/common/main-hero sectionClass="burn-main-hero"}} {{>components/tour-search}}
+        {{>sections/burn-offer/burn-offer}}
+
+    </main>
+
+    {{> layout/footer}}
+    {{>layout/script srcJs="main"}}
+    {{> layout/script srcJs="burn"}}
+
+
+
+</body>
+
+</html>

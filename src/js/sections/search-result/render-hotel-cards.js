@@ -7,14 +7,20 @@ import { initAccordion } from '@/js/sections/search-result/init-accordion.js';
 import { hotelDataMapper } from '@/js/sections/search-result/hotel-data-mapper.js';
 import { initSortInCard } from '@/js/sections/search-result/init-sort-in-card.js';
 
+let allCardsData = [];
+let currentRenderedCount = 0;
+const CHUNK_SIZE = 5;
+
 export const renderHotelCards = async () => {
   const state =  getFilterState();
   const strapiQueryString = convertStateToStrapiQuery(state);
   const rawData = await findHotels(strapiQueryString);
   console.log(rawData);
 
-  const cardsData =rawData.map(hotelDataMapper);
-  console.log("cardsData", cardsData);
+  // const cardsData =rawData.map(hotelDataMapper);
+  // console.log("cardsData", cardsData);
+  allCardsData = rawData.map(hotelDataMapper);
+  console.log("cardsData", allCardsData);
 
   const container = document.querySelector('[data-card-container]');
   const templateEl = container.querySelector('[data-card-template]');
@@ -22,19 +28,57 @@ export const renderHotelCards = async () => {
 
   container.querySelectorAll('[data-hotel-card]').forEach(card => card.remove());
 
+  currentRenderedCount = 0;
+  const loadMoreBtn = document.querySelector('[data-btn-more]');
+  if (loadMoreBtn) {
+    loadMoreBtn.onclick = renderNextChunk; // При клике вызываем функцию отрисовки следующей порции
+  }
+  renderNextChunk();
+
+  // const blockFragment = document.createDocumentFragment();
+  //
+  // cardsData.forEach(hotel => {
+  //   const clonCard = cardEl.cloneNode(true);
+  //
+  //   renderAboutHotel(clonCard,hotel);
+  //   renderCardSwiper(clonCard, hotel.gallery);
+  //   renderOffers(clonCard, hotel.offers);
+  //   initAccordion(clonCard);
+  //
+  //   blockFragment.append(clonCard);
+  // })
+  // container.append(blockFragment);
+}
+
+function renderNextChunk() {
+  const container = document.querySelector('[data-card-container]');
+  const templateEl = container.querySelector('[data-card-template]');
+  const cardEl = templateEl.content.querySelector('[data-hotel-card]');
+  const loadMoreBtn = document.querySelector('[data-btn-more]');
+
+  const nextChunk = allCardsData.slice(currentRenderedCount, currentRenderedCount + CHUNK_SIZE);
   const blockFragment = document.createDocumentFragment();
 
-  cardsData.forEach(hotel => {
+  nextChunk.forEach(hotel => {
     const clonCard = cardEl.cloneNode(true);
-
-    renderAboutHotel(clonCard,hotel);
+    renderAboutHotel(clonCard, hotel);
     renderCardSwiper(clonCard, hotel.gallery);
     renderOffers(clonCard, hotel.offers);
     initAccordion(clonCard);
-
     blockFragment.append(clonCard);
-  })
+  });
+
   container.append(blockFragment);
+
+  currentRenderedCount += nextChunk.length;
+
+  if (loadMoreBtn) {
+    if (currentRenderedCount >= allCardsData.length) {
+      loadMoreBtn.classList.add('is-hidden');
+    } else {
+      loadMoreBtn.classList.remove('is-hidden');
+    }
+  }
 }
 
 function renderAboutHotel(clonCard,hotel){

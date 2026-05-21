@@ -9,6 +9,7 @@ const FILTER_GROUPS_ORDER = [
   'tourComposition',
   'departureCity',
   'region',
+  'apartmentType',
 ];
 
 const FILTER_GROUP_LABELS = {
@@ -17,6 +18,7 @@ const FILTER_GROUP_LABELS = {
   tourComposition: 'Состав тура',
   departureCity: 'Вылет из',
   region: 'Регионы',
+  apartmentType: 'Тип размещения',
 };
 
 const FILTER_LABELS = {
@@ -25,6 +27,8 @@ const FILTER_LABELS = {
     3: '3 звезды',
     4: '4 звезды',
     5: '5 звезд',
+  },
+  apartmentType: {
     apartments: 'Апартаменты',
   },
   meal: {
@@ -158,6 +162,10 @@ function normalizeAccommodationValue(value) {
   return trimmed;
 }
 
+function isValidAccommodationStar(value) {
+  return /^[1-5]$/.test(String(value || '').trim());
+}
+
 function getSavedValues(urlParams, paramName) {
   const values = (urlParams.get(paramName) || '')
     .split(',')
@@ -165,7 +173,9 @@ function getSavedValues(urlParams, paramName) {
     .filter(Boolean);
 
   if (paramName === 'accommodation') {
-    return values.map(normalizeAccommodationValue);
+    return values
+      .map(normalizeAccommodationValue)
+      .filter(isValidAccommodationStar);
   }
 
   return values;
@@ -182,17 +192,22 @@ async function initTourSearch(root) {
 
   let allRegions = [];
 
+  const isAllDirectionsState = selectedDirection => !selectedDirection;
+
+  const getRegionsForDirection = selectedDirection => {
+    if (isAllDirectionsState(selectedDirection)) {
+      return allRegions;
+    }
+
+    return allRegions.filter(
+      region => getRegionCountryValue(region) === selectedDirection,
+    );
+  };
+
   const renderRegions = selectedDirection => {
     if (!regionList) return;
 
-    if (!selectedDirection) {
-      regionList.innerHTML = '';
-      return;
-    }
-
-    const filteredRegions = allRegions.filter(
-      region => getRegionCountryValue(region) === selectedDirection,
-    );
+    const filteredRegions = getRegionsForDirection(selectedDirection);
 
     regionList.innerHTML = filteredRegions
       .map(region => createRegionItemMarkup(region, checkboxSvgMarkup))
@@ -224,6 +239,7 @@ async function initTourSearch(root) {
     }
 
     applyCheckboxes('accommodation', 'accommodation');
+    applyCheckboxes('apartmentType', 'apartmentType');
     applyCheckboxes('meal', 'meal');
     applyCheckboxes('tourComposition', 'tourComposition');
     applyCheckboxes('departureCity', 'departureCity');
@@ -238,6 +254,7 @@ async function initTourSearch(root) {
 
     regionInputs.forEach(input => {
       const isAllowed =
+        isAllDirectionsState(selectedDirection) ||
         input.dataset.tourSearchRegionCountry === selectedDirection;
 
       input.checked = isAllowed && savedRegions.includes(input.value);
@@ -270,6 +287,10 @@ async function initTourSearch(root) {
       clean.set('meal', state.meal.join(','));
     }
 
+    if (state.apartmentType?.length) {
+      clean.set('apartmentType', state.apartmentType.join(','));
+    }
+
     if (state.tourComposition?.length) {
       clean.set('tourComposition', state.tourComposition.join(','));
     }
@@ -296,13 +317,15 @@ async function initTourSearch(root) {
   const syncRegionsForDirection = selectedDirection => {
     renderRegions(selectedDirection);
 
-    root
-      .querySelectorAll('[data-tour-search-filter][name="region"]')
-      .forEach(input => {
-        if (input.dataset.tourSearchRegionCountry !== selectedDirection) {
-          input.checked = false;
-        }
-      });
+    if (!isAllDirectionsState(selectedDirection)) {
+      root
+        .querySelectorAll('[data-tour-search-filter][name="region"]')
+        .forEach(input => {
+          if (input.dataset.tourSearchRegionCountry !== selectedDirection) {
+            input.checked = false;
+          }
+        });
+    }
 
     renderActiveFilters(root, activeFilters);
     syncQueryAndApi();

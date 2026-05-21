@@ -1,10 +1,10 @@
 <section class="card-area">
-  <div class="card-area__container container" data-card-container>
-    <template class="card-area__template" data-card-template>
-      {{>sections/search-result/hotel-card}}
-    </template>
-
-    {{>sections/search-result/hotel-card}}
-    {{>sections/search-result/hotel-card}}
+  <div class="card-area__container container">
+    <div class="card-area__wrap" data-card-container>
+      <template class="card-area__template" data-card-template>
+        {{>sections/search-result/hotel-card}}
+      </template>
+    </div>
+    <button class="card-area__more btn btn_orange" data-btn-more aria-label="Показать больше">Показать больше</button>
   </div>
 </section>

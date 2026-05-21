@@ -1,6 +1,7 @@
 @use '@/scss/utils/media' as media;
 
 .hotel-offers {
+    //--offers-cols: 1.2fr 1fr 1.2fr 1.2fr 1fr 1fr 160px;
     --offers-cols: 1.2fr 1fr 1.2fr 1.2fr 1fr 1fr 160px;
     --offers-gap: 16px;
 
@@ -80,7 +81,8 @@
         span {
             display: flex;
             align-items: center;
-            text-align: left;
+            justify-content: center;
+            text-align: center;
         }
 
         //span:last-child {
@@ -98,6 +100,7 @@
         align-items: center;
         justify-content: center;
         gap: 5px;
+        margin-right: -10px;
     }
     &__head-btn-icon{
         width: 24px;
@@ -118,6 +121,7 @@
         font-size: 16px;
         color: var(--text);
         position: relative;
+        text-align: center;
 
         @include media.max-width(sd) {
             display: flex;
@@ -128,6 +132,7 @@
             min-height: auto;
             border: 1px solid #e2e2e2;
             border-radius: 8px;
+            text-align: start;
             > span, > strong {
                 width: 100%;
             }
@@ -155,10 +160,13 @@
         }
 
         & > span {
-            display: flex;
-            align-items: center;
-            text-align: left;
-            white-space: nowrap;
+            //display: flex;
+            //align-items: center;
+            //text-align: left;
+            //white-space: nowrap;
+            //&::first-letter {
+            //    text-transform: uppercase;
+            //}
         }
 
         strong {
@@ -186,7 +194,6 @@
                 text-align: left;
             }
         }
-
     }
 
     &__select {
@@ -210,6 +217,12 @@
             display: block;
             width: 100%;
             margin-top: auto;
+        }
+    }
+    &__empty{
+        text-align: center;
+        &.is-hidden {
+            display: none;
         }
     }
 }

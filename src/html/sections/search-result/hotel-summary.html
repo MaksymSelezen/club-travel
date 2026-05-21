@@ -1,7 +1,7 @@
 <div class="hotel-summary {{hotelSummaryClass}}" data-hotel-summary>
-  <template class="hotel-summary__swiper-template" data-hotel-summary-template>
+  <template class="hotel-summary__swiper-template" data-swiper-template>
     <div class="hotel-summary__swiper-slide swiper-slide" data-swiper-slide>
-      <img src="" alt="">
+      <img src="" alt="" loading="lazy">
     </div>
   </template>
 
@@ -30,7 +30,7 @@
       {{> ui/svg className="hotel-summary__image-location-icon" id="point"}}
       <span
         class="hotel-summary__image-location-item"
-        data-hotel-location="image">Болгария, Золотые Пески Золотые Пески Золотые Пески Золотые Пески Золотые Пески</span>
+        data-hotel-location="image"></span>
     </div>
   </div>
 
@@ -38,31 +38,16 @@
     <div class="hotel-summary__content-inner">
       <a href="{{links.hotel.href}}" class="hotel-summary__title-link clickable">
         <h3 class="hotel-summary__title" data-hotel-title>
-          Название Отеля здесь
         </h3>
         {{> ui/svg className="hotel-summary__title-icon" id="arrow-right"}}
       </a>
 
       <div class="hotel-summary__location">
         {{> ui/svg className="hotel-summary__location-icon" id="point"}}
-        <span data-hotel-location="content">
-          Болгария, Золотые Пески
-        </span>
+        <span data-hotel-location="content"></span>
       </div>
 
       <p class="hotel-summary__description" data-hotel-description>
-        Краткое описание отеля. Рекомендуем для семейного и молодёжного отдыха.
-        Краткое описание отеля. Рекомендуем для семейного и молодёжного отдыха.
-        Краткое описание отеля. Рекомендуем для семейного и молодёжного отдыха.
-        Краткое описание отеля. Рекомендуем для семейного и молодёжного отдыха.
-        Краткое описание отеля. Рекомендуем для семейного и молодёжного отдыха.
-        Краткое описание отеля. Рекомендуем для семейного и молодёжного отдыха.
-        Краткое описание отеля. Рекомендуем для семейного и молодёжного отдыха.
-        Краткое описание отеля. Рекомендуем для семейного и молодёжного отдыха.
-        Краткое описание отеля. Рекомендуем для семейного и молодёжного отдыха.
-        Краткое описание отеля. Рекомендуем для семейного и молодёжного отдыха.
-        Краткое описание отеля. Рекомендуем для семейного и молодёжного отдыха.
-        Краткое описание отеля. Рекомендуем для семейного и молодёжного отдыха.
       </p>
     </div>
     {{> ui/link-more
@@ -81,19 +66,19 @@
     <ul class="hotel-summary__features" aria-label="Параметры тура">
       <li class="hotel-summary__feature">
         {{> ui/svg className="hotel-summary__feature-icon" id="clock"}}
-        <span data-hotel-nights>7 ночей</span>
+        <span data-hotel-summary-nights></span>
       </li>
       <li class="hotel-summary__feature">
         {{> ui/svg className="hotel-summary__feature-icon" id="food"}}
-        <span data-hotel-meal>Завтрак</span>
+        <span data-hotel-summary-meal></span>
       </li>
       <li class="hotel-summary__feature">
         {{> ui/svg className="hotel-summary__feature-icon" id="house"}}
-        <span data-hotel-room>Standard</span>
+        <span data-hotel-summary-room></span>
       </li>
       <li class="hotel-summary__feature">
         {{> ui/svg className="hotel-summary__feature-icon" id="settings"}}
-        <span data-hotel-beach>Пляж: песок, &lt;50 м</span>
+        <span data-hotel-summary-beach></span>
       </li>
     </ul>
   </div>
@@ -101,9 +86,9 @@
   <div class="hotel-summary__deal-wrap" data-hotel-deal>
   <div class="hotel-summary__deal">
     <p class="hotel-summary__deal-price">
-      <span data-hotel-offers>2 предложения</span>
-      <span class="hotel-summary__deal-value">от <strong
-        data-hotel-price> 460€</strong>
+      <span data-hotel-offers-number>0 предложений</span>
+      <span class="hotel-summary__deal-value">от&nbsp;<strong
+        data-hotel-price>0€</strong>
         <span class="hotel-summary__price-per-person">/чел</span>
       </span>
     </p>

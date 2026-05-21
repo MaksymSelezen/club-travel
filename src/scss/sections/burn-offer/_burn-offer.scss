@@ -1,0 +1,529 @@
+$orange: #f5a623;
+$orange-dark: #d4891a;
+$orange-text: #e8980a;
+$blue-link: #4a90d9;
+$gray-head: #6b7280;
+$gray-border: #e5e7eb;
+$gray-sub-bg: #f4f6fa;
+$white: #ffffff;
+$text-main: #1f2937;
+$text-muted: #9ca3af;
+
+// ══════════════════════════════════════════════════════════════
+//  OUTER TABLE
+// ══════════════════════════════════════════════════════════════
+.tours-table {
+  margin-top: 72px;
+  overflow: hidden;
+
+  // ── Desktop grid ──
+  &__grid {
+    display: grid;
+    grid-template-columns: 155px 130px 195px 115px 155px auto;
+    align-items: center;
+  }
+
+  // ── Header ──
+  &__head {
+    padding: 13px 20px;
+    border-bottom: 1px solid $gray-border;
+
+    span {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: $gray-head;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+  }
+
+  // hide column headers on mobile
+  @media (max-width: 767px) {
+    &__head {
+      display: none;
+    }
+    &__grid {
+      display: block;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  OUTER ROW
+// ══════════════════════════════════════════════════════════════
+.tour-row {
+  border-bottom: 1px solid $gray-border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  // open state
+  &.is-open > .tour-row__main {
+    // border-top: 1px solid $gray-border;
+  }
+
+  // ── main row ──
+  &__main {
+    padding: 15px 20px;
+    transition:
+      background 0.18s,
+      border-left-color 0.18s;
+
+    &:hover {
+      //   background: #fafafa;
+    }
+
+    span {
+      font-size: 14px;
+    }
+  }
+
+  // ── panel ──
+  &__panel {
+    border-top: 1px solid $gray-border;
+    box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.04);
+    animation: slideDown 0.22s ease;
+    background: $white;
+  }
+
+  // ─ mobile: card layout ─
+  @media (max-width: 767px) {
+    &__main {
+      padding: 14px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+
+      // hide individual span labels shown via data-label
+      .col-date {
+        font-weight: 700;
+        font-size: 14px;
+        width: 100%;
+      }
+      .col-from,
+      .col-to {
+        font-size: 13px;
+        color: $gray-head;
+        &::before {
+          color: $text-muted;
+          font-size: 11px;
+          display: block;
+        }
+      }
+      .col-from::before {
+        content: 'Откуда';
+      }
+      .col-to::before {
+        content: 'Куда';
+      }
+      .col-dur {
+        font-size: 13px;
+        color: $gray-head;
+      }
+      .col-price {
+        font-size: 14px;
+      }
+      .col-action {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+    }
+    &__panel {
+      border-left-width: 3px;
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  BTN-TOGGLE  (ОТКРЫТЬ / ЗАКРЫТЬ)
+// ══════════════════════════════════════════════════════════════
+.btn-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 0;
+
+  &__label {
+    font-size: 13px;
+    font-weight: 700;
+    color: $orange-text;
+    letter-spacing: 0.04em;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.15s;
+  }
+
+  &__arrow {
+    font-size: 17px;
+    color: $orange-text;
+    line-height: 1;
+    display: inline-block;
+    transition: transform 0.22s ease;
+  }
+
+  &:hover .btn-toggle__label {
+    color: $orange-dark;
+  }
+
+  &[aria-expanded='true'] {
+    .btn-toggle__label {
+      color: $text-main;
+      text-decoration: none;
+    }
+    .btn-toggle__arrow {
+      transform: rotate(90deg);
+      color: $text-muted;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid $orange;
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  INNER TABLE
+// ══════════════════════════════════════════════════════════════
+.inner-table {
+  &__grid {
+    display: grid;
+    grid-template-columns: 190px 115px 195px 185px 130px auto;
+    align-items: center;
+  }
+
+  &__head {
+    padding: 11px 20px;
+    border-bottom: 1px solid $gray-border;
+
+    span {
+      font-size: 11px;
+      font-weight: 700;
+      color: $gray-head;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+  }
+
+  @media (max-width: 767px) {
+    &__head {
+      display: none;
+    }
+    &__grid {
+      display: block;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  INNER ROWS
+// ══════════════════════════════════════════════════════════════
+.inner-row {
+  border-bottom: 1px solid $gray-border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  // plain (non-expandable) inner row IS the grid
+  &:not(.inner-row--expandable) {
+    padding: 13px 20px;
+    transition: background 0.15s;
+
+    &:hover {
+      background: #fafafa;
+    }
+  }
+
+  // ─ mobile card ─
+  @media (max-width: 767px) {
+    &:not(.inner-row--expandable) {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+      padding: 12px 16px;
+
+      .icol-hotel {
+        width: 100%;
+      }
+      .icol-cat {
+        order: 2;
+      }
+      .icol-food {
+        order: 3;
+        font-size: 13px;
+        color: $gray-head;
+        width: 100%;
+      }
+      .icol-comp {
+        order: 4;
+        font-size: 13px;
+        color: $gray-head;
+        width: 100%;
+      }
+      .icol-price {
+        order: 5;
+        font-weight: 700;
+      }
+      .icol-action {
+        order: 6;
+        margin-left: auto;
+      }
+    }
+  }
+}
+
+.inner-row--expandable {
+  .inner-row__main {
+    padding: 13px 20px;
+    transition: background 0.15s;
+
+    &:hover {
+      background: #fafafa;
+    }
+  }
+
+  &.is-open .inner-row__main {
+    background: #fffcf5;
+  }
+
+  // ─ mobile card ─
+  @media (max-width: 767px) {
+    .inner-row__main {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+      padding: 12px 16px;
+
+      .icol-hotel {
+        width: 100%;
+      }
+      .icol-cat {
+        order: 2;
+      }
+      .icol-food {
+        order: 3;
+        font-size: 13px;
+        color: $gray-head;
+        width: 100%;
+      }
+      .icol-comp {
+        order: 4;
+        font-size: 13px;
+        color: $gray-head;
+        width: 100%;
+      }
+      .icol-price {
+        order: 5;
+        font-weight: 700;
+      }
+      .icol-action {
+        order: 6;
+        margin-left: auto;
+      }
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  SUB-ROWS  (розкриваються через btn-offers)
+// ══════════════════════════════════════════════════════════════
+.sub-rows {
+  border-top: 1px solid darken($gray-sub-bg, 5%);
+  animation: slideDown 0.18s ease;
+}
+
+.sub-row {
+  padding: 12px 20px;
+  background: $gray-sub-bg;
+  border-bottom: 1px solid #e8ebf2;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  // ─ mobile ─
+  @media (max-width: 767px) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 12px;
+    padding: 10px 16px;
+
+    .icol-hotel {
+      width: 100%;
+    }
+    .icol-cat {
+      order: 2;
+    }
+    .icol-food {
+      order: 3;
+      font-size: 13px;
+      color: $gray-head;
+      width: 100%;
+    }
+    .icol-comp {
+      order: 4;
+      font-size: 13px;
+      color: $gray-head;
+      width: 100%;
+    }
+    .icol-price {
+      order: 5;
+    }
+    .icol-action {
+      order: 6;
+      margin-left: auto;
+    }
+  }
+}
+
+.sub-arrow {
+  color: $text-muted;
+  margin-right: 4px;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  BTN-OFFERS  (ОТКРЫТЬ / СКРЫТЬ ПРЕДЛОЖЕНИЯ)
+// ══════════════════════════════════════════════════════════════
+.btn-offers {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 11px;
+  border: 1px solid $gray-border;
+  border-radius: 5px;
+  background: $white;
+  color: $text-main;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+
+  &__arrow {
+    font-size: 10px;
+    color: $gray-head;
+    display: inline-block;
+    transition: transform 0.22s ease;
+  }
+
+  &:hover {
+    border-color: $orange;
+    background: #fff8ec;
+  }
+
+  &[aria-expanded='true'] {
+    border-color: $orange;
+    background: #fff3d6;
+
+    .btn-offers__arrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid $orange;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  BTN-SELECT  (ВЫБРАТЬ)
+// ══════════════════════════════════════════════════════════════
+.btn-select {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 5px;
+  background: $orange;
+  color: $white;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.15s,
+    transform 0.1s;
+
+  &:hover {
+    background: $orange-dark;
+  }
+  &:active {
+    transform: scale(0.96);
+  }
+  &:focus-visible {
+    outline: 2px solid $orange-dark;
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 7px 12px;
+    font-size: 11px;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  SHARED HELPERS
+// ══════════════════════════════════════════════════════════════
+.stars {
+  color: $orange;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.hotel-link {
+  color: $blue-link;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+  &.dimmed {
+    color: #7eb5e8;
+    font-weight: 400;
+  }
+}
+
+.sort-icon {
+  color: $orange;
+  font-size: 11px;
+}
+
+.col-action,
+.icol-action {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 4px;
+}
+
+strong {
+  font-weight: 700;
+}

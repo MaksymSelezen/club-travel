@@ -192,17 +192,22 @@ async function initTourSearch(root) {
 
   let allRegions = [];
 
+  const isAllDirectionsState = selectedDirection => !selectedDirection;
+
+  const getRegionsForDirection = selectedDirection => {
+    if (isAllDirectionsState(selectedDirection)) {
+      return allRegions;
+    }
+
+    return allRegions.filter(
+      region => getRegionCountryValue(region) === selectedDirection,
+    );
+  };
+
   const renderRegions = selectedDirection => {
     if (!regionList) return;
 
-    if (!selectedDirection) {
-      regionList.innerHTML = '';
-      return;
-    }
-
-    const filteredRegions = allRegions.filter(
-      region => getRegionCountryValue(region) === selectedDirection,
-    );
+    const filteredRegions = getRegionsForDirection(selectedDirection);
 
     regionList.innerHTML = filteredRegions
       .map(region => createRegionItemMarkup(region, checkboxSvgMarkup))
@@ -249,6 +254,7 @@ async function initTourSearch(root) {
 
     regionInputs.forEach(input => {
       const isAllowed =
+        isAllDirectionsState(selectedDirection) ||
         input.dataset.tourSearchRegionCountry === selectedDirection;
 
       input.checked = isAllowed && savedRegions.includes(input.value);
@@ -311,13 +317,15 @@ async function initTourSearch(root) {
   const syncRegionsForDirection = selectedDirection => {
     renderRegions(selectedDirection);
 
-    root
-      .querySelectorAll('[data-tour-search-filter][name="region"]')
-      .forEach(input => {
-        if (input.dataset.tourSearchRegionCountry !== selectedDirection) {
-          input.checked = false;
-        }
-      });
+    if (!isAllDirectionsState(selectedDirection)) {
+      root
+        .querySelectorAll('[data-tour-search-filter][name="region"]')
+        .forEach(input => {
+          if (input.dataset.tourSearchRegionCountry !== selectedDirection) {
+            input.checked = false;
+          }
+        });
+    }
 
     renderActiveFilters(root, activeFilters);
     syncQueryAndApi();

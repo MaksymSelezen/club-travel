@@ -5,9 +5,13 @@
     --hotel-card-gap: 39px;
 
     width: 100%;
-    padding: 0 0 34px;
+    padding: 0 0 34px 0;
     border-bottom: 1px solid #e2e2e2;
     color: var(--text);
+    @include media.max-width(sm) {
+        border-bottom: none;
+        padding: 0;
+    }
 
     &__container {
     }
@@ -19,12 +23,9 @@
     &__offers-container {
         display: grid;
         grid-template-rows: 0fr;
-        //transition: grid-template-rows 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
+        transition: grid-template-rows 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
         overflow: hidden;
         margin-top: 0;
-        @include media.max-width(lg) {
-            transition: grid-template-rows 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
-        }
     }
     &__offers-accordion-body {
         min-height: 0;
@@ -36,24 +37,27 @@
 
     &.is-open &__offers-container {
         grid-template-rows: 1fr;
-        margin-top: 13px;
+        //margin-top: 13px;
+        background: #F5F5FA;
+        border-radius: 10px 0 10px 10px;
         //padding: 15px 4px 5px 13px;
 
         @include media.max-width(lg) {
+            border-radius: 0;
             margin-top: -1px;
-            //padding-top: 5px;
-            //padding-bottom: 8px;
+            background: none;
         }
     }
 
     &.is-open &__summary {
+        .hotel-summary__deal-wrap {
+            background: #F5F5FA;
+            border-radius: 10px 10px 0 0;
+        }
         .hotel-summary__deal {
             border-radius: 10px 10px 0 0;
             box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0);
-            background: #F5F5FA;
-            &::after{
-                opacity: 1;
-                visibility: visible;
+            @include media.max-width(lg) {
                 background: #F5F5FA;
             }
         }

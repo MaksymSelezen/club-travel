@@ -72,37 +72,6 @@ picture {
   }
 }
 
-input,
-button,
-textarea,
-select {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: inherit;
-  font-size: inherit;
-
-  &:focus {
-    outline: none;
-  }
-}
-
-input {
-  appearance: none;
-  -webkit-appearance: none;
-  border-radius: 0;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px #fdfdfd inset !important;
-  -webkit-text-fill-color: var(--text) !important;
-  border: 1px solid #ddd !important;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
 .user-services-bg {
   position: relative;
   background: url('@/assets/image/components/promo-support/bg.webp') no-repeat

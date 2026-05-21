@@ -40,9 +40,24 @@ input,
 select,
 button,
 textarea {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font: inherit;
+  //font-family: inherit;
+  //font-size: inherit;
   color: inherit;
   outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+input {
   appearance: none;
   -webkit-appearance: none;
   border-radius: 0;

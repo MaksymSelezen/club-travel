@@ -1,6 +1,6 @@
 const tourSearchForm = document.querySelector('[data-tour-search-form]');
 
-const restoreFilterFromURL = () => {
+export const restoreFilterFromURL = () => {
   const urlParams = new URLSearchParams(window.location.search);
   
 
@@ -17,10 +17,10 @@ const restoreFilterFromURL = () => {
   if (maxPriceInput && urlParams.has('priceMax')) maxPriceInput.value = urlParams.get('priceMax');
 
   const restoreCheckboxesFromURL = (paramName, inputName) => {
-    const rawValue = urlParams.get(paramName); // получим строку вида "breakfast,all-inclusive"
+    const rawValue = urlParams.get(paramName); 
     if (!rawValue) return;
 
-    const savedValues = rawValue.split(','); // превращаем обратно в массив: ['breakfast', 'all-inclusive']
+    const savedValues = rawValue.split(','); 
     const checkboxes = tourSearchForm.querySelectorAll(`input[name="${inputName}"]`);
     
     checkboxes.forEach(cb => {
@@ -28,13 +28,11 @@ const restoreFilterFromURL = () => {
     });
   };
 
-  // Вызываем помощника для каждой группы чекбоксов
   restoreCheckboxesFromURL('accommodation', 'accommodation');
   restoreCheckboxesFromURL('meal', 'meal');
   restoreCheckboxesFromURL('tourComposition', 'tourComposition');
   restoreCheckboxesFromURL('departureCity', 'departureCity');
-  restoreCheckboxesFromURL('region', 'region');
+  restoreCheckboxesFromURL('regions', 'region');
 };
 
-// Вызываем ОДИН раз при старте скрипта
 restoreFilterFromURL();

@@ -1,5 +1,5 @@
 import { formatMoney } from '@/js/utils/format-money.js';
-import { updateTextContent } from '@/js/ui/update-text-content.js';
+import { updateTextContent } from '@/js/utils/update-text-content.js';
 
 const inputsTrackers = new WeakMap();
 

@@ -1,4 +1,4 @@
-<div class="{{cardClass}} hot-card" data-card>
+<a href="{{links.hotDeals.href}}" class="{{cardClass}} hot-card card-clickable" data-card>
   <div class="hot-card__inner">
   <div class="hot-card__image-wrap">
     <div class="hot-card__overlay">
@@ -19,7 +19,6 @@
     </picture>
   </div>
 
-
   <div class="hot-card__header">
     <span class="hot-card__title" data-card-hotel>Отель</span>
     {{> ui/rating ratingClass="hot-card__rating"}}
@@ -28,14 +27,14 @@
   <div class="hot-card__footer">
     <div class="hot-card__price">
       <span class="hot-card__price_current"><span
-        class="hot-card__price-value" data-card-price>509</span>€/чел</span>
-      <span class="hot-card__price_old" data-card-old-price>779€/чел</span>
+        class="hot-card__price-value" data-card-price></span>€/чел</span>
+      <span class="hot-card__price_old" data-card-old-price></span>
     </div>
 
     {{> ui/badge
       bangeClass="hot-card__badge"
-      text="-30%"
+      text="0%"
     }}
 
   </div>
-</div>
+</a>

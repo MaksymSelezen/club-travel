@@ -1,8 +1,16 @@
-export function initSortInCard(){
-  const hotelCardList = document.querySelectorAll('[data-hotel-card]');
-  hotelCardList.forEach(card => {
+const LABEL_TRANSLATION = {
+  'date': 'Дата',
+  'period': 'Период',
+  'places': 'Мест',
+  'price': 'Стоимость',
+};
+
+
+export function initSortInCard(card){
+  // const hotelCardList = document.querySelectorAll('[data-hotel-card]');
+  // hotelCardList.forEach(card => {
     sortInCard(card);
-  });
+  // });
 }
 
 
@@ -46,21 +54,16 @@ function sortInCard(card) {
   }
 
   function sortRow(value, direction) {
+
     if (!direction) {
       direction = sortBtnWrap.getAttribute('aria-sort');
     }
     if (!value) {
-      value = valueInputEl?.value || 'period';
+      value = value || 'period';
     }
 
-    const labelTranslation = {
-      'date': 'Дата',
-      'period': 'Период',
-      'places': 'Мест',
-      'price': 'Стоимость',
-    };
-
-    const russianLabel = labelTranslation[value] || value;
+    // console.log("direction", value,direction);
+    const russianLabel = LABEL_TRANSLATION[value] || value;
 
     const rowsBodyEl = card.querySelector('[data-hotel-offer-body]');
     const rowsArr = Array.from(card.querySelectorAll('[data-hotel-offer-row]'));
@@ -70,6 +73,7 @@ function sortInCard(card) {
 
       const aNum = parseInt(aText.replace(/\D/g, ''), 10);
       const bNum = parseInt(bText.replace(/\D/g, ''), 10);
+
       switch (direction){
         case 'asc': return aNum - bNum;
         case 'desc': return bNum - aNum;

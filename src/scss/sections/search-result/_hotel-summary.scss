@@ -35,13 +35,14 @@
         }
     }
     &__swiper-slide{
-        & picture{
-            aspect-ratio: 38 / 25;
-            border-radius: 8px;
-
-            @include media.max-width(xs) {
-                aspect-ratio: 8 / 5;
-            }
+        aspect-ratio: 38 / 25;
+        border-radius: 8px;
+        @include media.max-width(xs) {
+            aspect-ratio: 8 / 5;
+        }
+        & img{
+            width: 100%;
+            height: 100%;
         }
     }
 
@@ -257,9 +258,6 @@
 
     &__rating {
         padding-top: 9px;
-        svg {
-            display: block;   //- js----------
-        }
     }
 
     &__features {
@@ -287,6 +285,7 @@
         grid-template-columns: 24px 1fr;
         align-items: center;
         gap: 12px;
+
         color: #333;
         order: 1;
         @include media.max-width(xs) {
@@ -300,6 +299,9 @@
             &:nth-child(4) {
                 order: 4;
             }
+        }
+        &::first-letter {
+            text-transform: uppercase;
         }
     }
 

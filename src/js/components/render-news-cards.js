@@ -19,7 +19,6 @@ function newsCardMapper(data) {
 export const renderNewsCards = async (className, maxCards) => {
   const rawData = await getNews(maxCards);
   const cardsData = (rawData || []).map(newsCardMapper);
-  console.log(rawData);
 
   const container = document.querySelector(className);
   if (!container) return;

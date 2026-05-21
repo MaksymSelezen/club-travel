@@ -9,6 +9,7 @@ const FILTER_GROUPS_ORDER = [
   'tourComposition',
   'departureCity',
   'region',
+  'apartmentType',
 ];
 
 const FILTER_GROUP_LABELS = {
@@ -17,6 +18,7 @@ const FILTER_GROUP_LABELS = {
   tourComposition: 'Состав тура',
   departureCity: 'Вылет из',
   region: 'Регионы',
+  apartmentType: 'Тип размещения',
 };
 
 const FILTER_LABELS = {
@@ -25,6 +27,8 @@ const FILTER_LABELS = {
     3: '3 звезды',
     4: '4 звезды',
     5: '5 звезд',
+  },
+  apartmentType: {
     apartments: 'Апартаменты',
   },
   meal: {
@@ -158,6 +162,10 @@ function normalizeAccommodationValue(value) {
   return trimmed;
 }
 
+function isValidAccommodationStar(value) {
+  return /^[1-5]$/.test(String(value || '').trim());
+}
+
 function getSavedValues(urlParams, paramName) {
   const values = (urlParams.get(paramName) || '')
     .split(',')
@@ -165,7 +173,9 @@ function getSavedValues(urlParams, paramName) {
     .filter(Boolean);
 
   if (paramName === 'accommodation') {
-    return values.map(normalizeAccommodationValue);
+    return values
+      .map(normalizeAccommodationValue)
+      .filter(isValidAccommodationStar);
   }
 
   return values;
@@ -224,6 +234,7 @@ async function initTourSearch(root) {
     }
 
     applyCheckboxes('accommodation', 'accommodation');
+    applyCheckboxes('apartmentType', 'apartmentType');
     applyCheckboxes('meal', 'meal');
     applyCheckboxes('tourComposition', 'tourComposition');
     applyCheckboxes('departureCity', 'departureCity');
@@ -268,6 +279,10 @@ async function initTourSearch(root) {
 
     if (state.meal?.length) {
       clean.set('meal', state.meal.join(','));
+    }
+
+    if (state.apartmentType?.length) {
+      clean.set('apartmentType', state.apartmentType.join(','));
     }
 
     if (state.tourComposition?.length) {

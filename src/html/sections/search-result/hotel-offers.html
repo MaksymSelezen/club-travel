@@ -19,7 +19,7 @@
         name="directionSort"
         placeholder="Возрастаю..."
         inputValue="asc"
-        options=(json '[{ "value": "asc", "label": "Возрастаю..." }, { "value": "desc", "label": "Убываю..." }]')
+        options=(json '[{ "value": "ascending", "label": "Возрастаю..." }, { "value": "descending", "label": "Убываю..." }]')
       }}
     </div>
   </div>
@@ -29,7 +29,16 @@
     data-offers-container>
 
     <div class="hotel-offers__head" role="row">
-      <span role="columnheader">Дата</span>
+      <span
+        role="columnheader" aria-sort="none" class="hotel-offers__head-btn-wrap"
+        data-sort-wrapper="date">
+        <button
+          class="hotel-offers__head-btn clickable" type="button"
+          data-column-sort="period" aria-label="Сортировать по дате">
+          Дата
+          {{> ui/svg className="hotel-offers__head-btn-icon" id="drop-down"}}
+        </button>
+      </span>
       <span
         role="columnheader" aria-sort="none" class="hotel-offers__head-btn-wrap"
         data-sort-wrapper="period">
@@ -42,8 +51,26 @@
       </span>
       <span role="columnheader">Питание</span>
       <span role="columnheader">Тип номера</span>
-      <span role="columnheader">Мест в самолёте</span>
-      <span role="columnheader">Стоимость</span>
+      <span
+        role="columnheader" aria-sort="none" class="hotel-offers__head-btn-wrap"
+        data-sort-wrapper="places">
+        <button
+          class="hotel-offers__head-btn clickable" type="button"
+          data-column-sort="places" aria-label="Сортировать по местам в самолете">
+          Мест в самолёте
+          {{> ui/svg className="hotel-offers__head-btn-icon" id="drop-down"}}
+        </button>
+      </span>
+      <span
+        role="columnheader" aria-sort="none" class="hotel-offers__head-btn-wrap"
+        data-sort-wrapper="price">
+        <button
+          class="hotel-offers__head-btn clickable" type="button"
+          data-column-sort="period" aria-label="Сортировать по стоимости">
+          Стоимость
+          {{> ui/svg className="hotel-offers__head-btn-icon" id="drop-down"}}
+        </button>
+      </span>
     </div>
 
     <div class="hotel-offers__body" data-hotel-offer-body>

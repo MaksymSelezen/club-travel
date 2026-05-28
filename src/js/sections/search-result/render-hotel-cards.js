@@ -17,8 +17,6 @@ export const renderHotelCards = async () => {
   const rawData = await findHotels(strapiQueryString);
   console.log(rawData);
 
-  // const cardsData =rawData.map(hotelDataMapper);
-  // console.log("cardsData", cardsData);
   allCardsData = rawData.map(hotelDataMapper);
   console.log("cardsData", allCardsData);
 
@@ -34,20 +32,6 @@ export const renderHotelCards = async () => {
     loadMoreBtn.onclick = renderNextChunk; // При клике вызываем функцию отрисовки следующей порции
   }
   renderNextChunk();
-
-  // const blockFragment = document.createDocumentFragment();
-  //
-  // cardsData.forEach(hotel => {
-  //   const clonCard = cardEl.cloneNode(true);
-  //
-  //   renderAboutHotel(clonCard,hotel);
-  //   renderCardSwiper(clonCard, hotel.gallery);
-  //   renderOffers(clonCard, hotel.offers);
-  //   initAccordion(clonCard);
-  //
-  //   blockFragment.append(clonCard);
-  // })
-  // container.append(blockFragment);
 }
 
 function renderNextChunk() {

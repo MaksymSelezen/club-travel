@@ -13,7 +13,7 @@ export const links = {
   authorization: { href: './auth.html' },
   registration: { href: './signup.html' },
   passwordRecovery: { href: '#!' },
-  airTickets: { href: './hotel.html' },  // change !!!
+  airTickets: { href: '#!' },
 
   // social: { href: './company.html' },
   seasonTours: { href: '#!' },

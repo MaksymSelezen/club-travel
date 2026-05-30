@@ -8,10 +8,13 @@ import '@/js/components/tour-search.js';
 
 import { initSelect } from '@/js/ui/custom-select.js';
 import { renderHotelCards } from '@/js/sections/search-result/render-hotel-cards.js';
+import { dynamicUrl } from '@/js/components/dynamic-url.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   initSelect();
 
   await renderHotelCards()
+
+  dynamicUrl();
 });
 

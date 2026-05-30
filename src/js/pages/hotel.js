@@ -15,6 +15,7 @@ import { renderSelectedTour } from '@/js/sections/hotel/render-selected-tour.js'
 
 import { renderHotCards } from '@/js/components/render-hot-cards.js';
 import { initCardsSwiper } from '@/js/components/cards-swiper.js';
+import { dynamicUrl } from '@/js/components/dynamic-url.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const hotelDataPromise = hotelDataMapper();
@@ -40,4 +41,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   requestAnimationFrame(() => {
     initCardsSwiper('.hotel-page__promo-tours', 3);
   });
+
+  dynamicUrl();
 });

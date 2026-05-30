@@ -33,7 +33,8 @@ export const renderNewsCards = async (className, maxCards) => {
   for (let i = 0; i < cardsToRender; i++) {
     const news = cardsData[i];
     const card = templateCard.cloneNode(true);
-    card.dataset.id=news.id
+    // card.dataset.id=news.id
+    card.dataset.params=`id=${news.id}`;
 
     if (container.querySelector('.swiper')) card.classList.add('swiper-slide');
 

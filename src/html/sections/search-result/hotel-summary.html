@@ -36,7 +36,7 @@
 
   <div class="hotel-summary__content">
     <div class="hotel-summary__content-inner">
-      <a href="{{links.hotel.href}}" class="hotel-summary__title-link clickable">
+      <a href="{{links.hotel.href}}" class="hotel-summary__title-link clickable" data-hotel-link>
         <h3 class="hotel-summary__title" data-hotel-title>
         </h3>
         {{> ui/svg className="hotel-summary__title-icon" id="arrow-right"}}
@@ -52,6 +52,7 @@
     </div>
     {{> ui/link-more
       linkMoreClass="hotel-summary__more"
+      linkMoreAttr="data-hotel-link"
       hrefLink=links.hotel.href
       textLinkMore="Подробнее об отеле"
     }}

@@ -40,7 +40,7 @@ export const renderHotCards = async (className, maxCards) => {
   for (let i = 0; i < cardsToRender; i++) {
     const offer = cardsData[i];
     const card = templateCard.cloneNode(true);
-    card.dataset.paramsId=offer.id;
+    card.dataset.paramsId=`id=${offer.id}`;
 
     if (container.querySelector('.swiper')) card.classList.add('swiper-slide');
 

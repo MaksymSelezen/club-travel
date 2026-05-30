@@ -21,8 +21,8 @@ export const renderHotelCards = async () => {
   console.log("cardsData", allCardsData);
 
   const container = document.querySelector('[data-card-container]');
-  const templateEl = container.querySelector('[data-card-template]');
-  const cardEl=templateEl.content.querySelector('[data-hotel-card]');
+  // const templateEl = container.querySelector('[data-card-template]');
+  // const cardEl=templateEl.content.querySelector('[data-hotel-card]');
 
   container.querySelectorAll('[data-hotel-card]').forEach(card => card.remove());
 
@@ -71,6 +71,7 @@ function renderAboutHotel(clonCard,hotel){
   const locationList  = clonCard.querySelectorAll('[data-hotel-location]');
   const offersNumberEl = clonCard.querySelector('[data-hotel-offers-number]');
   const minPriceEl = clonCard.querySelector('[data-hotel-price]');
+  const hotelLinkList = clonCard.querySelectorAll('[data-hotel-link');
 
   const nightsHeadEl = clonCard.querySelector('[data-hotel-summary-nights]');
   const mealHeadEl = clonCard.querySelector('[data-hotel-summary-meal]');
@@ -86,6 +87,10 @@ function renderAboutHotel(clonCard,hotel){
   });
   updateTextContent(offersNumberEl, hotel.offersNumber);
   updateTextContent(minPriceEl, hotel.minPrice);
+
+  hotelLinkList.forEach(link => {
+    link.dataset.params=`id=${hotel.id}`;
+  })
 
   updateTextContent(nightsHeadEl, hotel.daysDuration);
   updateTextContent(mealHeadEl, hotel.meal);
@@ -141,10 +146,10 @@ function renderOffers(clonCard,offers){
     updateTextContent(dateEl,offer.date);
     updateTextContent(nightsEl,offer.nights);
     updateTextContent(mealEl,offer.meal);
-    updateTextContent(roomEl,offer.room);
+    updateTextContent(roomEl, offer.room);
     updateTextContent(seatsEl,offer.seats);
     updateTextContent(priceEl,offer.price);
-    linkEl.dataset.id=offer.id;
+    linkEl.dataset.params=`id=${offer.id}`;
 
     offersFragment.append(cloneRow);
   });

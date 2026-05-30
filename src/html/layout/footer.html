@@ -7,8 +7,18 @@
         {{> ui/links-list
           linksListClass="footer__destinations-list"
           classNameItem="footer__destinations-link clickable"
-          link=links.directions.href
-          sortItems=(split "Египет, Бали, ОАЭ, Грузия, Таиланд, Греция, Болгария, Турция, Тенерифе, Кипр")
+          sortItems=(json '[
+            {"text": "Батуми", "href": "./search-result.html?regions=batumi"},
+            {"text": "Коста-Адехе", "href": "./search-result.html?regions=kosta-adehe"},
+            {"text": "Банско", "href": "./search-result.html?regions=bansko"},
+            {"text": "Дубай", "href": "./search-result.html?regions=dubaj"},
+            {"text": "Убуд", "href": "./search-result.html?regions=ubud"},
+            {"text": "Аланья", "href": "./search-result.html?regions=alanya"},
+            {"text": "Самуи", "href": "./search-result.html?regions=samui"},
+            {"text": "Халкидики", "href": "./search-result.html?regions=halkidiki"},
+            {"text": "Хургада", "href": "./search-result.html?regions=hurgada"},
+            {"text": "Родос", "href": "./search-result.html?regions=rodos"}
+          ]')
         }}
       </div>
       <div class="footer__contacts">

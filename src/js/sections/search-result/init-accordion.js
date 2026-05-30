@@ -1,9 +1,6 @@
 export const initAccordion=(card) =>{
-  // const hotelCardList = document.querySelectorAll('[data-hotel-card]');
-  // if (!hotelCardList) return;
   if (!card) return;
 
-  // hotelCardList.forEach(card => {
     const toggleBtnEl = card.querySelector('[data-hotel-card-toggle]');
     if (!toggleBtnEl)  return;
 
@@ -14,7 +11,6 @@ export const initAccordion=(card) =>{
       card.classList.toggle('is-open');
       updateButtonState(card,toggleBtnEl);
     });
-  // });
 };
 
 window.addEventListener('resize', () => {

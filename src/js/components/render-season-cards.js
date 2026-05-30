@@ -36,7 +36,7 @@ export const renderSeasonCards = async (season, className, maxCards) => {
     const priceEl = card.querySelector('[data-card-price]');
     const btnEl = card.querySelector('[data-card-btn]');
     if (btnEl && tour.id) {
-      btnEl.dataset.id = tour.id;
+      btnEl.dataset.params = `id=${tour.id}`;
     }
 
     if (imgEl && tour.coverImage) {

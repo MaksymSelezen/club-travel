@@ -4,7 +4,7 @@ import { convertStateToStrapiQuery } from '@/js/utils/format-query-to-strapi-req
 import { updateTextContent } from '@/js/utils/update-text-content.js';
 import { initCardsSwiper } from '@/js/components/cards-swiper.js';
 import { initAccordion } from '@/js/sections/search-result/init-accordion.js';
-import { hotelDataMapper } from '@/js/sections/search-result/hotel-data-mapper.js';
+import { hotelCardDataMapper } from '@/js/sections/search-result/hotel-card-data-mapper.js';
 import { initSortInCard } from '@/js/sections/search-result/init-sort-in-card.js';
 
 let allCardsData = [];
@@ -17,14 +17,12 @@ export const renderHotelCards = async () => {
   const rawData = await findHotels(strapiQueryString);
   console.log(rawData);
 
-  // const cardsData =rawData.map(hotelDataMapper);
-  // console.log("cardsData", cardsData);
-  allCardsData = rawData.map(hotelDataMapper);
+  allCardsData = rawData.map(hotelCardDataMapper);
   console.log("cardsData", allCardsData);
 
   const container = document.querySelector('[data-card-container]');
-  const templateEl = container.querySelector('[data-card-template]');
-  const cardEl=templateEl.content.querySelector('[data-hotel-card]');
+  // const templateEl = container.querySelector('[data-card-template]');
+  // const cardEl=templateEl.content.querySelector('[data-hotel-card]');
 
   container.querySelectorAll('[data-hotel-card]').forEach(card => card.remove());
 
@@ -34,20 +32,6 @@ export const renderHotelCards = async () => {
     loadMoreBtn.onclick = renderNextChunk; // При клике вызываем функцию отрисовки следующей порции
   }
   renderNextChunk();
-
-  // const blockFragment = document.createDocumentFragment();
-  //
-  // cardsData.forEach(hotel => {
-  //   const clonCard = cardEl.cloneNode(true);
-  //
-  //   renderAboutHotel(clonCard,hotel);
-  //   renderCardSwiper(clonCard, hotel.gallery);
-  //   renderOffers(clonCard, hotel.offers);
-  //   initAccordion(clonCard);
-  //
-  //   blockFragment.append(clonCard);
-  // })
-  // container.append(blockFragment);
 }
 
 function renderNextChunk() {
@@ -87,6 +71,7 @@ function renderAboutHotel(clonCard,hotel){
   const locationList  = clonCard.querySelectorAll('[data-hotel-location]');
   const offersNumberEl = clonCard.querySelector('[data-hotel-offers-number]');
   const minPriceEl = clonCard.querySelector('[data-hotel-price]');
+  const hotelLinkList = clonCard.querySelectorAll('[data-hotel-link');
 
   const nightsHeadEl = clonCard.querySelector('[data-hotel-summary-nights]');
   const mealHeadEl = clonCard.querySelector('[data-hotel-summary-meal]');
@@ -102,6 +87,10 @@ function renderAboutHotel(clonCard,hotel){
   });
   updateTextContent(offersNumberEl, hotel.offersNumber);
   updateTextContent(minPriceEl, hotel.minPrice);
+
+  hotelLinkList.forEach(link => {
+    link.dataset.params=`id=${hotel.id}`;
+  })
 
   updateTextContent(nightsHeadEl, hotel.daysDuration);
   updateTextContent(mealHeadEl, hotel.meal);
@@ -157,10 +146,10 @@ function renderOffers(clonCard,offers){
     updateTextContent(dateEl,offer.date);
     updateTextContent(nightsEl,offer.nights);
     updateTextContent(mealEl,offer.meal);
-    updateTextContent(roomEl,offer.room);
+    updateTextContent(roomEl, offer.room);
     updateTextContent(seatsEl,offer.seats);
     updateTextContent(priceEl,offer.price);
-    linkEl.dataset.id=offer.id;
+    linkEl.dataset.params=`id=${offer.id}`;
 
     offersFragment.append(cloneRow);
   });

@@ -30,7 +30,6 @@ function mapBadge(hotel = {}) {
 
 function mapBookingCard(hotel = {}, activeOffer = null) {
   const city = hotel.departureCity;
-  const lineup = hotel.tourLineup || "";
 
   if (activeOffer) {
     const period = [activeOffer.date, activeOffer.nights].filter(Boolean).join(' / ');
@@ -42,11 +41,12 @@ function mapBookingCard(hotel = {}, activeOffer = null) {
       period: period || "",
       departureCity: city ? `Вылет: ${city}` : "",
       typeOfMeal: activeOffer.meal || "—",
-      tourLineup: lineup,
+      tourLineup: activeOffer.room || "—", // Выведет тип номера из оффера вместо "Туристический пакет"
       priceForPerson: formattedPrice,
     };
   }
 
+  const lineup = hotel.tourLineup || "—";
   const rawDate = hotel.dateOfDeparture;
   let dateText = "";
   if (rawDate) {
@@ -89,13 +89,13 @@ export async function hotelDataMapper() {
         return currentPrice < minPrice ? current : min;
       }, hotel.offers[0]);
 
-      console.log(`%c[MAPPER] Автоматически выбран минимальный тур с ценой: ${activeOffer.price}`, 'color: #ff9800; font-weight: bold;');
+      // console.log(`%c[MAPPER] Совпадений по ID нет. Автоматически выбран минимальный оффер с ценой: ${activeOffer.price}`, 'color: #ff9800; font-weight: bold;');
     }
   }
 
-  console.group(`%c[MAPPER OUT] Данные для рендеринга страницы отеля`, 'color: #4caf50; font-weight: bold;');
-  console.log("Итоговый bookingCard:", mapBookingCard(hotel, activeOffer));
-  console.groupEnd();
+  // console.group(`%c[MAPPER OUT] Данные для рендеринга страницы отеля`, 'color: #4caf50; font-weight: bold;');
+  // console.log("Итоговый bookingCard:", mapBookingCard(hotel, activeOffer));
+  // console.groupEnd();
 
   return {
     gallery: mapGallery(hotel.gallery),

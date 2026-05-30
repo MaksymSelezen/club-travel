@@ -1,7 +1,17 @@
 @use '@/scss/utils/media' as media;
 
 .about-hotel {
-
+    @include media.max-width(lg) {
+        margin-top: -40px;
+        position: relative;
+        z-index: 5;
+    }
+    @include media.max-width(sm) {
+        margin-top: 20px;
+    }
+    @include media.max-width(xs) {
+        margin-top: 0;
+    }
     &__inner {
         display: grid;
         grid-template-columns:minmax(0, 1fr) 370px;

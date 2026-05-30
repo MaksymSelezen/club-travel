@@ -4,7 +4,7 @@ import { convertStateToStrapiQuery } from '@/js/utils/format-query-to-strapi-req
 import { updateTextContent } from '@/js/utils/update-text-content.js';
 import { initCardsSwiper } from '@/js/components/cards-swiper.js';
 import { initAccordion } from '@/js/sections/search-result/init-accordion.js';
-import { hotelDataMapper } from '@/js/sections/search-result/hotel-data-mapper.js';
+import { hotelCardDataMapper } from '@/js/sections/search-result/hotel-card-data-mapper.js';
 import { initSortInCard } from '@/js/sections/search-result/init-sort-in-card.js';
 
 let allCardsData = [];
@@ -17,7 +17,7 @@ export const renderHotelCards = async () => {
   const rawData = await findHotels(strapiQueryString);
   console.log(rawData);
 
-  allCardsData = rawData.map(hotelDataMapper);
+  allCardsData = rawData.map(hotelCardDataMapper);
   console.log("cardsData", allCardsData);
 
   const container = document.querySelector('[data-card-container]');

@@ -29,21 +29,20 @@ function getNightsWord(count) {
   return 'ночей';
 }
 
-function formatBeachInfo(offers) {
-  if (!Array.isArray(offers) || offers.length === 0) return "Пляж: песок, —";
+function formatBeachInfo(offers, dataBeach) {
+  if (dataBeach) return dataBeach;
 
+  if (!Array.isArray(offers) || offers.length === 0) return "Пляж: песок, —";
   const distances = offers
     .map(offer => Number(offer.beachDistance))
     .filter(dist => !isNaN(dist) && dist > 0);
 
   if (distances.length === 0) return "Пляж: песок, —";
-
   const minDistance = Math.min(...distances);
-
   return `Пляж: песок, <${minDistance} м`;
 }
 
-export function hotelDataMapper(data) {
+export function hotelCardDataMapper(data) {
   if (!data) return {};
 
   const location = [data.country?.name, data.region?.name].filter(Boolean).join(', ');
@@ -59,38 +58,58 @@ export function hotelDataMapper(data) {
   const rawOffers = data.offers ?? [];
 
   const formattedOffers = rawOffers.map(offer => {
-    const nights = Number(offer.duration) || 0;
-    const rawRoom = offer.type;
+    const nights = Number(offer.duration || offer.daysDuration || offer.nights) || 0;
+    const rawRoom = offer.type || offer.room;
 
     return {
       id: offer.id || "",
-      date: formatIsoDateToRu(offer.date),
+      date: offer.date ? (offer.date.includes('-') ? formatIsoDateToRu(offer.date) : offer.date) : "",
       nights: nights > 0 ? `${nights} ${getNightsWord(nights)}` : "—",
-      meal: formatMealType(offer.mealType),
+      meal: formatMealType(offer.mealType || offer.meal),
       room: rawRoom ? rawRoom.charAt(0).toUpperCase() + rawRoom.slice(1) : "—",
-      seats: offer.seatsOnThePlane ? String(offer.seatsOnThePlane) : "10+",
-      price: offer.price ? `${formatMoney(offer.price)}€` : "0€",
-      rawPrice: Number(offer.price) || 0
+      seats: offer.seatsOnThePlane ? String(offer.seatsOnThePlane) : (offer.seats || "10+"),
+      price: offer.price ? (String(offer.price).includes('€') ? offer.price : `${formatMoney(offer.price)}€`) : "0€",
+      rawPrice: Number(String(offer.price).replace(/[^\d]/g, '')) || 0
     };
   });
 
-  const prices = formattedOffers.map(o => o.rawPrice).filter(p => p > 0);
-  const minPriceValue = prices.length > 0 ? Math.min(...prices) : 0;
+  let cheapestOffer = null;
+  if (formattedOffers.length > 0) {
+    cheapestOffer = formattedOffers.reduce((min, current) => {
+      return (current.rawPrice < min.rawPrice) ? current : min;
+    }, formattedOffers[0]);
+  }
+
+  const minPriceText = cheapestOffer
+    ? cheapestOffer.price
+    : (data.priceForPerson ? `${formatMoney(data.priceForPerson)}€` : "0€");
+
+  const finalDaysDuration = cheapestOffer
+    ? cheapestOffer.nights
+    : (Number(data.daysDuration) > 0 ? `${data.daysDuration} ${getNightsWord(Number(data.daysDuration))}` : "—");
+
+  const finalMeal = cheapestOffer
+    ? cheapestOffer.meal
+    : (data.typeOfMeal ? formatMealType(data.typeOfMeal) : "—");
+
+  const finalLineup = cheapestOffer
+    ? cheapestOffer.room
+    : (data.tourLineup || "—");
 
   return {
     id: data.id || "",
     hotelName: data.hotelName || "",
     stars: Number(data.stars) || 0,
     gallery: formattedGallery,
-    desc: data.hotelDescription[0]?.description || "",
-    location: location,
-    lineup: data.tourLineup || "",
-    meal: data.typeOfMeal || "",
-    daysDuration: Number(data.daysDuration) > 0 ? `${data.daysDuration} ${getNightsWord(Number(data.daysDuration))}` : "—",
-    beach: formatBeachInfo(rawOffers),
+    desc: data.hotelDescription?.[0]?.description || data.desc || "",
+    location: data.location || location,
+    lineup: finalLineup,
+    meal: finalMeal,
+    daysDuration: finalDaysDuration,
+    beach: formatBeachInfo(rawOffers, data.beach),
 
     offersNumber: rawOffers.length > 0 ? `${rawOffers.length} ${getOfferWord(rawOffers.length)}` : "0 предложений",
-    minPrice: minPriceValue > 0 ? `${formatMoney(minPriceValue)}€` : "0€",
+    minPrice: minPriceText,
     offers: formattedOffers,
   };
 }

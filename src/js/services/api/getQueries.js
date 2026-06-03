@@ -1,5 +1,7 @@
 const tourSearchForm = document.querySelector('[data-tour-search-form]');
 
+let currentFilterQueryString = '';
+
 export const getFilterState = () => {
   if (!tourSearchForm) {
     return {
@@ -15,9 +17,15 @@ export const getFilterState = () => {
     };
   }
 
-  const checkedDirection = tourSearchForm.querySelector('select[name="direction"]');
-  const selectedDuration = tourSearchForm.querySelector('select[name="duration"]');
-  const selectedDate = tourSearchForm.querySelector('input[name="departureDate"]');
+  const checkedDirection = tourSearchForm.querySelector(
+    'select[name="direction"]',
+  );
+  const selectedDuration = tourSearchForm.querySelector(
+    'select[name="duration"]',
+  );
+  const selectedDate = tourSearchForm.querySelector(
+    'input[name="departureDate"]',
+  );
   const checkedHotelAccomondation = tourSearchForm.querySelectorAll(
     'input[name="accommodation"]:checked',
   );
@@ -33,7 +41,7 @@ export const getFilterState = () => {
   const checkedRegion = tourSearchForm.querySelectorAll(
     'input[name="region"]:checked',
   );
-  
+
   return {
     direction: checkedDirection?.value || '',
     duration: selectedDuration?.value || '',
@@ -60,14 +68,12 @@ export const getFilterState = () => {
   };
 };
 
-const getParams = () => {
-  const currentState = getFilterState();
+export const getFilterParams = (currentState = getFilterState()) => {
   const urlParams = new URLSearchParams();
 
   if (currentState.direction)
-  urlParams.set('direction', currentState.direction);
-  if(currentState.duration) 
-    urlParams.set('duration', currentState.duration);
+    urlParams.set('direction', currentState.direction);
+  if (currentState.duration) urlParams.set('duration', currentState.duration);
   urlParams.set('priceMin', currentState.price.min);
   urlParams.set('priceMax', currentState.price.max);
 
@@ -84,18 +90,32 @@ const getParams = () => {
   return urlParams;
 };
 
-tourSearchForm.addEventListener('input', e => {
-  e.preventDefault();
- 
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
-    const urlParams = getParams();
-    const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
-    window.history.pushState({}, '', newUrl);
-  }
-});
+export const getFilterQueryString = (state = getFilterState()) =>
+  getFilterParams(state).toString();
 
-tourSearchForm.addEventListener('submit', e => {
+export const syncFilterQueryString = (state = getFilterState()) => {
+  currentFilterQueryString = getFilterQueryString(state);
+
+  return currentFilterQueryString;
+};
+
+export const getCurrentFilterQueryString = () => currentFilterQueryString;
+
+const updateFilterQueryString = e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+    syncFilterQueryString();
+  }
+};
+
+tourSearchForm?.addEventListener('input', updateFilterQueryString);
+tourSearchForm?.addEventListener('change', updateFilterQueryString);
+
+tourSearchForm?.addEventListener('submit', e => {
   e.preventDefault();
-  const urlParams = getParams();
-  window.location.href = `/club-travel/search-result.html?${urlParams.toString()}`;
+  const queryString = syncFilterQueryString();
+  const searchUrl = queryString
+    ? `/club-travel/search-result.html?${queryString}`
+    : '/club-travel/search-result.html';
+
+  window.location.href = searchUrl;
 });

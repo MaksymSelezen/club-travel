@@ -1,5 +1,8 @@
 import { getCountries, getRegions } from '../services/api/getDirection.js';
-import { getFilterState } from '../services/api/getQueries.js';
+import {
+  getFilterState,
+  syncFilterQueryString,
+} from '../services/api/getQueries.js';
 
 const FILTER_GROUPS_ORDER = [
   'accommodation',
@@ -187,7 +190,11 @@ async function initTourSearch(root) {
   const directionField = root.querySelector('[name="direction"]');
   const regionList = root.querySelector('[data-tour-search-region-list]');
   const form = root.querySelector('[data-tour-search-form]');
-  const urlParams = new URLSearchParams(window.location.search);
+  const shouldRestoreFromUrl =
+    document.body.classList.contains('search-result');
+  const urlParams = shouldRestoreFromUrl
+    ? new URLSearchParams(window.location.search)
+    : new URLSearchParams();
   const checkboxSvgMarkup = getCheckboxSvgMarkup(root);
 
   let allRegions = [];
@@ -275,11 +282,12 @@ async function initTourSearch(root) {
 
   const emitFilterChange = () => {
     const state = getFilterState();
+    const queryString = syncFilterQueryString(state);
 
     root.dispatchEvent(
       new CustomEvent('tour-search:change', {
         bubbles: true,
-        detail: { state, form, root },
+        detail: { state, queryString, form, root },
       }),
     );
   };
@@ -390,7 +398,12 @@ async function initTourSearch(root) {
   root.dispatchEvent(
     new CustomEvent('tour-search:ready', {
       bubbles: true,
-      detail: { state: getFilterState(), form, root },
+      detail: {
+        state: getFilterState(),
+        queryString: syncFilterQueryString(),
+        form,
+        root,
+      },
     }),
   );
 }

@@ -13,6 +13,7 @@ const CHUNK_SIZE = 5;
 
 export const renderHotelCards = async () => {
   const state =  getFilterState();
+  console.log("state", state);
   const strapiQueryString = convertStateToStrapiQuery(state);
   const rawData = await findHotels(strapiQueryString);
   console.log(rawData);

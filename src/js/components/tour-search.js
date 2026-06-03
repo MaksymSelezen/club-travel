@@ -1,8 +1,5 @@
 import { getCountries, getRegions } from '../services/api/getDirection.js';
 import { getFilterState } from '../services/api/getQueries.js';
-import { findHotels } from '../services/api/findHotels.js';
-import { convertStateToStrapiQuery } from '../utils/format-query-to-strapi-req.js';
-
 
 const FILTER_GROUPS_ORDER = [
   'accommodation',
@@ -89,7 +86,9 @@ const ACTIVE_FILTERS_LABEL =
 const CHECKBOX_SVG_FALLBACK =
   '<svg class="tour-search__checkbox_svg"><use href="#check-circle"></use></svg>';
 
-document.querySelectorAll('[data-tour-search]').forEach(initTourSearch);
+export const tourSearchReady = Promise.all(
+  [...document.querySelectorAll('[data-tour-search]')].map(initTourSearch),
+);
 
 function getCountryValue(country) {
   return (
@@ -230,6 +229,18 @@ async function initTourSearch(root) {
 
     const minPriceInput = form.querySelector('[data-tour-search-price-min]');
     const maxPriceInput = form.querySelector('[data-tour-search-price-max]');
+    const durationInput = form.querySelector('select[name="duration"]');
+
+    if (durationInput && urlParams.has('duration')) {
+      const requestedDuration = urlParams.get('duration') || '';
+      const hasDurationOption = [...durationInput.options].some(
+        option => option.value === requestedDuration,
+      );
+
+      if (hasDurationOption) {
+        durationInput.value = requestedDuration;
+      }
+    }
 
     if (minPriceInput && urlParams.has('priceMin')) {
       minPriceInput.value = urlParams.get('priceMin') || minPriceInput.value;
@@ -262,64 +273,15 @@ async function initTourSearch(root) {
     });
   };
 
-  const syncQueryAndApi = async () => {
-    // if (!form) return;
-
+  const emitFilterChange = () => {
     const state = getFilterState();
-    // const clean = new URLSearchParams();
 
-    // if (state.direction) {
-    //   clean.set('direction', state.direction);
-    // }
-
-    //  if (state.duration) {
-    //   clean.set('duration', state.duration);
-    // }
-
-    // if (state.date) {
-    //   clean.set('date', state.date);
-    // }
-
-    // if (state.price?.min !== undefined) {
-    //   clean.set('priceMin', String(state.price.min));
-    // }
-
-    // if (state.price?.max !== undefined) {
-    //   clean.set('priceMax', String(state.price.max));
-    // }
-
-    // if (state.accomondation?.length) {
-    //   clean.set('accommodation', state.accomondation.join(','));
-    // }
-
-    if (state.meal?.length) {
-      clean.set('meal', state.meal.join(','));
-    }
-
-    if (state.apartmentType?.length) {
-      clean.set('apartmentType', state.apartmentType.join(','));
-    }
-
-    // if (state.tourComposition?.length) {
-    //   clean.set('tourComposition', state.tourComposition.join(','));
-    // }
-
-    // if (state.departureCity?.length) {
-    //   clean.set('departureCity', state.departureCity.join(','));
-    // }
-
-    // if (state.regions?.length) {
-    //   clean.set('regions', state.regions.join(','));
-    // }
-
-    // const nextUrl = clean.toString()
-    //   ? `${window.location.pathname}?${clean.toString()}`
-    //   : window.location.pathname;
-
-    // window.history.replaceState({}, '', nextUrl);
-    const strapiQuery = convertStateToStrapiQuery(state);
-    const hotels = await findHotels(strapiQuery);
-   
+    root.dispatchEvent(
+      new CustomEvent('tour-search:change', {
+        bubbles: true,
+        detail: { state, form, root },
+      }),
+    );
   };
 
   const syncRegionsForDirection = selectedDirection => {
@@ -336,7 +298,7 @@ async function initTourSearch(root) {
     }
 
     renderActiveFilters(root, activeFilters);
-    syncQueryAndApi();
+    emitFilterChange();
   };
 
   if (directionField) {
@@ -399,8 +361,10 @@ async function initTourSearch(root) {
         '[data-tour-search-filter], [data-tour-search-field], [data-tour-search-price-min], [data-tour-search-price-max]',
       )
     ) {
+      if (event.target === directionField) return;
+
       renderActiveFilters(root, activeFilters);
-      syncQueryAndApi();
+      emitFilterChange();
     }
   });
 
@@ -417,14 +381,18 @@ async function initTourSearch(root) {
     input.checked = false;
 
     renderActiveFilters(root, activeFilters);
-    syncQueryAndApi();
+    emitFilterChange();
   });
 
   initDatePicker(root);
   initPriceRange(priceBlock);
   renderActiveFilters(root, activeFilters);
-  syncQueryAndApi();
-
+  root.dispatchEvent(
+    new CustomEvent('tour-search:ready', {
+      bubbles: true,
+      detail: { state: getFilterState(), form, root },
+    }),
+  );
 }
 
 function renderActiveFilters(root, container) {
@@ -698,4 +666,3 @@ function formatIsoDate(date) {
 function formatInputDate(date) {
   return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 }
-

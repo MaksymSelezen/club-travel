@@ -8,6 +8,7 @@ import { renderNewsCards } from '@/js/components/render-news-cards.js';
 import { renderHotCards } from '@/js/components/render-hot-cards.js';
 import { renderSeasonCards } from '@/js/components/render-season-cards.js';
 import { initCardsSwiper } from '@/js/components/cards-swiper.js';
+import { dynamicUrl } from '@/js/components/dynamic-url.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await Promise.all([
@@ -24,4 +25,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       initCardsSwiper('.promo-summer-tours', 4),
     ),
   ]);
+
+  dynamicUrl();
 });
+
+
+
+

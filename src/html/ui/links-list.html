@@ -1,5 +1,9 @@
 <div class="{{linksListClass}}" {{{dataAtr}}}>
   {{#each sortItems}}
-    <a href="{{../link}}" class="{{../classNameItem}}">{{this}}</a>
+    {{#if this.href}}
+      <a href="{{this.href}}" class="{{../classNameItem}}">{{this.text}}</a>
+    {{else}}
+      <a href="{{../link}}" class="{{../classNameItem}}">{{this}}</a>
+    {{/if}}
   {{/each}}
 </div>

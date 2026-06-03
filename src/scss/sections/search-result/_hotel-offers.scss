@@ -4,9 +4,6 @@
     --offers-cols: 1.2fr 1fr 1.2fr 1.2fr 1fr 1fr 160px;
     --offers-gap: 16px;
 
-    //background: var(--white);
-    //background: #F5F5FA;
-    //border-radius: 10px 0 10px 10px;
     padding: 15px 4px 5px 13px;
 
     @include media.max-width(lg) {
@@ -16,9 +13,6 @@
         border-radius: 0 0 10px 10px;
         padding: 5px 14px 15px 14px;
         margin-top: -4px;
-    }
-    @include media.max-width(sd) {
-        //padding: 0 14px 15px 14px;
     }
 
     &__sort {
@@ -80,28 +74,48 @@
         span {
             display: flex;
             align-items: center;
-            text-align: left;
+            justify-content: center;
+            text-align: center;
         }
 
-        //span:last-child {
-        //    justify-content: center;
-        //}
 
         @include media.max-width(sd) {
             display: none;
         }
     }
 
+    &__head-btn-wrap{
+        &[aria-sort="ascending"] {
+            .hotel-offers__head-btn-icon {
+                transform: rotate(180deg);
+            }
+        }
+
+        &[aria-sort="descending"] {
+            .hotel-offers__head-btn-icon {
+                transform: rotate(0deg);
+            }
+        }
+
+        &[aria-sort="none"] {
+            .hotel-offers__head-btn-icon {
+                opacity: 0.4;
+                transform: rotate(0deg);
+            }
+        }
+    }
     &__head-btn{
         fill: var(--primary);
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 5px;
+        margin-right: -10px;
     }
     &__head-btn-icon{
         width: 24px;
         aspect-ratio: 1;
+        display: block;
     }
 
     &__body{
@@ -118,6 +132,7 @@
         font-size: 16px;
         color: var(--text);
         position: relative;
+        text-align: center;
 
         @include media.max-width(sd) {
             display: flex;
@@ -128,6 +143,7 @@
             min-height: auto;
             border: 1px solid #e2e2e2;
             border-radius: 8px;
+            text-align: start;
             > span, > strong {
                 width: 100%;
             }
@@ -154,20 +170,12 @@
             }
         }
 
-        & > span {
-            display: flex;
-            align-items: center;
-            text-align: left;
-            white-space: nowrap;
-        }
-
         strong {
             display: inline;
             font-weight: 700;
         }
     }
 
-    //&__row strong[data-label],
     &__row span[data-label] {
 
         @include media.max-width(sd) {
@@ -186,7 +194,6 @@
                 text-align: left;
             }
         }
-
     }
 
     &__select {
@@ -210,6 +217,12 @@
             display: block;
             width: 100%;
             margin-top: auto;
+        }
+    }
+    &__empty{
+        text-align: center;
+        &.is-hidden {
+            display: none;
         }
     }
 }

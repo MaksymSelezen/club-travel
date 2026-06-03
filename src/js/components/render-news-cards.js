@@ -19,7 +19,6 @@ function newsCardMapper(data) {
 export const renderNewsCards = async (className, maxCards) => {
   const rawData = await getNews(maxCards);
   const cardsData = (rawData || []).map(newsCardMapper);
-  console.log(rawData);
 
   const container = document.querySelector(className);
   if (!container) return;
@@ -34,7 +33,8 @@ export const renderNewsCards = async (className, maxCards) => {
   for (let i = 0; i < cardsToRender; i++) {
     const news = cardsData[i];
     const card = templateCard.cloneNode(true);
-    card.dataset.id=news.id
+    // card.dataset.id=news.id
+    card.dataset.params=`id=${news.id}`;
 
     if (container.querySelector('.swiper')) card.classList.add('swiper-slide');
 

@@ -1,8 +1,19 @@
+@use '@/scss/utils/media' as media;
 .card-area{
-    &__container{
+    &__wrap{
     display: grid;
     grid-template-columns: 1fr;
     gap: 40px;
     margin-top: 35px;
+        @include media.max-width(sm) {
+            margin-top: 53px;
+        }
+    }
+    &__more{
+        max-width: 400px;
+        margin: 40px auto 0 auto;
+        &.is-hidden{
+            display: none;
+        }
     }
 }

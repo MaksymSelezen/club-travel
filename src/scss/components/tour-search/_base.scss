@@ -1,0 +1,59 @@
+@use '@/scss/utils/media' as media;
+
+.tour-search {
+  width: 1170px;
+  min-height: 195px;
+  margin: -86px auto 0;
+  position: relative;
+  z-index: 5;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+
+  @include media.max-width(lg) {
+    width: calc(100% - 194px);
+    min-height: auto;
+    margin-top: -70px;
+  }
+
+  @include media.max-width(sm) {
+    width: 100%;
+    margin-top: 0;
+    border-radius: 0;
+  }
+
+  &_expanded {
+    min-height: 577px;
+
+    @include media.max-width(lg) {
+      min-height: auto;
+    }
+
+    .tour-search__toggle {
+      display: none;
+    }
+
+    .tour-search__advanced {
+      display: block;
+    }
+  }
+
+  &__title {
+    padding: 20px 32px 11px;
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+
+    @include media.max-width(lg) {
+      padding: 19px 32px 16px;
+    }
+
+    @include media.max-width(sm) {
+      padding: 12px;
+      text-align: center;
+    }
+  }
+}

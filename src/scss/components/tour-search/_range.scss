@@ -1,0 +1,170 @@
+@use '@/scss/utils/media' as media;
+
+.tour-search {
+  &__price,
+  &__price_values,
+  &__price_limits,
+  &__range {
+    width: 240px;
+  }
+
+  @include media.max-width(lg) {
+    &__price,
+    &__price_values,
+    &__price_limits,
+    &__range {
+      width: 210px;
+    }
+  }
+
+  @include media.max-width(xxs) {
+    &__price,
+    &__price_values,
+    &__price_limits,
+    &__range {
+      width: 190px;
+    }
+
+    &__stars {
+      gap: 3px;
+    }
+  }
+
+  &__price {
+    --price-min-position: 7.142%;
+    --price-max-position: 64.285%;
+  }
+
+  &__price_values,
+  &__price_limits {
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  &__price_values {
+    position: relative;
+    height: 16px;
+    margin-bottom: 7px;
+    color: var(--text);
+  }
+
+  &__price_limits {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 7px;
+    color: #c0c0c0;
+  }
+
+  &__price_value {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  &__price_value:first-child {
+    z-index: 1;
+    left: clamp(16px, var(--price-min-position), calc(100% - 16px));
+  }
+
+  &__price_value:last-child {
+    z-index: 2;
+    left: clamp(16px, var(--price-max-position), calc(100% - 16px));
+    padding: 0 4px;
+    border-radius: 3px;
+    background: #fff;
+  }
+
+  &__range {
+    position: relative;
+    height: 24px;
+  }
+
+  &__range::before,
+  &__range::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__range::before {
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #cfcfcf;
+  }
+
+  &__range::after {
+    left: var(--price-min-position);
+    width: calc(var(--price-max-position) - var(--price-min-position));
+    height: 3px;
+    background: var(--primary);
+  }
+
+  &__range_input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 24px;
+    margin: 0;
+    background: transparent;
+    pointer-events: none;
+    appearance: none;
+  }
+
+  &__range_input[data-tour-search-price-min] {
+    z-index: 3;
+  }
+
+  &__range_input[data-tour-search-price-max] {
+    z-index: 4;
+  }
+
+  &__range_input::-webkit-slider-runnable-track {
+    height: 24px;
+    background: transparent;
+  }
+
+  &__range_input::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    pointer-events: auto;
+    appearance: none;
+  }
+
+  &__range_input::-moz-range-track {
+    height: 24px;
+    background: transparent;
+  }
+
+  &__range_input::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  @include media.max-width(xxs) {
+    &__range_input::-webkit-slider-thumb {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+    }
+
+    &__range_input::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}

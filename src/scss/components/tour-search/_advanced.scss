@@ -1,0 +1,162 @@
+@use '@/scss/utils/media' as media;
+
+.tour-search {
+  &__advanced {
+    display: none;
+  }
+
+  &__advanced_header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 32px 0;
+  }
+
+  &__advanced_title {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex: 1 1 auto;
+    font-size: 18px;
+  }
+
+  &__advanced_title::after {
+    content: '';
+    flex: 1 1 auto;
+    height: 1px;
+    background: #e5e5e5;
+  }
+
+  &__advanced_close {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  &__advanced_close-icon {
+    width: 20px;
+    height: 20px;
+    fill: var(--primary);
+    transition: fill 180ms ease;
+  }
+
+  &__advanced_close:focus-visible &__advanced_close-icon {
+    fill: #13882d;
+  }
+
+  @include media.min-width(lg) {
+    @media (hover: hover) and (pointer: fine) {
+      &__advanced_close:hover &__advanced_close-icon {
+        fill: #13882d;
+      }
+    }
+  }
+
+  &__advanced_content {
+    display: grid;
+    grid-template-columns: 240px 273px 1fr;
+    grid-template-areas:
+      'accommodation composition region'
+      'meal departure region'
+      'meal price region';
+    column-gap: 48px;
+    row-gap: 30px;
+    padding: 30px 32px 0;
+  }
+
+  @include media.max-width(lg) {
+    &__advanced_content {
+      grid-template-columns: 1fr 1fr 1fr;
+      column-gap: 32px;
+    }
+
+    &__group_departure,
+    &__group_price {
+      transform: none;
+    }
+
+    &__group_region .tour-search__list {
+      display: none;
+    }
+
+    &__group_region::after {
+      content: 'Выберите сначала направление';
+      display: block;
+    }
+  }
+
+  @include media.max-width(sm) {
+    &__advanced_header {
+      gap: 12px;
+      padding: 14px 24px 0;
+    }
+
+    &__advanced_title {
+      gap: 12px;
+      font-size: 16px;
+    }
+
+    &__advanced_content {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'accommodation composition'
+        'meal departure'
+        'meal price'
+        'region region';
+      column-gap: 28px;
+      padding: 28px 24px 0;
+    }
+
+    &__group_region {
+      padding-top: 8px;
+    }
+  }
+
+  @include media.max-width(xxs) {
+    &__advanced_title {
+      font-size: 14px;
+    }
+
+    &__advanced_title::after {
+      display: none;
+    }
+
+    &__advanced_close,
+    &__option {
+      font-size: 12px;
+    }
+
+    &__advanced_close-icon,
+    &__checkbox_icon,
+    &__checkbox_svg,
+    &__option_icon,
+    &__star {
+      width: 14px;
+      height: 14px;
+    }
+
+    &__advanced_content {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'accommodation'
+        'meal'
+        'composition'
+        'departure'
+        'price'
+        'region';
+      row-gap: 28px;
+      padding: 26px 24px 0;
+    }
+
+    &__group_region {
+      padding-top: 0;
+    }
+
+    &__group_title {
+      margin-bottom: 14px;
+      font-size: 13px;
+    }
+  }
+}

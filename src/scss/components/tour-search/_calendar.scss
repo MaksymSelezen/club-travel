@@ -1,0 +1,130 @@
+@use '@/scss/utils/media' as media;
+
+.tour-search {
+  &__calendar {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    z-index: 30;
+    width: 260px;
+    padding: 14px 12px 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
+    transform: translate(-50%, 8px);
+
+    &[hidden] {
+      display: none;
+    }
+
+    @include media.max-width(lg) {
+      left: 0;
+      width: 100%;
+      max-width: 320px;
+      transform: translateY(8px);
+    }
+
+    @include media.max-width(xxs) {
+      max-width: 100%;
+    }
+  }
+
+  &__calendar_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  &__calendar_month {
+    color: var(--text);
+    font-size: 14px;
+    text-align: center;
+  }
+
+  &__calendar_nav {
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    color: #888;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 180ms ease;
+
+    &:focus-visible {
+      color: var(--primary);
+    }
+
+    @include media.min-width(lg) {
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          color: var(--primary);
+        }
+      }
+    }
+  }
+
+  &__calendar_weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 8px;
+  }
+
+  &__calendar_weekday {
+    color: #666;
+    font-size: 11px;
+    line-height: 1;
+    text-align: center;
+  }
+
+  &__calendar_grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+
+  &__calendar_day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 32px;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text);
+    font-size: 12px;
+    cursor: pointer;
+    transition:
+      background 180ms ease,
+      color 180ms ease;
+
+    &:focus-visible {
+      background: linear-gradient(180deg, #fccb04 0%, #ee901b 100%);
+      color: #fff;
+    }
+
+    @include media.min-width(lg) {
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          background: linear-gradient(180deg, #fccb04 0%, #ee901b 100%);
+          color: #fff;
+        }
+      }
+    }
+
+    &_selected {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    &_today {
+      box-shadow: inset 0 0 0 1px var(--primary);
+    }
+
+    &_empty {
+      pointer-events: none;
+    }
+  }
+}

@@ -1,0 +1,153 @@
+@use '@/scss/utils/media' as media;
+
+.tour-search {
+  &__group_accommodation {
+    grid-area: accommodation;
+  }
+
+  &__group_meal {
+    grid-area: meal;
+  }
+
+  &__group_composition {
+    grid-area: composition;
+  }
+
+  &__group_departure {
+    grid-area: departure;
+    transform: translateY(-90px);
+  }
+
+  &__group_price {
+    grid-area: price;
+    transform: translateY(-90px);
+  }
+
+  &__group_region {
+    grid-area: region;
+    min-width: 0;
+  }
+
+  &__group_title {
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  &__group_accommodation .tour-search__option {
+    gap: 0;
+  }
+
+  &__group_accommodation
+    .tour-search__checkbox:checked
+    ~ .tour-search__stars
+    .tour-search__star {
+    fill: #f5c213;
+  }
+
+  @include media.min-width(lg) {
+    @media (hover: hover) and (pointer: fine) {
+      &__group_accommodation .tour-search__option:hover .tour-search__star {
+        fill: #f5c213;
+      }
+    }
+  }
+
+  &__group_accommodation .tour-search__checkbox_icon {
+    display: none;
+  }
+
+  &__group_accommodation .tour-search__apartments {
+    margin-top: 8px;
+  }
+
+  &__group_accommodation .tour-search__apartments .tour-search__option {
+    gap: 8px;
+  }
+
+  &__group_meal .tour-search__list {
+    gap: 10px;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__list_columns {
+    display: block;
+    columns: 3;
+    column-gap: 32px;
+    column-fill: auto;
+    height: 360px;
+
+    .tour-search__item {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      margin-bottom: 8px;
+    }
+
+    .tour-search__option {
+      display: inline-flex;
+    }
+  }
+
+  &__option {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.25;
+    cursor: pointer;
+  }
+
+  &__option_icon {
+    width: 16px;
+    height: 16px;
+    fill: #cfcfcf;
+  }
+
+  &__checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__checkbox:checked + .tour-search__checkbox_icon .tour-search__checkbox_svg {
+    fill: #f5c213;
+  }
+
+  &__checkbox_icon,
+  &__checkbox_svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &__checkbox_icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 13px;
+  }
+
+  &__checkbox_svg {
+    fill: #cfcfcf;
+    transition: fill 180ms ease;
+  }
+
+  &__stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__star {
+    width: 18px;
+    height: 18px;
+    fill: #ffe489;
+    transition: fill 180ms ease;
+  }
+}

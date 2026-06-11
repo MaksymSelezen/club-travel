@@ -21,6 +21,7 @@ export const getFilterState = () => {
       meal: [],
       tourComposition: [],
       departureCity: [],
+      season: [],
       regions: [],
       price: { min: PRICE_DEFAULT_MIN, max: PRICE_DEFAULT_MAX },
       duration: '',
@@ -52,6 +53,9 @@ export const getFilterState = () => {
   const checkedRegion = tourSearchForm.querySelectorAll(
     'input[name="region"]:checked',
   );
+  const checkedSeason = tourSearchForm.querySelectorAll(
+    'input[name="season"]:checked',
+  );
 
   return {
     direction: checkedDirection?.value || '',
@@ -65,6 +69,7 @@ export const getFilterState = () => {
       input => input.value,
     ),
     departureCity: Array.from(checkedDepartureCity).map(input => input.value),
+    season: Array.from(checkedSeason).map(input => input.value),
     regions: Array.from(checkedRegion).map(input => input.value),
     price: {
       min: getNumericPrice('[data-tour-search-price-min]', PRICE_DEFAULT_MIN),
@@ -90,6 +95,8 @@ export const getFilterParams = (currentState = getFilterState()) => {
     urlParams.set('tourComposition', currentState.tourComposition.join(','));
   if (currentState.departureCity.length)
     urlParams.set('departureCity', currentState.departureCity.join(','));
+  if (currentState.season.length)
+    urlParams.set('season', currentState.season.join(','));
   if (currentState.regions.length)
     urlParams.set('regions', currentState.regions.join(','));
   return urlParams;

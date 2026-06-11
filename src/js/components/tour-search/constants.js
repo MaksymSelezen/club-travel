@@ -3,6 +3,7 @@ export const FILTER_GROUPS_ORDER = [
   'meal',
   'tourComposition',
   'departureCity',
+  'season',
   'price',
   'region',
   'apartmentType',
@@ -13,6 +14,7 @@ export const FILTER_GROUP_LABELS = {
   meal: 'Питание',
   tourComposition: 'Состав тура',
   departureCity: 'Вылет из',
+  season: 'Сезон',
   price: 'Цена',
   region: 'Регионы',
   apartmentType: 'Тип размещения',
@@ -44,6 +46,10 @@ export const FILTER_LABELS = {
     tallinn: 'Таллин',
     riga: 'Рига',
     vilnius: 'Вильнюс',
+  },
+  season: {
+    summer: 'Лето',
+    winter: 'Зима',
   },
 };
 

@@ -18,6 +18,11 @@
     transform: translateY(-90px);
   }
 
+  &__group_season {
+    grid-area: season;
+    transform: translateY(-90px);
+  }
+
   &__group_price {
     grid-area: price;
     transform: translateY(-90px);

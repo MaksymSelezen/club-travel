@@ -118,6 +118,7 @@ async function initTourSearch(root) {
     applyCheckboxes('meal', 'meal');
     applyCheckboxes('tourComposition', 'tourComposition');
     applyCheckboxes('departureCity', 'departureCity');
+    applyCheckboxes('season', 'season');
   };
 
   const restoreRegions = selectedDirection => {

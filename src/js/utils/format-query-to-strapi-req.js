@@ -84,6 +84,7 @@ export const convertStateToStrapiQuery = state => {
     appendStrapiOffersArray('tourComposition', state.tourComposition);
   if (state.departureCity.length)
     appendStrapiOffersArray('departureCitySlug', state.departureCity);
+  if (state.season.length) appendStrapiHotelsArray('[season]', state.season);
   if (state.regions.length)
     appendStrapiHotelsArray('[region][slug]', state.regions);
 

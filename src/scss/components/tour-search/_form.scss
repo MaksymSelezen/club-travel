@@ -151,6 +151,10 @@
       }
     }
 
+    select.tour-search__field_control:open + .tour-search__field_icon {
+      transform: translateY(-50%) rotate(180deg);
+    }
+
     &_icon {
       position: absolute;
       top: 50%;
@@ -159,7 +163,12 @@
       height: 24px;
       fill: #a9a9a9;
       transform: translateY(-50%);
+      transform-origin: center;
       pointer-events: none;
+
+      select.tour-search__field_control + & {
+        transition: transform 200ms ease;
+      }
 
       @include media.max-width(xxs) {
         right: 8px;

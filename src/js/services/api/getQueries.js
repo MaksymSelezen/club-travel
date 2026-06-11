@@ -1,6 +1,17 @@
+import {
+  PRICE_DEFAULT_MAX,
+  PRICE_DEFAULT_MIN,
+} from '@/js/components/tour-search/constants.js';
+
 const tourSearchForm = document.querySelector('[data-tour-search-form]');
 
 let currentFilterQueryString = '';
+
+const getNumericPrice = (selector, fallback) => {
+  const value = Number(tourSearchForm?.querySelector(selector)?.value);
+
+  return Number.isFinite(value) ? value : fallback;
+};
 
 export const getFilterState = () => {
   if (!tourSearchForm) {
@@ -11,7 +22,7 @@ export const getFilterState = () => {
       tourComposition: [],
       departureCity: [],
       regions: [],
-      price: { min: 200, max: 3000 },
+      price: { min: PRICE_DEFAULT_MIN, max: PRICE_DEFAULT_MAX },
       duration: '',
       date: '',
     };
@@ -56,14 +67,8 @@ export const getFilterState = () => {
     departureCity: Array.from(checkedDepartureCity).map(input => input.value),
     regions: Array.from(checkedRegion).map(input => input.value),
     price: {
-      min: Number(
-        tourSearchForm.querySelector('[data-tour-search-price-min]')?.value ||
-          200,
-      ),
-      max: Number(
-        tourSearchForm.querySelector('[data-tour-search-price-max]')?.value ||
-          3000,
-      ),
+      min: getNumericPrice('[data-tour-search-price-min]', PRICE_DEFAULT_MIN),
+      max: getNumericPrice('[data-tour-search-price-max]', PRICE_DEFAULT_MAX),
     },
   };
 };

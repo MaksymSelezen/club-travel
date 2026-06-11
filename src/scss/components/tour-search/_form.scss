@@ -135,6 +135,11 @@
             font-size: 18px;
           }
 
+          &:checked {
+            background: linear-gradient(180deg, #fccb04 0%, #ee901b 100%);
+            color: #fff;
+          }
+
           @include media.min-width(lg) {
             @media (hover: hover) and (pointer: fine) {
               &:hover {

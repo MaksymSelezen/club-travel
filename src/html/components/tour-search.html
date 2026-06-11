@@ -464,6 +464,50 @@
           </ul>
         </div>
 
+        <div class="tour-search__group tour-search__group_season">
+          <h4 class="tour-search__group_title">Сезон</h4>
+
+          <ul class="tour-search__list">
+            <li class="tour-search__item">
+              <label class="tour-search__option">
+                <input
+                  class="tour-search__checkbox"
+                  type="checkbox"
+                  name="season"
+                  value="summer"
+                  data-tour-search-filter
+                />
+
+                <span class="tour-search__checkbox_icon">
+                  {{> ui/svg className="tour-search__checkbox_svg"
+                  id="check-circle" }}
+                </span>
+
+                <span class="tour-search__option_text">Лето</span>
+              </label>
+            </li>
+
+            <li class="tour-search__item">
+              <label class="tour-search__option">
+                <input
+                  class="tour-search__checkbox"
+                  type="checkbox"
+                  name="season"
+                  value="winter"
+                  data-tour-search-filter
+                />
+
+                <span class="tour-search__checkbox_icon">
+                  {{> ui/svg className="tour-search__checkbox_svg"
+                  id="check-circle" }}
+                </span>
+
+                <span class="tour-search__option_text">Зима</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
         <div class="tour-search__group tour-search__group_price">
           <h4 class="tour-search__group_title">Цена на одного человека</h4>
 

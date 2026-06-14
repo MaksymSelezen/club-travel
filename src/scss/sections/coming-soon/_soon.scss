@@ -1,0 +1,92 @@
+@use '@/scss/utils/media' as media;
+
+.soon {
+    position: relative;
+    //aspect-ratio: 683/345;
+    padding-block: 139px;
+    @include media.max-width(sm) {
+        aspect-ratio: 683/345;
+        padding-block: 0;
+    }
+    @include media.max-width(sm) {
+        aspect-ratio: 90/80;
+    }
+    @include media.max-width(xs) {
+        aspect-ratio: 90/110;
+    }
+    @include media.max-width(xxs) {
+        aspect-ratio: 90/120;
+    }
+    &__bg{
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        &::after{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(8, 44, 99, 0.8);
+            z-index: 1;
+        }
+        & img{
+            object-fit: cover;
+        }
+    }
+
+    &__container {
+        position: relative;
+        z-index: 4;
+        height: 100%;
+        //width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    &__title {
+        font-weight: 700;
+        font-size: 54px;
+        text-align: center;
+        color: white;
+        margin-bottom: 10px;
+        @include media.max-width(sd) {
+            font-size: 34px;
+        }
+        @include media.max-width(xxs) {
+            font-size: 24px;
+        }
+    }
+
+    &__subtitle {
+        font-weight: 400;
+        font-size: 14px;
+        text-align: center;
+        color: white;
+        margin-bottom: 14px;
+    }
+
+    &__list {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    &__item {
+    }
+
+    &__link {
+        display: block;
+        font-size: 16px;
+        text-decoration: underline;
+        text-decoration-skip-ink: none;
+        text-align: center;
+        color: white;
+    }
+}

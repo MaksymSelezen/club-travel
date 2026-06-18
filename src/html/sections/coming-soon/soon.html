@@ -1,0 +1,25 @@
+<section class="soon">
+  {{> ui/picture
+    className="soon__bg"
+    alt=""
+    desktop="/src/assets/image/components/promo-support/bg.jpg"
+    desktopWebp="/src/assets/image/components/promo-support/bg.webp"
+    mobile="/src/image/assets/components/promo-support/bg_2.jpg"
+    mobileWebp="/src/assets/image/components/promo-support/bg_2.webp"
+  }}
+  <div class="soon__container container">
+    <h1 class="soon__title">Ожидается в ближайшее время</h1>
+    <div class="soon__subtitle">Вот несколько полезных ссылок:</div>
+    <ul class="soon__list">
+      <li class="soon__item"><a href='{{links.searchResults.href}}' class="soon__link">Поиск тура</a></li>
+      <li class="soon__item"><a href='{{links.directions.href}}' class="soon__link">Направления</a></li>
+      <li class="soon__item"><a href='{{links.company.href}}' class="soon__link">Кампании</a>
+      </li>
+      <li class="soon__item"><a href='{{links.hotDeals.href}}' class="soon__link">Горящие предложения</a>
+      </li>
+      <li class="soon__item"><a href='{{links.tourRequest.href}}' class="soon__link">Запрос тура</a>
+      </li>
+      <li class="soon__item"><a href='{{links.contacts.href}}' class="soon__link">Контакты</a></li>
+    </ul>
+  </div>
+</section>

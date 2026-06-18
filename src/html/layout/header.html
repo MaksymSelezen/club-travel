@@ -12,8 +12,8 @@
 
       <nav class="header__service-nav" aria-label="Дополнительная навигация">
         <div class="header__service-list">
-          <a class="header__service-link clickable" href="main.html">Страховки</a>
-          <a class="header__service-link clickable" href="main.html">Визы</a>
+          <a class="header__service-link clickable" href="{{links.insurance.href}}">Страховки</a>
+          <a class="header__service-link clickable" href="{{links.visa.href}}">Визы</a>
           <a class="header__service-link clickable" href="{{links.contacts.href}}">Контакты</a>
         </div>
       </nav>
@@ -57,7 +57,7 @@
             </li>
 
             <li class="header__account-item">
-              <a class="header__account-link" href="main.html">
+              <a class="header__account-link" href="{{links.paymentHistory.href}}">
                 {{> ui/svg className="header__account-item-icon"
                 id="payment-card" }}
                 <span class="header__account-item-text">История платежей</span>
@@ -65,7 +65,7 @@
             </li>
 
             <li class="header__account-item">
-              <a class="header__account-link" href="main.html">
+              <a class="header__account-link" href="{{links.settings.href}}">
                 {{> ui/svg className="header__account-item-icon" id="settings"
                 }}
                 <span class="header__account-item-text">Настройки</span>
@@ -75,10 +75,10 @@
 
           <div class="header__account-divider"></div>
 
-          <a class="header__account-logout" href="main.html">
+          <button class="header__account-logout">
             {{> ui/svg className="header__account-logout-icon" id="exit" }}
             <span class="header__account-logout-text">Выход</span>
-          </a>
+          </button>
         </div>
       </div>
 
